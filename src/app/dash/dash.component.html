@@ -1,0 +1,11 @@
+<div class="dash" [class.dash-compact]="showSideMenu">
+
+  <app-nav></app-nav>
+
+  <app-header (toggleSideBar)="showSideMenu=!showSideMenu"></app-header>
+<div class="dash-app">
+  <main class="dash-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+</div>

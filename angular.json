@@ -24,6 +24,9 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "./node_modules/spur-template/dist/css/demo.min.css",
+              "./node_modules/spur-template/dist/css/spur.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -119,6 +122,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "result-tracker"
+    }
+  },
+  "defaultProject": "result-tracker",
+  "cli": {
+    "analytics": false
+  }
 }
