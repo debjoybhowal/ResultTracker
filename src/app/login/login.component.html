@@ -1,14 +1,46 @@
 <div class="form-screen">
     <a href="index.html" class="spur-logo"><i class="fas fa-bolt"></i> <span>Result Tracker</span></a>
     <div class="card account-dialog">
-        <div class="card-header bg-primary text-white"> Please sign in </div>
+        <div class="card-header bg-primary text-white"> Please Register</div>
         <div class="card-body">
-            <form action="#!">
+            <form [formGroup]="form" >
+
+
                 <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <input formControlName="username" type="text" class="form-control" id="exampleInputUserName1" aria-describedby="userHelp" placeholder="Enter User Name">
+                    <small *ngIf="user_name.touched && user_name.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="user_name.errors.required">Please Enter User Name</div>
+                        <div *ngIf="user_name.errors.minLength||user_name.errors.maxLength">User Name Must Contain Min. 8 & Max. 13 Characters</div>
+                    </small>
                 </div>
+
+
+                <div class="form-group">
+                    <input formControlName="studentname" type="text" class="form-control" id="exampleInputName1" aria-describedby="nameHelp" placeholder="Enter Name">
+                    <small *ngIf="student_name.touched && student_name.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="student_name.errors.required">Please Enter The Name</div>
+                        <div *ngIf="student_name.errors.minLength||student_name.errors.maxLength">Student Name Must Contain Min. 5 & Max. 30 Characters</div>
+
+                    </small>
+                </div>
+
+
+                <div class="form-group">
+                    <input formControlName="primaryEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small *ngIf="primary_Email.touched && primary_Email.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="primary_Email.errors.required">Please Enter Email</div>
+                        <div *ngIf="primary_Email.errors.email">Please Enter The Correct Email</div>
+                    </small>
+                </div>
+
+
                 <div class="form-group">
                     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+
+
+                <div class="form-group">
+                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm Password">
                 </div>
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
@@ -17,8 +49,8 @@
                     </div>
                 </div>
                 <div class="account-dialog-actions">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
-                    <a class="account-dialog-link" href="signup.html">Create a new account</a>
+                    <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Register</button>
+                    <a class="account-dialog-link" href="signup.html">If You Have an Account.Sign In</a>
                 </div>
             </form>
         </div>
