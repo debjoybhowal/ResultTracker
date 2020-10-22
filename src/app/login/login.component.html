@@ -7,41 +7,54 @@
 
 
                 <div class="form-group">
-                    <input formControlName="username" type="text" class="form-control" id="exampleInputUserName1" aria-describedby="userHelp" placeholder="Enter User Name">
-                    <small *ngIf="user_name.touched && user_name.invalid" class="form-text text-danger font-weight-bold">
-                        <div *ngIf="user_name.errors.required">Please Enter User Name</div>
-                        <div *ngIf="user_name.errors.minLength||user_name.errors.maxLength">User Name Must Contain Min. 8 & Max. 13 Characters</div>
-                    </small>
+                    <input formControlName="username" type="name" class="form-control" id="exampleFormControlInput1" placeholder="Enter User Name">
+                    <small *ngIf="f.username.touched && f.username.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.username.errors.required">Please Enter User Name</div>
+                        
+                      <div *ngIf="f.username.errors.minlength||f.username.errors.maxlength||f.username.errors.noSpecial||f.username.errors.notSpace">Accepts Alphanumeric & Min 8 to Max 13 Char</div>
+                      </small>
                 </div>
 
 
                 <div class="form-group">
-                    <input formControlName="studentname" type="text" class="form-control" id="exampleInputName1" aria-describedby="nameHelp" placeholder="Enter Name">
-                    <small *ngIf="student_name.touched && student_name.invalid" class="form-text text-danger font-weight-bold">
-                        <div *ngIf="student_name.errors.required">Please Enter The Name</div>
-                        <div *ngIf="student_name.errors.minLength||student_name.errors.maxLength">Student Name Must Contain Min. 5 & Max. 30 Characters</div>
-
-                    </small>
+                    <input formControlName="studentname" type="name" class="form-control" id="exampleFormControlInput2" placeholder="Enter Name">
+                    <small *ngIf="f.studentname.touched && f.studentname.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.studentname.errors.required">Please Enter Student Name</div>
+                        
+                      <div *ngIf="f.studentname.errors.minlength||f.studentname.errors.maxlength||f.studentname.noSpecial||f.studentname.notNumber">Accepts Alphabets & Min 5 to Max 30 Char</div>
+                      </small>
                 </div>
 
 
                 <div class="form-group">
                     <input formControlName="primaryEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small *ngIf="primary_Email.touched && primary_Email.invalid" class="form-text text-danger font-weight-bold">
-                        <div *ngIf="primary_Email.errors.required">Please Enter Email</div>
-                        <div *ngIf="primary_Email.errors.email">Please Enter The Correct Email</div>
+                    <small *ngIf="f.primaryEmail.touched && f.primaryEmail.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.primaryEmail.errors.required">Please Enter Email</div>
+                        <div *ngIf="f.primaryEmail.errors.email">Please Enter The Correct Email</div>
                     </small>
                 </div>
 
 
                 <div class="form-group">
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input formControlName="pwd" type="password" class="form-control" id="exampleFormControlInput4" placeholder="Enter Password">
+                    <small *ngIf="f.pwd.touched && f.pwd.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.pwd.errors.required">Please Enter Password</div>
+                        
+                      <div *ngIf="f.pwd.errors.minlength||f.pwd.errors.maxlength">Accepts Min 8 to Max 16 Char</div>
+                      <div *ngIf="f.pwd.errors.notSpace">Password Cannot Contain Space</div>
+                      </small>
                 </div>
 
 
                 <div class="form-group">
-                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm Password">
+                    <input formControlName="cpwd" type="password" class="form-control" id="exampleFormControlInput5" placeholder="Confirm Password">
+                    <small *ngIf="f.cpwd.touched && f.cpwd.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.cpwd.errors.required">Password is required.</div>
+                        <div *ngIf="f.cpwd.errors.confirmedValidator">Password and Confirm Password must be match.</div>
+                    </small>
                 </div>
+
+
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck1">

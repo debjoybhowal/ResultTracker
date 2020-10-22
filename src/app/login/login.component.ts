@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray,FormBuilder,FormGroup,FormControl, Validators} from '@angular/forms';
+import {CustomValidators} from './custom.validators';
+import { ConfirmedValidator } from './confirmed.validator';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,28 +15,40 @@ export class LoginComponent implements OnInit {
       'username':new FormControl('',[
         Validators.required,
         Validators.minLength(8),
-        Validators.maxLength(13)
+        Validators.maxLength(13),
+        CustomValidators.noSpecial,
+        CustomValidators.notSpace
       ]),
       'studentname':new FormControl('',[
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(30)
+        Validators.maxLength(30),
+        CustomValidators.noSpecial,
+        CustomValidators.notNumber
       ]),
       'primaryEmail': new FormControl('',[
         Validators.required,
         Validators.email
-      ])
-    })
+      ]),
+      'pwd':new FormControl('',[
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(16),
+        CustomValidators.notSpace
+      ]),
+      'cpwd':new FormControl('',[
+        Validators.required
+      ])},
+       { 
+        validator: ConfirmedValidator('pwd', 'cpwd')
+      }
+    )
   }
-  get user_name(){
-    return this.form.get('username');
+  
+   get f(){
+    return this.form.controls;
   }
-  get student_name(){
-    return this.form.get('studentname');
-  }
-  get primary_Email() {
-    return this.form.get('primaryEmail');
-} 
+   
   ngOnInit(): void {
   }
 
