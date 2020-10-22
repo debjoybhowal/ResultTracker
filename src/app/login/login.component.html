@@ -1,15 +1,60 @@
 <div class="form-screen">
     <a href="index.html" class="spur-logo"><i class="fas fa-bolt"></i> <span>Result Tracker</span></a>
     <div class="card account-dialog">
-        <div class="card-header bg-primary text-white"> Please sign in </div>
+        <div class="card-header bg-primary text-white"> Please Register</div>
         <div class="card-body">
-            <form action="#!">
+            <form [formGroup]="form" >
+
+
                 <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <input formControlName="username" type="name" class="form-control" id="exampleFormControlInput1" placeholder="Enter User Name">
+                    <small *ngIf="f.username.touched && f.username.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.username.errors.required">Please Enter User Name</div>
+                        
+                      <div *ngIf="f.username.errors.minlength||f.username.errors.maxlength||f.username.errors.noSpecial||f.username.errors.notSpace">Accepts Alphanumeric & Min 8 to Max 13 Char</div>
+                      </small>
                 </div>
+
+
                 <div class="form-group">
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input formControlName="studentname" type="name" class="form-control" id="exampleFormControlInput2" placeholder="Enter Name">
+                    <small *ngIf="f.studentname.touched && f.studentname.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.studentname.errors.required">Please Enter Student Name</div>
+                        
+                      <div *ngIf="f.studentname.errors.minlength||f.studentname.errors.maxlength||f.studentname.noSpecial||f.studentname.notNumber">Accepts Alphabets & Min 5 to Max 30 Char</div>
+                      </small>
                 </div>
+
+
+                <div class="form-group">
+                    <input formControlName="primaryEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small *ngIf="f.primaryEmail.touched && f.primaryEmail.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.primaryEmail.errors.required">Please Enter Email</div>
+                        <div *ngIf="f.primaryEmail.errors.email">Please Enter The Correct Email</div>
+                    </small>
+                </div>
+
+
+                <div class="form-group">
+                    <input formControlName="pwd" type="password" class="form-control" id="exampleFormControlInput4" placeholder="Enter Password">
+                    <small *ngIf="f.pwd.touched && f.pwd.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.pwd.errors.required">Please Enter Password</div>
+                        
+                      <div *ngIf="f.pwd.errors.minlength||f.pwd.errors.maxlength">Accepts Min 8 to Max 16 Char</div>
+                      <div *ngIf="f.pwd.errors.notSpace">Password Cannot Contain Space</div>
+                      </small>
+                </div>
+
+
+                <div class="form-group">
+                    <input formControlName="cpwd" type="password" class="form-control" id="exampleFormControlInput5" placeholder="Confirm Password">
+                    <small *ngIf="f.cpwd.touched && f.cpwd.invalid" class="form-text text-danger font-weight-bold">
+                        <div *ngIf="f.cpwd.errors.required">Password is required.</div>
+                        <div *ngIf="f.cpwd.errors.confirmedValidator">Password and Confirm Password must be match.</div>
+                    </small>
+                </div>
+
+
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck1">
@@ -17,8 +62,8 @@
                     </div>
                 </div>
                 <div class="account-dialog-actions">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
-                    <a class="account-dialog-link" href="signup.html">Create a new account</a>
+                    <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Register</button>
+                    <a class="account-dialog-link" href="signup.html">If You Have an Account.Sign In</a>
                 </div>
             </form>
         </div>
