@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
-
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
   declarations: [LoginComponent],
@@ -11,7 +11,8 @@ import { LoginComponent } from './login.component';
     CommonModule,
     LoginRoutingModule, 
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgApexchartsModule
   ]
 })
 export class LoginModule { }
