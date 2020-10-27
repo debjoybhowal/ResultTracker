@@ -1,9 +1,9 @@
 <div class="form-screen">
     <a href="index.html" class="spur-logo"><i class="fas fa-bolt"></i> <span>Result Tracker</span></a>
-    <div class="card account-dialog">
+    <div class="card account-dialog" *ngIf="showMyContainer">
         <div class="card-header bg-primary text-white"> Please Register</div>
         <div class="card-body">
-            <form [formGroup]="form" >
+            <form [formGroup]="form">
 
 
                 <div class="form-group">
@@ -63,9 +63,27 @@
                 </div>
                 <div class="account-dialog-actions">
                     <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Register</button>
-                    <a class="account-dialog-link" href="signup.html">If You Have an Account.Sign In</a>
+                    <a class="account-dialog-link" (click)="showMyContainer=!showMyContainer">If You Have an Account.Sign In</a>
                 </div>
             </form>
+            
+        </div>
+    </div>
+    <div class="card account-dialog" *ngIf="!showMyContainer">
+        <div class="card-header bg-primary text-white"> Please Login</div>
+        <div class="card-body">
+    <form>
+        <div class="form-group">
+            <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="Enter User Name">
+            
+        </div> 
+        <div class="form-group">
+            <input type="password" class="form-control" id="exampleFormControlInput4" placeholder="Enter Password">
+            
+        </div>
+        <button  type="submit" class="btn btn-primary">Login</button>
+            <a class="account-dialog-link" (click)="showMyContainer=!showMyContainer">If You Don't Have an Account.Sign Up</a>
+    </form>
         </div>
     </div>
 </div>

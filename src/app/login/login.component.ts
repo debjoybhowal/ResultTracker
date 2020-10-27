@@ -10,6 +10,10 @@ import { ConfirmedValidator } from './confirmed.validator';
 })
 export class LoginComponent implements OnInit {
   form;
+  
+  showMyContainer: boolean = true;
+
+
   constructor(private fb: FormBuilder) { 
     this.form = this.fb.group({
       'username':new FormControl('',[
@@ -49,6 +53,7 @@ export class LoginComponent implements OnInit {
     return this.form.controls;
   }
    
+  
   ngOnInit(): void {
   }
 
