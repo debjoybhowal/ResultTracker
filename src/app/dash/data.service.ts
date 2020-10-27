@@ -11,11 +11,11 @@ export class DataService {
 
   constructor( private http: HttpClient) { }
 
-  getProfileInfo(){
-    return this.http.get(this.url+"?profile&stud_id=42&pass=1234abcd");
+  getProfileInfo(user_id:string, pwd:string){
+    return this.http.get(this.url+`?profile&stud_id=${user_id}&pass=${pwd}`);
   }
 
-  getAllBasicData(){
-    return this.http.get(this.url+"?stud_id=42&pass=1234abcd");
+  getAllBasicData(user_id:string, pwd:string){
+    return this.http.get(this.url+`?stud_id=${user_id}&pass=${pwd}`);
   }
 }
