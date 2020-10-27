@@ -1,5 +1,26 @@
 <div class="container-fluid">
     <h1 class="dash-title">Blank</h1>
     <!-- put your rows / columns here -->
-    
+    <div align="center" style="margin-top:10%;">
+ <!-- put your rows / columns here 
+        <circle-progress [percent]="40" [subtitle]="'Aggregate Percentage'"  [space]="-10" [radius]="100" [outerStrokeWidth]="10"
+          [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
+          [animationDuration]="1000" [title]="'Physics'"></circle-progress>
+     -->
+     <circle-progress
+  [percent]="avg_percentage"
+  [radius]="100"
+  [subtitle]="'Overall Average Score Percentage'"
+  [outerStrokeWidth]="16"
+  [innerStrokeWidth]="8"
+  [outerStrokeColor]="'blue'"
+  [innerStrokeColor]="'#C7E596'"
+  [animation]="true"
+  [animationDuration]="300"
+></circle-progress>
+ <p>Overall Average Score Percentage</p>
+      
+    </div>
+   
+ 
 </div>
