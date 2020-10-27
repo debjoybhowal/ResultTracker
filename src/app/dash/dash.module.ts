@@ -6,13 +6,15 @@ import { DashComponent } from './dash.component';
 import { HomeComponent } from './home/home.component';
 import { NavComponent } from './nav/nav.component';
 import { HeaderComponent } from './header/header.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
   declarations: [DashComponent, HomeComponent, NavComponent, HeaderComponent],
   imports: [
     CommonModule,
-    DashRoutingModule
+    DashRoutingModule,
+    NgApexchartsModule
   ]
 })
 export class DashModule { }

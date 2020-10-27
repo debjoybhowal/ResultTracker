@@ -1,10 +1,10 @@
-<div class="dash-nav dash-nav-dark">
+<div class="dash-nav dash-nav-dark "  [class.mobile-show]="showMobile">
   <header>
-    <a href="#!" class="menu-toggle">
+    <a (click)="toggleSideMobile()" class="menu-toggle">
       <i class="fas fa-bars"></i>
     </a>
     <a href="index.html" class="spur-logo"
-      ><i class="fas fa-bolt"></i> <span>Result Tracker</span></a
+      ><i class="fas fa-chart-line"></i> <span>Result Tracker</span></a
     >
   </header>
   <nav class="dash-nav-list">
@@ -20,7 +20,7 @@
     <a href="index.html" class="dash-nav-item">
         <i class="fas fa-user"></i>  Profile
     </a>
-    <a href="index.html" class="dash-nav-item">
+    <a class="dash-nav-item" (click)="logOut()">
         <i class="fas fa-sign-out-alt"></i>  Sign out
     </a>
   </nav>
