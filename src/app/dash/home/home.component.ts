@@ -8,6 +8,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 })
 export class HomeComponent implements OnInit {
 
+  avg_percentage=84.7;
+  
   constructor() { }
 avg_percentage=84.7;
 

@@ -20,7 +20,13 @@
     "@angular/platform-browser-dynamic": "~10.1.4",
     "@angular/router": "~10.1.4",
     "@fortawesome/fontawesome-free": "^5.4.1",
+<<<<<<< HEAD
     "ng-circle-progress": "^1.5.1",
+=======
+    "apexcharts": "^3.22.0",
+    "ng-apexcharts": "^1.5.4",
+    "ng-circle-progress": "^1.6.0",
+>>>>>>> 6079c1d4a3391058481e04ca04e85a4a44b21a60
     "rxjs": "~6.6.0",
     "spur-template": "^1.1.0",
     "tslib": "^2.0.0",

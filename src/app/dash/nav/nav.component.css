@@ -1,3 +1,7 @@
 .spur-logo{
-    font-size:16px;
+    font-size:15px;
+}
+.dash-nav-item , .menu-toggle{
+    cursor: pointer;
+    color:white !important;
 }

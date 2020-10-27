@@ -1,4 +1,5 @@
 <div class="container-fluid">
+<<<<<<< HEAD
     <h1 class="dash-title">Blank</h1>
     <!-- put your rows / columns here -->
     <div align="center" style="margin-top:10%;">
@@ -23,4 +24,45 @@
     </div>
    
  
+=======
+  <h1 class="dash-title">Hi Danny!</h1>
+  <p class="mb-5">
+    Here you will find the overview of you performances and get a overall
+    picture.
+  </p>
+  <!-- put your rows / columns here -->
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card spur-card">
+        <div class="card-header">
+          <div class="spur-card-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="spur-card-title">Overal Average Score Percentage</div>
+        </div>
+        <div class="card-body">
+          <div align="center" >
+            <!-- put your rows / columns here 
+                       <circle-progress [percent]="40" [subtitle]="'Aggregate Percentage'"  [space]="-10" [radius]="100" [outerStrokeWidth]="10"
+                         [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
+                         [animationDuration]="1000" [title]="'Physics'"></circle-progress>
+                    -->
+            <circle-progress
+              [percent]="avg_percentage"
+              [radius]="100"
+              [subtitle]="'Overall Average Score Percentage'"
+              [outerStrokeWidth]="16"
+              [innerStrokeWidth]="8"
+              [outerStrokeColor]="'blue'"
+              [innerStrokeColor]="'#C7E596'"
+              [animation]="true"
+              [animationDuration]="300"
+            ></circle-progress>
+          </div>
+          <p>This is the score which is average of all your subjects accross all exams and terms.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+>>>>>>> 6079c1d4a3391058481e04ca04e85a4a44b21a60
 </div>
