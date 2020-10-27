@@ -1,12 +1,14 @@
 <div class="container-fluid">
-  <h1 class="dash-title">Hi Danny!</h1>
+  <h1 class="dash-title">
+    Hi <span *ngIf="profile">{{ profile.full_name }}</span> !
+  </h1>
   <p class="mb-5">
     Here you will find the overview of you performances and get a overall
     picture.
   </p>
   <!-- put your rows / columns here -->
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-xl-4">
       <div class="card spur-card">
         <div class="card-header">
           <div class="spur-card-icon">
@@ -15,27 +17,117 @@
           <div class="spur-card-title">Overal Average Score Percentage</div>
         </div>
         <div class="card-body">
-          <div align="center" >
-            <!-- put your rows / columns here 
-                       <circle-progress [percent]="40" [subtitle]="'Aggregate Percentage'"  [space]="-10" [radius]="100" [outerStrokeWidth]="10"
-                         [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
-                         [animationDuration]="1000" [title]="'Physics'"></circle-progress>
-                    -->
-            <circle-progress
-              [percent]="avg_percentage"
-              [radius]="100"
-              [subtitle]="'Overall Average Score Percentage'"
-              [outerStrokeWidth]="16"
-              [innerStrokeWidth]="8"
-              [outerStrokeColor]="'blue'"
-              [innerStrokeColor]="'#C7E596'"
-              [animation]="true"
-              [animationDuration]="300"
-            ></circle-progress>
+          
+          
+          <div class="row align-items-center">
+              <div class="col-xl-6">
+                <div class="text-center">
+                    <circle-progress
+                    class="circle-progress"
+                      [percent]="avg_percentage"
+                      [radius]="70"
+                      [subtitle]="'Overall Average Score Percentage'"
+                      [outerStrokeWidth]="14"
+                      [innerStrokeWidth]="7"
+                      [outerStrokeColor]="'blue'"
+                      [innerStrokeColor]="'#C7E596'"
+                      [animation]="true"
+                      [animationDuration]="500"
+                    ></circle-progress>
+                  </div>
+              </div>
+              <div class="col-xl-6"><p>
+                This is the score which is average of all your subjects accross all
+                exams and terms.
+              </p></div>
           </div>
-          <p>This is the score which is average of all your subjects accross all exams and terms.</p>
         </div>
       </div>
     </div>
+    <div class="col-xl-4 second">
+      <div class="card spur-card">
+        <div class="card-header bg-success text-white">
+          <div class="spur-card-icon">
+            <i class="far fa-check-circle"></i>
+          </div>
+          <div class="spur-card-title">Top 3 Subjects</div>
+        </div>
+        <div class="card-body" *ngIf="allData">
+          <table class="table table-hover table-in-card">
+            <thead>
+              <tr>
+                <th scope="col" class="text rank-list"><span>#</span></th>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Avg</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let val of allData.top_three.response; let i = index">
+                <th scope="row" class="text rank-list">
+                  <span>{{ i }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ val.subject_name }}</span>
+                </td>
+                <td class="text">
+                  <span>{{ val.average }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 second">
+        <div class="card spur-card">
+          <div class="card-header bg-danger text-white">
+            <div class="spur-card-icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="spur-card-title">Needs to Improve</div>
+          </div>
+          <div class="card-body" *ngIf="allData">
+            <table class="table table-hover table-in-card">
+              <thead>
+                <tr>
+                  <th scope="col" class="text rank-list"><span>#</span></th>
+                  <th scope="col" class="text"><span>Subject</span></th>
+                  <th scope="col" class="text"><span>Avg</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of allData.bottom_three.response; let i = index">
+                  <th scope="row" class="text rank-list">
+                    <span>{{ i }}</span>
+                  </th>
+                  <td class="text">
+                    <span>{{ val.subject_name }}</span>
+                  </td>
+                  <td class="text">
+                    <span>{{ val.average }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+    <div class="col-xl-4">
+        <div class="card spur-card">
+          <div class="card-header bg-secondary text-white">
+            <div class="spur-card-icon">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="spur-card-title">Candidate Details</div>
+          </div>
+          <div class="card-body bg-secondary text-white" *ngIf="profile">
+            <ul>
+              <li>{{ profile.full_name | uppercase }}</li>
+              <li>{{ profile.email }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
