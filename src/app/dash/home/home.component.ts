@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  avg_percentage=84.7;
+  
   constructor() { }
 
   ngOnInit(): void {
