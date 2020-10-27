@@ -1,0 +1,12 @@
+.table .text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 0;
+  }
+  .rank-list{
+      width:35px;
+  }
+  .circle-progress::ng-deep svg{
+      width:100%;
+  }
