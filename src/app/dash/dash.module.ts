@@ -17,14 +17,12 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     DashRoutingModule,
     NgApexchartsModule,
     NgCircleProgressModule.forRoot({
-      "backgroundColor": "#F1F1F1",
+      "backgroundColor": "#FFFFFF",
       "backgroundPadding": -18,
       "radius": 60,
       "toFixed": 1,
       "titleFontSize":"28",
       "outerStrokeWidth": 10,
-      "outerStrokeColor": "#FF6347",
-      "innerStrokeColor": "#32CD32",
       "innerStrokeWidth": 1,
       "showSubtitle":false,
       "startFromZero": false})
