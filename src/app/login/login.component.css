@@ -1,6 +1,55 @@
-.form-control.ng-touched.ng-invalid{
-    border: 2px solid red;
+.form-control.ng-touched.ng-invalid {
+  border: 2px solid red;
 }
 a:hover {
-    cursor:pointer;
-   }
+  cursor: pointer;
+}
+
+.text {
+  border-radius: 7.5px;
+  width: 15px;
+  height: 15px;
+  animation-name: img1;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-duration: 1s;
+  position: absolute;
+  left: 57.3px;
+  z-index: 100;
+  top: 12.2px;
+}
+@keyframes img1 {
+  0% {
+    background-color: red;
+  }
+  100% {
+    background-color: brown;
+  }
+}
+.eye img {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 40px;
+}
+.logo {
+  position: relative;
+  display: inline-block;
+}
+.eye {
+  position: absolute;
+  top: -30px;
+  left: -40px;
+  margin-bottom: 18px;
+}
+.row {
+  margin: 0px;
+  overflow-x: hidden;
+}
+.form-screen{
+    padding-top:0;
+    min-height: auto;
+}
+.full-height{
+    min-height: 100vh;
+}

@@ -85,11 +85,12 @@ export class HomeComponent implements OnInit {
       xaxis: {
         type: 'category',
         categories: termsChart,
-      },
-      tooltip: {
-        x: {
-          format: 'dd/MM/yy HH:mm',
-        },
+        labels:{
+          hideOverlappingLabels:true,
+          showDuplicates:true,
+          trim:true,
+        }
+        
       },
     };
   }
