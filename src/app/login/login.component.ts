@@ -45,6 +45,7 @@ export type ChartOptions = {
 export class LoginComponent implements OnInit {
   form;
   loginForm: FormGroup;
+  showLoading:boolean=false;
 
   showMyContainer: boolean = false;
 
@@ -176,6 +177,7 @@ export class LoginComponent implements OnInit {
   }
   onLogin() {
     console.log(this.loginForm.value);
+    this.showLoading=true;
     this.loginService.login(this.loginForm.value).subscribe((result: any) => {
       if (result.code == 202) {
         console.log('Successfully Logged In');
@@ -191,6 +193,7 @@ export class LoginComponent implements OnInit {
       } else {
         console.log('Something went wrong');
       }
+      this.showLoading=false;
     });
   }
 

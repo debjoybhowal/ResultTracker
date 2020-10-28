@@ -7,15 +7,9 @@ import { Injectable } from '@angular/core';
 export class DataService {
 
   
-  url = 'https://atdebjoy.com/others/api/perform/basic_details.php'; 
+  url = 'https://atdebjoy.com/others/api/perform/'; 
 
   constructor( private http: HttpClient) { }
 
-  getProfileInfo(user_id:string, pwd:string){
-    return this.http.get(this.url+`?profile&stud_id=${user_id}&pass=${pwd}`);
-  }
-
-  getAllBasicData(user_id:string, pwd:string){
-    return this.http.get(this.url+`?stud_id=${user_id}&pass=${pwd}`);
-  }
+  
 }

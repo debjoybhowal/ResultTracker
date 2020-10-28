@@ -3,21 +3,21 @@
     <a (click)="toggleSideMobile()" class="menu-toggle">
       <i class="fas fa-bars"></i>
     </a>
-    <a href="index.html" class="spur-logo"
+    <a routerLink="/dash/home"  class="spur-logo"
       ><i class="fas fa-chart-line"></i> <span>Result Tracker</span></a
     >
   </header>
   <nav class="dash-nav-list">
-    <a href="index.html" class="dash-nav-item">
+    <a routerLink="/dash/home" class="dash-nav-item">
       <i class="fas fa-home"></i> Dashboard
     </a>
-    <a href="index.html" class="dash-nav-item">
+    <a routerLink="/dash/term"  class="dash-nav-item">
         <i class="fas fa-chart-bar"></i>  Terms
     </a>
-    <a href="index.html" class="dash-nav-item">
+    <a routerLink="/dash/subject"  class="dash-nav-item">
         <i class="fas fa-book"></i>  Subjects
     </a>
-    <a href="index.html" class="dash-nav-item">
+    <a routerLink="/dash/profile"  class="dash-nav-item">
         <i class="fas fa-user"></i>  Profile
     </a>
     <a class="dash-nav-item" (click)="logOut()">

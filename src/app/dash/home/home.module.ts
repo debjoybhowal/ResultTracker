@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DashRoutingModule } from './dash-routing.module';
-import { DashComponent } from './dash.component';
-import { NavComponent } from './nav/nav.component';
-import { HeaderComponent } from './header/header.component';
+import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './home.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
 
 @NgModule({
-  declarations: [DashComponent, NavComponent, HeaderComponent],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
-    DashRoutingModule,
+    HomeRoutingModule,
     NgApexchartsModule,
     NgCircleProgressModule.forRoot({
       "backgroundColor": "#FFFFFF",
@@ -27,4 +25,4 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       "startFromZero": false})
   ]
 })
-export class DashModule { }
+export class HomeModule { }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../data.service';
+import { HomeService } from './home.service';
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -9,7 +9,6 @@ import {
   ApexTooltip,
   ApexStroke,
 } from 'ng-apexcharts';
-
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -22,9 +21,10 @@ export type ChartOptions = {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
   profile;
   allData;
   user_id: string;
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  constructor(private dataservice: DataService) {}
+  constructor(private dataservice: HomeService) {}
 
   
   ngOnInit(): void {

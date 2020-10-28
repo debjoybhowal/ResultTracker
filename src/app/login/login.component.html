@@ -1,15 +1,19 @@
 <div class="container-fluid">
-  <div class="container" >
+  <div class="container">
     <div class="row align-items-center full-height">
       <div class="col-sm-6" style="border-right: 0px">
         <div class="form-screen">
           <a href="index.html" class="spur-logo mb-3"
-            ><i class="fas fa-bolt"></i>
-            <span>Result Tracker</span></a
+            ><i class="fas fa-bolt"></i> <span>Result Tracker</span></a
           >
 
           <div class="card account-dialog" *ngIf="showMyContainer">
-            <div class="card-header bg-primary text-white">Please Register</div>
+            <div class="card-header bg-primary text-white position-relative">
+              Please Register
+              <div class="spinner-border text-light spinner-border-sm position-absolute" role="status" style="top:18px; right:22px" *ngIf="showLoading">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
             <div class="card-body">
               <form [formGroup]="form">
                 <div class="form-group">
@@ -170,7 +174,12 @@
             </div>
           </div>
           <div class="card account-dialog" *ngIf="!showMyContainer">
-            <div class="card-header bg-primary text-white">Please Login</div>
+            <div class="card-header bg-primary text-white position-relative">
+              Please Login
+              <div class="spinner-border text-light spinner-border-sm position-absolute" role="status" style="top:18px; right:22px" *ngIf="showLoading">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
             <div class="card-body">
               <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
                 <div class="form-group">
@@ -247,7 +256,7 @@
         </div>
       </div>
       <div class="col-sm-6 p-5" style="border: 0px">
-        <div class="logo" style="margin: 0px 43%; ">
+        <div class="logo" style="margin: 0px 43%">
           <div class="eye" style="position: relative; display: inline-block">
             <p class="text" style="display: inline-block"></p>
             <img src="https://img.icons8.com/fluent/48/000000/visible.png" />
