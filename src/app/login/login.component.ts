@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
           show: false,
         },
       },
-      colors: ['black'],
+      colors: ['#6c757d'],
       dataLabels: {
         enabled: true,
       },
@@ -135,6 +135,11 @@ export class LoginComponent implements OnInit {
       title: {
         text: 'Yearly app subscribers progression',
         align: 'center',
+        style: {
+          color: undefined,
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 600,
+      },
       },
       grid: {
         borderColor: 'gold',
@@ -150,14 +155,29 @@ export class LoginComponent implements OnInit {
         categories: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
         title: {
           text: 'year',
+          style: {
+            color: undefined,
+            fontSize: '12px',
+            fontFamily: 'Arial, sans-serif',
+            fontWeight: 300,
+            cssClass: 'apexcharts-yaxis-title',
+        },
         },
       },
       yaxis: {
         title: {
           text: 'number of users in lakhs',
+          style: {
+            color: undefined,
+            fontSize: '12px',
+            fontFamily: 'Arial, sans-serif',
+            fontWeight: 100,
+            cssClass: 'apexcharts-yaxis-title',
+        },
         },
         min: 5,
         max: 40,
+        
       },
       legend: {
         position: 'top',

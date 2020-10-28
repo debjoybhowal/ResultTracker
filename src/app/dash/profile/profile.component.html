@@ -1,1 +1,147 @@
-<p>profile works!</p>
+<div class="row">
+  <div class="col-xl-6">
+    <div class="card-custom hovercard-custom card spur-card">
+      <div class="card-customheader card-body"></div>
+      <div class="avatar">
+        <img
+          alt=""
+          src="https://vrs.amsi.org.au/wp-content/uploads/sites/78/2017/12/tobinsouth_vrs_2017-18.jpeg"
+        />
+      </div>
+      <div class="info" *ngIf="profile">
+        <div class="title">
+          <a target="_blank" href="https://scripteden.com/">{{
+            profile.full_name
+          }}</a>
+        </div>
+        <div class="desc">
+          <span class="desc-title">Username:</span>&nbsp;{{ profile.username }}
+        </div>
+        <div class="desc">
+          <span class="desc-title">Email:</span>&nbsp;{{ profile.email }}
+        </div>
+      </div>
+      <div class="bottom"></div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card spur-card">
+      <div class="card-header">
+        <div class="spur-card-icon">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <div class="spur-card-title">Overal Average Score Percentage</div>
+      </div>
+      <div class="card-body">
+        <div id="chart">
+          <p>Total No. Of Exams For Each Subjects</p>
+          <apx-chart
+            *ngIf="responsive"
+            [series]="series"
+            [chart]="chart"
+            [labels]="labels"
+            [fill]="fill"
+            [dataLabels]="dataLabels"
+            [responsive]="responsive"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card spur-card">
+      <div class="card-header bg-primary text-white">
+        <div class="spur-card-icon">
+          <i class="fas fa-clipboard"></i>
+        </div>
+        <div class="spur-card-title">Subject List Added</div>
+      </div>
+      <div class="card-body" *ngIf="allData">
+        <table class="table table-hover table-in-card">
+          <thead>
+            <tr>
+              <th scope="col" class="text"><span>Subject</span></th>
+              <th scope="col" class="text"><span>Term</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let val of allData.all.response">
+              <ng-container *ngIf="val.exam_name === 'Final'">
+                <th class="text">
+                  <span>{{ val.subject_name }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ val.term_name }}</span>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card spur-card">
+      <div class="card-header bg-warning text-white">
+        <div class="spur-card-icon">
+          <i class="fas fa-clipboard"></i>
+        </div>
+        <div class="spur-card-title">Term List Added</div>
+      </div>
+      <div class="card-body" *ngIf="allData">
+        <table class="table table-hover table-in-card">
+          <thead>
+            <tr>
+              <th scope="col" class="text"><span>#</span></th>
+              <th scope="col" class="text"><span>Term Name</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let val of termData.response; let i = index">
+              <th class="text">
+                <span>{{ i + 1 }}</span>
+              </th>
+              <td class="text">
+                <span>{{ val.term_name }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6" *ngFor="let val of termData?.response">
+    <div class="card spur-card">
+        <div class="card-header bg-info text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-clipboard"></i>
+          </div>
+          <div class="spur-card-title">No. Of Subjects in {{val.term_name}}</div>
+        </div>
+        <div class="card-body" *ngIf="allData">
+          <table class="table table-hover table-in-card">
+            <thead>
+              <tr>
+                
+                <th scope="col" class="text"><span>#</span></th>
+                <th scope="col" class="text"><span>Subject Name</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of val.subjects;let i=index">
+                  
+                
+                <th class="text">
+                  <span>{{ i+1 }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ v.sub_name }}</span>
+                </td>
+              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+</div>
