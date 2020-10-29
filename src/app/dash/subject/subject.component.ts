@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -30,97 +31,121 @@ export type ChartOptions = {
 export class SubjectComponent implements OnInit {
   adata;
   bdata;
+  cdata;
+  user_id: string;
+  pwd: string;
+  subjectList;
+  subjectLoaded:string="";
+  
+  paramLoaded:boolean=false;
   @ViewChild('chart1') chart1: ChartComponent;
   public chartOptions1: Partial<ChartOptions>;
   @ViewChild('chart2') chart2: ChartComponent;
   public chartOptions2: Partial<ChartOptions>;
-  constructor(private dataservice: SubjectService) {}
+  constructor(private dataservice: SubjectService, private route:ActivatedRoute, private router:Router) {}
 
   ngOnInit() {
-    this.dataservice.getPosts().subscribe((data) => {
-      this.adata = data;
-      this.chartData1();
-    });
     this.dataservice.getPosts2().subscribe((data)=>{
       this.bdata= data;
       this.chartData2();
     })
+    if (localStorage.getItem('user_id')) {
+      this.user_id = localStorage.getItem('user_id');
+      this.pwd = localStorage.getItem('pwd');
+      
+      this.route.paramMap.subscribe((route:any)=>{
+        if(route.params.id){
+          this.paramLoaded=true;
+          this.chartOptions1=undefined;
+          this.dataservice.getSubjectFromId(this.user_id,this.pwd,route.params.id).subscribe((data:any)=>{
+            this.cdata=data;
+            console.log("cdata")
+            console.log(this.cdata);
+            this.chartData1(); 
+          })  
+        }
+      })
+
+
+      this.dataservice.getAllSubjectData(this.user_id, this.pwd).subscribe((response:any)=>{
+        if(!this.paramLoaded)
+        this.router.navigate(["dash","subject",response.response[0].sub_id]);
+        this.subjectList=response.response;
+      })
+    }
+
   }
 
   chartData1() {
-    let posts;
-    posts = this.adata.response;
+    let posts1;
+    posts1 = this.cdata.response;
     let termsChart = [];
     let marks1 = [];
-    let marks2 = [];
-    let finaleach = [];
-    posts.forEach((character) => {
-      if (
-        character.assignment_id == '21' &&
-        character.assesment_number == '1'
-      ) {
-        marks1.push(character.marks);
-        termsChart.push(character.subject_name);
-      } else if (
-        character.assignment_id == '21' &&
-        character.assesment_number == '2'
-      ) {
-        marks2.push(character.marks);
-        termsChart.push(character.subject_name);
-      } else {
-        finaleach.push(character.marks);
-        termsChart.push(character.subject_name);
-      }
+    let p;
+    this.subjectLoaded=posts1.length>0? posts1[0].subject_name:"";
+    console.log("posts1");
+    console.log(posts1);
+    posts1.forEach((character) => {
+
+      termsChart.push(character.assesment_number>1?(character.exam_name+" "+character.assesment_number):character.exam_name);      
+      marks1.push(character.percentage);
     });
-
-    console.log(marks1);
-    console.log(marks2);
-    console.log(finaleach);
-    let unique = [...new Set(termsChart)];
-
-    console.log(unique);
-
+    console.log(termsChart)
+    
     this.chartOptions1 = {
       series: [
         {
-          name: 'internal 1',
-          data: marks1,
-        },
-        {
-          name: 'internal 2',
-          data: marks2,
-        },
-        {
-          name: 'Final exam',
-          data: finaleach,
-        },
+          name: "Score",
+          data: marks1
+        }
       ],
       chart: {
-        type: 'bar',
         height: 350,
+        type: "bar"
       },
       plotOptions: {
         bar: {
-          horizontal: false,
-          columnWidth: '55%',
-          endingShape: 'rounded',
-        },
+          columnWidth: "50%",
+          endingShape: "flat"
+        }
       },
       dataLabels: {
-        enabled: false,
-      },
+            enabled: true,
+            formatter: function (val) {
+              return val + "%";
+            },
+            offsetY: 20,
+            style: {
+              fontSize: "12px",
+              colors: ["#ffffff"],
+            },
+          },
 
       xaxis: {
-        categories: unique,
+        labels: {
+          rotate: -45
+        },
+        categories: termsChart,
+        tickPlacement: "on"
       },
       yaxis: {
         title: {
-          text: 'marks',
-        },
+          text: "Score"
+        }
       },
       fill: {
-        opacity: 1,
-      },
+        type: "gradient",
+        gradient: {
+          shade: "light",
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100]
+        }
+      }
     };
   }
   chartData2() {
@@ -133,13 +158,14 @@ export class SubjectComponent implements OnInit {
     posts = this.bdata.response;
     posts.forEach((character) => {
       termsChart.push(character.subject_name);
-      percent.push(character.average);
+      percent.push(Math.round(character.average * 10) / 10);
     });
     console.log(percent);
     console.log(overall);
 
     console.log(termsChart);
 
+    
     this.chartOptions2 = {
       series: [
         {
@@ -149,76 +175,50 @@ export class SubjectComponent implements OnInit {
       ],
       chart: {
         height: 350,
-        type: 'bar',
+        type: "bar"
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: "50%",
+          endingShape: "flat"
+        }
       },
       dataLabels: {
-        enabled: true,
-        formatter: function (val) {
-          return val + '%';
-        },
-        offsetY: 20,
-        style: {
-          fontSize: '12px',
-          colors: ['#304758'],
-        },
-      },
-
-      xaxis: {
-        type: 'category',
-        categories: termsChart,
-        position: 'top',
-        labels: {
-          offsetY: -18,
-        },
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
-        crosshairs: {
-          fill: {
-            type: 'gradient',
-            gradient: {
-              colorFrom: '#D8E3F0',
-              colorTo: '#BED1E6',
-              stops: [0, 100],
-              opacityFrom: 0.4,
-              opacityTo: 0.5,
+            enabled: true,
+            formatter: function (val) {
+              return val + "%";
+            },
+            offsetY: 20,
+            style: {
+              fontSize: "12px",
+              colors: ["#ffffff"],
             },
           },
+  
+      xaxis: {
+        labels: {
+          rotate: -45
         },
-        tooltip: {
-          enabled: true,
-          offsetY: -35,
-        },
+        categories: termsChart,
+        tickPlacement: "on"
+      },
+      yaxis: {
+        title: {
+          text: "Score"
+        }
       },
       fill: {
-        type: 'gradient',
+        type: "gradient",
         gradient: {
-          shade: 'light',
-          type: 'horizontal',
+          shade: "light",
+          type: "horizontal",
           shadeIntensity: 0.25,
           gradientToColors: undefined,
           inverseColors: true,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [50, 0, 100, 100],
-        },
-      },
-      yaxis: {
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
-        labels: {
-          show: false,
-          formatter: function (val) {
-            return val + '%';
-          },
-        },
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100]
+        }
       },
       title: {
         text: 'student marks' + 'having overall average of ' + ' ' + overall,
@@ -231,4 +231,7 @@ export class SubjectComponent implements OnInit {
       },
     };
   }
+
+  
 }
+

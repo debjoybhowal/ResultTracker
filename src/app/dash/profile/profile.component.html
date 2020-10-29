@@ -110,13 +110,13 @@
           </div>
           <table class="table table-hover table-in-card"  *ngIf="subjectList">
             <thead>
-              <tr>
+              <tr >
                 <th scope="col" class="text"><span>Subject</span></th>
                 <th scope="col" class="text"><span>Term</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let val of subjectList">
+              <tr *ngFor="let val of subjectList" routerLink="/dash/subject/{{val.sub_id}}" class="cursor-pointer">
                 <ng-container>
                   <th class="text">
                     <span>{{ val.subject_name }}</span>

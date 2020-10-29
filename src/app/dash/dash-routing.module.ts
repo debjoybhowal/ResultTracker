@@ -24,6 +24,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./term/term.module').then((m) => m.TermModule),
         pathMatch: 'full',
+      },{
+        path: 'subject/:id',
+        loadChildren: () =>
+          import('./subject/subject.module').then((m) => m.SubjectModule),
+        pathMatch: 'full',
       },
       {
         path: 'subject',

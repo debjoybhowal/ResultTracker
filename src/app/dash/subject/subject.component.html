@@ -1,4 +1,8 @@
 <div class="container-fluid">
+  <h1 class="dash-title">Subject</h1>
+  <p class="mb-5">
+    Here you will find all the information about your subjects and select a subject to see deailed analysis.
+  </p>
   <div class="row">
     <div class="col-xl-6">
       <div class="card spur-card">
@@ -6,9 +10,18 @@
           <div class="spur-card-icon">
             <i class="fas fa-chart-bar"></i>
           </div>
-          <div class="spur-card-title">Subject Marks on each exam</div>
+          <div class="spur-card-title">{{subjectLoaded}} marks on each exam</div>
         </div>
         <div class="card-body">
+          <div class="spinner text-center" *ngIf="!chartOptions1">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
           <div id="chart1" *ngIf="chartOptions1">
             <apx-chart
               [series]="chartOptions1.series"
@@ -25,13 +38,63 @@
     </div>
     <div class="col-xl-6">
       <div class="card spur-card">
+        <div class="card-header bg-primary text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-clipboard"></i>
+          </div>
+          <div class="spur-card-title">Subject List Added</div>
+        </div>
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!subjectList">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <table class="table table-hover table-in-card"  *ngIf="subjectList">
+            <thead>
+              <tr>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Term</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let val of subjectList" routerLink="/dash/subject/{{val.sub_id}}" class="cursor-pointer">
+                <ng-container>
+                  <th class="text">
+                    <span>{{ val.subject_name }}</span>
+                  </th>
+                  <td class="text">
+                    <span>{{ val.term_name }}</span>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-12">
+      <div class="card spur-card">
         <div class="card-header">
           <div class="spur-card-icon">
             <i class="fas fa-chart-bar"></i>
           </div>
-          <div class="spur-card-title">Avg Marks on each exam</div>
+          <div class="spur-card-title">Avg Marks on each subject</div>
         </div>
         <div class="card-body">
+          <div class="spinner text-center" *ngIf="!chartOptions2">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
           <div id="chart2" *ngIf="chartOptions2">
             <apx-chart
               [series]="chartOptions2.series"
