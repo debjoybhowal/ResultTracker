@@ -1,1 +1,29 @@
-<p>term works!</p>
+<div class="row">
+  <div class="col-xl-6">
+    <div class="card spur-card">
+      <div class="card-header">
+        <div class="spur-card-icon">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <div class="spur-card-title">Subject marks from Term</div>
+      </div>
+      <div class="card-body">
+
+        <div id="chart" *ngIf="chartOptions">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels"
+              [plotOptions]="chartOptions.plotOptions"
+              [xaxis]="chartOptions.xaxis"
+              [yaxis]="chartOptions.yaxis"
+              [stroke]="chartOptions.stroke"
+            ></apx-chart>
+          </div>
+          
+
+
+      </div>
+    </div>
+  </div>
+</div>
