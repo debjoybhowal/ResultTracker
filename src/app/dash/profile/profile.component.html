@@ -174,6 +174,78 @@
         </div>
       </div>
     </div>
+    <div class="col-xl-6">
+      <div class="card spur-card">
+        <div class="card-header bg-success text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-grin"></i>
+          </div>
+          <div class="spur-card-title">Subjects With Score Above Average</div>
+        </div>
+        <div class="card-body" *ngIf="subjectList">
+          <table class="table table-hover table-in-card">
+            <thead>
+              <tr>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Term</span></th>
+                <th scope="col" class="text"><span>Score Average</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let val of subjectList">
+                <ng-container *ngIf="val.average>=subjectAverage">
+                  <th class="text">
+                    <span>{{ val.subject_name }}</span>
+                  </th>
+                  <td class="text">
+                    <span>{{ val.term_name }}</span>
+                  </td>
+                  <td class="text">
+                    <span>{{ val.average }}</span>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+      <div class="col-xl-6">
+        <div class="card spur-card">
+          <div class="card-header bg-danger text-white">
+            <div class="spur-card-icon">
+              <i class="fas fa-frown"></i>
+            </div>
+            <div class="spur-card-title">Subjects With Score Below Average</div>
+          </div>
+          <div class="card-body" *ngIf="subjectList">
+            <table class="table table-hover table-in-card">
+              <thead>
+                <tr>
+                  <th scope="col" class="text"><span>Subject</span></th>
+                  <th scope="col" class="text"><span>Term</span></th>
+                  <th scope="col" class="text"><span>Score Average</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of subjectList">
+                  <ng-container *ngIf="val.average<subjectAverage">
+                    <th class="text">
+                      <span>{{ val.subject_name }}</span>
+                    </th>
+                    <td class="text">
+                      <span>{{ val.term_name }}</span>
+                    </td>
+                    <td class="text">
+                      <span>{{ val.average }}</span>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+  </div>
     <div class="col-xl-6" *ngFor="let val of termData?.response">
       <div class="card spur-card">
         <div class="card-header bg-info text-white">

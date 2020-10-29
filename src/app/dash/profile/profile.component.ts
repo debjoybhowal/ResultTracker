@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit {
   profile;
   allData;
   subjectList;
+  subjectAverage;
   termData;
   PieData;
   user_id: string;
@@ -155,7 +156,8 @@ export class ProfileComponent implements OnInit {
       this.dataservice
         .getAllSubjectData(this.user_id, this.pwd)
         .subscribe((response: any) => {
-          this.subjectList = response.response;
+          this.subjectList = response.response;          
+          this.subjectAverage=response.average.response;
         });
     }
   }
