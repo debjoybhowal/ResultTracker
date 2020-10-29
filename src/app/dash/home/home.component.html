@@ -1,178 +1,199 @@
 <div class="container-fluid">
-    <h1 class="dash-title">
-      Hi <span *ngIf="profile">{{ profile.full_name }}</span> !
-    </h1>
-    <p class="mb-5">
-      Here you will find the overview of you performances and get a overall
-      picture.
-    </p>
-    <!-- put your rows / columns here -->
-    <div class="row">
-      <div class="col-xl-4">
-        <div class="card spur-card">
-          <div class="card-header">
-            <div class="spur-card-icon">
-              <i class="fas fa-chart-bar"></i>
-            </div>
-            <div class="spur-card-title">Overal Average Score Percentage</div>
+  <h1 class="dash-title">
+    Hi <span *ngIf="profile">{{ profile.full_name }}</span> !
+  </h1>
+  <p class="mb-5">
+    Here you will find the overview of you performances and get a overall
+    picture.
+  </p>
+  <!-- put your rows / columns here -->
+  <div class="row">
+    <div class="col-xl-4">
+      <div class="card spur-card">
+        <div class="card-header">
+          <div class="spur-card-icon">
+            <i class="fas fa-chart-bar"></i>
           </div>
-          <div class="card-body">
-            <div class="spinner text-center" *ngIf="!allData">
-                <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
+          <div class="spur-card-title">Overal Average Score Percentage</div>
+        </div>
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!allData">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
             </div>
-            <div class="row align-items-center" *ngIf="allData">
-              <div class="col-xl-6">
-                <div class="text-center">
-                  <circle-progress
-                    class="circle-progress"
-                    [percent]="allData.average.response.value"
-                    [radius]="70"
-                    [subtitle]="'Overall Average Score Percentage'"
-                    [outerStrokeWidth]="14"
-                    [innerStrokeWidth]="7"
-                    [outerStrokeColor]="'#3F84FC'"
-                    [innerStrokeColor]="'#c2c5cc'"
-                    [animation]="true"
-                    [animationDuration]="500"
-                  ></circle-progress>
-                </div>
-              </div>
-              <div class="col-xl-6">
-                <p>
-                  This is the score which is average of all your subjects accross
-                  all exams and terms.
-                </p>
+          </div>
+          <div class="row align-items-center" *ngIf="allData">
+            <div class="col-xl-6">
+              <div class="text-center">
+                <circle-progress
+                  class="circle-progress"
+                  [percent]="allData.average.response.value"
+                  [radius]="70"
+                  [subtitle]="'Overall Average Score Percentage'"
+                  [outerStrokeWidth]="14"
+                  [innerStrokeWidth]="7"
+                  [outerStrokeColor]="'#3F84FC'"
+                  [innerStrokeColor]="'#c2c5cc'"
+                  [animation]="true"
+                  [animationDuration]="500"
+                ></circle-progress>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 second">
-        <div class="card spur-card">
-          <div class="card-header bg-success text-white">
-            <div class="spur-card-icon">
-              <i class="far fa-check-circle"></i>
+            <div class="col-xl-6">
+              <p>
+                This is the score which is average of all your subjects accross
+                all exams and terms.
+              </p>
             </div>
-            <div class="spur-card-title">Top 3 Subjects</div>
-          </div>
-          <div class="card-body" >
-            <div class="spinner text-center" *ngIf="!allData">
-                <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-            </div>
-            <table class="table table-hover table-in-card" *ngIf="allData">
-              <thead>
-                <tr>
-                  <th scope="col" class="text rank-list"><span>#</span></th>
-                  <th scope="col" class="text"><span>Subject</span></th>
-                  <th scope="col" class="text"><span>Avg %</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let val of allData.top_three.response; let i = index">
-                  <th scope="row" class="text rank-list">
-                    <span>{{ i }}</span>
-                  </th>
-                  <td class="text">
-                    <span>{{ val.subject_name }}</span>
-                  </td>
-                  <td class="text">
-                    <span>{{ val.average | number: ".1-2" }}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 third">
-        <div class="card spur-card">
-          <div class="card-header bg-danger text-white">
-            <div class="spur-card-icon">
-              <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <div class="spur-card-title">Needs to Improve</div>
-          </div>
-          <div class="card-body" >
-            <div class="spinner text-center" *ngIf="!allData">
-                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-            </div>
-            <table class="table table-hover table-in-card" *ngIf="allData">
-              <thead>
-                <tr>
-                  <th scope="col" class="text rank-list"><span>#</span></th>
-                  <th scope="col" class="text"><span>Subject</span></th>
-                  <th scope="col" class="text"><span>Avg %</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let val of allData.bottom_three.response; let i = index"
-                >
-                  <th scope="row" class="text rank-list">
-                    <span>{{ i }}</span>
-                  </th>
-                  <td class="text">
-                    <span>{{ val.subject_name }}</span>
-                  </td>
-                  <td class="text">
-                    <span>{{ val.average | number: ".1-2" }}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-  
-      <div class="col-xl-8">
-        <div class="card spur-card">
-          <div class="card-header">
-            <div class="spur-card-icon">
-              <i class="fas fa-chart-bar"></i>
-            </div>
-            <div class="spur-card-title">All marks calculated in %</div>
-          </div>
-          <div class="card-body" >
-              <div class="spinner text-center" *ngIf="!chartOptions">
-                <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-              </div>
-            <div id="chart" *ngIf="chartOptions">
-              <apx-chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [xaxis]="chartOptions.xaxis"
-                [stroke]="chartOptions.stroke"
-                [tooltip]="chartOptions.tooltip"
-                [dataLabels]="chartOptions.dataLabels"
-              ></apx-chart>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4">
-        <div class="card spur-card">
-          <div class="card-header bg-secondary text-white">
-            <div class="spur-card-icon">
-              <i class="fas fa-user-circle"></i>
-            </div>
-            <div class="spur-card-title">User Details</div>
-          </div>
-          <div class="card-body bg-secondary text-white" *ngIf="profile">
-            <ul>
-              <li>{{ profile.full_name | uppercase }}</li>
-              <li>{{ profile.email }}</li>
-            </ul>
           </div>
         </div>
       </div>
     </div>
+    <div class="col-xl-4 second">
+      <div class="card spur-card">
+        <div class="card-header bg-success text-white">
+          <div class="spur-card-icon">
+            <i class="far fa-check-circle"></i>
+          </div>
+          <div class="spur-card-title">Top 3 Subjects</div>
+        </div>
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!allData">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <table class="table table-hover table-in-card" *ngIf="allData">
+            <thead>
+              <tr>
+                <th scope="col" class="text rank-list"><span>#</span></th>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Avg %</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let val of allData.top_three.response; let i = index"
+                routerLink="/dash/subject/{{ val.sub_id }}"
+                class="cursor-pointer"
+              >
+                <th scope="row" class="text rank-list">
+                  <span>{{ i+1 }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ val.subject_name }}</span>
+                </td>
+                <td class="text">
+                  <span>{{ val.average | number: ".1-2" }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 third">
+      <div class="card spur-card">
+        <div class="card-header bg-danger text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-exclamation-circle"></i>
+          </div>
+          <div class="spur-card-title">Needs to Improve</div>
+        </div>
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!allData">
+            <div
+              class="spinner-grow"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <table class="table table-hover table-in-card" *ngIf="allData">
+            <thead>
+              <tr>
+                <th scope="col" class="text rank-list"><span>#</span></th>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Avg %</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let val of allData.bottom_three.response; let i = index"
+                routerLink="/dash/subject/{{ val.sub_id }}"
+                class="cursor-pointer"
+              >
+                <th scope="row" class="text rank-list">
+                  <span>{{ i+1 }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ val.subject_name }}</span>
+                </td>
+                <td class="text">
+                  <span>{{ val.average | number: ".1-2" }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8">
+      <div class="card spur-card">
+        <div class="card-header">
+          <div class="spur-card-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="spur-card-title">All marks calculated in %</div>
+        </div>
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!chartOptions">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <div id="chart" *ngIf="chartOptions">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [xaxis]="chartOptions.xaxis"
+              [stroke]="chartOptions.stroke"
+              [tooltip]="chartOptions.tooltip"
+              [dataLabels]="chartOptions.dataLabels"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card spur-card">
+        <div class="card-header bg-secondary text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="spur-card-title">User Details</div>
+        </div>
+        <div class="card-body bg-secondary text-white" *ngIf="profile">
+          <ul>
+            <li>{{ profile.full_name | uppercase }}</li>
+            <li>{{ profile.email }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  
+</div>

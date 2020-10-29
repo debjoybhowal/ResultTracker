@@ -193,7 +193,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let v of val.subjects; let i = index">
+              <tr *ngFor="let v of val.subjects; let i = index" routerLink="/dash/subject/{{v.sub_id}}" class="cursor-pointer">
                 <th class="text">
                   <span>{{ i + 1 }}</span>
                 </th>
