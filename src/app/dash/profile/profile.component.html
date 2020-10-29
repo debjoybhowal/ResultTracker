@@ -1,5 +1,11 @@
+<h1 class="dash-title">
+  Profile
+</h1>
+<p class="mb-5">
+  Here you will find all the information from you profile including the exam structures, subjects and terms.
+</p>
 <div class="row">
-  <div class="col-xl-6">
+  <div class="col-xl-4">
     <div class="card-custom hovercard-custom card spur-card">
       <div class="card-customheader card-body"></div>
       <div class="avatar">
@@ -24,27 +30,42 @@
       <div class="bottom"></div>
     </div>
   </div>
-  <div class="col-xl-6">
+  <div class="col-xl-8">
     <div class="card spur-card">
-      <div class="card-header">
-        <div class="spur-card-icon">
+      <div class="card-header bg-secondary">
+        <div class="spur-card-icon  text-white">
           <i class="fas fa-chart-bar"></i>
         </div>
-        <div class="spur-card-title">Overal Average Score Percentage</div>
+        <div class="spur-card-title text-white">Exam Structure</div>
       </div>
       <div class="card-body">
-        <div id="chart">
+        <div class="container4">
+          <div class="row">
+        <div id="col" *ngIf="chartOptions1">
           <p>Total No. Of Exams For Each Subjects</p>
           <apx-chart
-            *ngIf="responsive"
-            [series]="series"
-            [chart]="chart"
-            [labels]="labels"
-            [fill]="fill"
-            [dataLabels]="dataLabels"
-            [responsive]="responsive"
+            [series]="chartOptions1.series"
+            [chart]="chartOptions1.chart"
+            [labels]="chartOptions1.labels"
+            [fill]="chartOptions1.fill"
+            [dataLabels]="chartOptions1.dataLabels"
+            [responsive]="chartOptions1.responsive"
           ></apx-chart>
         </div>
+        
+        <div id="col" *ngIf="chartOptions2">
+          <p>Full Marks For Each Exam</p>
+          <apx-chart
+            [series]="chartOptions2.series"
+            [chart]="chartOptions2.chart"
+            [labels]="chartOptions2.labels"
+            [fill]="chartOptions2.fill"
+            [dataLabels]="chartOptions2.dataLabels"
+            [responsive]="chartOptions2.responsive"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
       </div>
     </div>
   </div>
@@ -56,7 +77,7 @@
         </div>
         <div class="spur-card-title">Subject List Added</div>
       </div>
-      <div class="card-body" *ngIf="allData">
+      <div class="card-body" *ngIf="subjectList">
         <table class="table table-hover table-in-card">
           <thead>
             <tr>
@@ -65,8 +86,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let val of allData.all.response">
-              <ng-container *ngIf="val.exam_name === 'Final'">
+            <tr *ngFor="let val of subjectList">
+              <ng-container >
                 <th class="text">
                   <span>{{ val.subject_name }}</span>
                 </th>
@@ -88,7 +109,7 @@
         </div>
         <div class="spur-card-title">Term List Added</div>
       </div>
-      <div class="card-body" *ngIf="allData">
+      <div class="card-body" *ngIf="termData">
         <table class="table table-hover table-in-card">
           <thead>
             <tr>
@@ -97,7 +118,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let val of termData.response; let i = index">
+            <tr *ngFor="let val of termData.response; let i = index" routerLink="/dash/term/{{val.term_id}}">
               <th class="text">
                 <span>{{ i + 1 }}</span>
               </th>

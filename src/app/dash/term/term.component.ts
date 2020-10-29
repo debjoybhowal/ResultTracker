@@ -28,6 +28,11 @@ export type ChartOptions = {
   styleUrls: ['./term.component.css'],
 })
 export class TermComponent implements OnInit {
+    
+
+  websiteList:any= ['chemistry', 'english', 'computer','biology']
+
+
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
@@ -55,6 +60,9 @@ export class TermComponent implements OnInit {
   }
 
   loadChart(term_id:number){
+    this.chartOptions=undefined;
+    this.subjects=[];
+    this.series=[];
     this.dataService.getTermWiseSubject(this.user_id,this.pwd,term_id).subscribe((data: any) => {
       this.setupData(data);
     });
