@@ -1,168 +1,210 @@
-<h1 class="dash-title">
-  Profile
-</h1>
-<p class="mb-5">
-  Here you will find all the information from you profile including the exam structures, subjects and terms.
-</p>
-<div class="row">
-  <div class="col-xl-4">
-    <div class="card-custom hovercard-custom card spur-card">
-      <div class="card-customheader card-body"></div>
-      <div class="avatar">
-        <img
-          alt=""
-          src="https://vrs.amsi.org.au/wp-content/uploads/sites/78/2017/12/tobinsouth_vrs_2017-18.jpeg"
-        />
-      </div>
-      <div class="info" *ngIf="profile">
-        <div class="title">
-          <a target="_blank" href="https://scripteden.com/">{{
-            profile.full_name
-          }}</a>
+<div class="container-fluid">
+  <h1 class="dash-title">Profile</h1>
+  <p class="mb-5">
+    Here you will find all the information from you profile including the exam
+    structures, subjects and terms.
+  </p>
+  <div class="row">
+    <div class="col-xl-4">
+      <div class="card-custom hovercard-custom card spur-card">
+        <div class="card-customheader card-body"></div>
+        <div class="avatar">
+          <img
+            alt=""
+            src="https://ableelite.com/wp-content/uploads/2016/06/avatar_square_blue_512dp.png"
+          />
         </div>
-        <div class="desc">
-          <span class="desc-title">Username:</span>&nbsp;{{ profile.username }}
+        <div class="spinner text-center" *ngIf="!profile">
+          <div
+            class="spinner-grow text-secondary"
+            style="width: 3rem; height: 3rem"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
         </div>
-        <div class="desc">
-          <span class="desc-title">Email:</span>&nbsp;{{ profile.email }}
+        <div class="info" *ngIf="profile">
+          <div class="title">
+            <a target="_blank" href="https://scripteden.com/">{{
+              profile.full_name
+            }}</a>
+          </div>
+          <div class="desc">
+            <span class="desc-title">Username:</span>&nbsp;{{
+              profile.username
+            }}
+          </div>
+          <div class="desc">
+            <span class="desc-title">Email:</span>&nbsp;{{ profile.email }}
+          </div>
         </div>
-      </div>
-      <div class="bottom"></div>
-    </div>
-  </div>
-  <div class="col-xl-8">
-    <div class="card spur-card">
-      <div class="card-header bg-secondary">
-        <div class="spur-card-icon  text-white">
-          <i class="fas fa-chart-bar"></i>
-        </div>
-        <div class="spur-card-title text-white">Exam Structure</div>
-      </div>
-      <div class="card-body">
-        <div class="container4">
-          <div class="row">
-        <div id="col" *ngIf="chartOptions1">
-          <p>Total No. Of Exams For Each Subjects</p>
-          <apx-chart
-            [series]="chartOptions1.series"
-            [chart]="chartOptions1.chart"
-            [labels]="chartOptions1.labels"
-            [fill]="chartOptions1.fill"
-            [dataLabels]="chartOptions1.dataLabels"
-            [responsive]="chartOptions1.responsive"
-          ></apx-chart>
-        </div>
-        
-        <div id="col" *ngIf="chartOptions2">
-          <p>Full Marks For Each Exam</p>
-          <apx-chart
-            [series]="chartOptions2.series"
-            [chart]="chartOptions2.chart"
-            [labels]="chartOptions2.labels"
-            [fill]="chartOptions2.fill"
-            [dataLabels]="chartOptions2.dataLabels"
-            [responsive]="chartOptions2.responsive"
-          ></apx-chart>
-        </div>
+        <div class="bottom"></div>
       </div>
     </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-6">
-    <div class="card spur-card">
-      <div class="card-header bg-primary text-white">
-        <div class="spur-card-icon">
-          <i class="fas fa-clipboard"></i>
+    <div class="col-xl-8">
+      <div class="card spur-card">
+        <div class="card-header bg-secondary">
+          <div class="spur-card-icon text-white">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="spur-card-title text-white">Exam Structure</div>
         </div>
-        <div class="spur-card-title">Subject List Added</div>
-      </div>
-      <div class="card-body" *ngIf="subjectList">
-        <table class="table table-hover table-in-card">
-          <thead>
-            <tr>
-              <th scope="col" class="text"><span>Subject</span></th>
-              <th scope="col" class="text"><span>Term</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let val of subjectList">
-              <ng-container >
-                <th class="text">
-                  <span>{{ val.subject_name }}</span>
-                </th>
-                <td class="text">
-                  <span>{{ val.term_name }}</span>
-                </td>
-              </ng-container>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-6">
-    <div class="card spur-card">
-      <div class="card-header bg-warning text-white">
-        <div class="spur-card-icon">
-          <i class="fas fa-clipboard"></i>
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!chartOptions1">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <div class="container4">
+            <div class="row">
+              <div id="col" *ngIf="chartOptions1">
+                <p>Total No. Of Exams For Each Subjects</p>
+                <apx-chart
+                  [series]="chartOptions1.series"
+                  [chart]="chartOptions1.chart"
+                  [labels]="chartOptions1.labels"
+                  [fill]="chartOptions1.fill"
+                  [dataLabels]="chartOptions1.dataLabels"
+                  [responsive]="chartOptions1.responsive"
+                ></apx-chart>
+              </div>
+
+              <div id="col" *ngIf="chartOptions2">
+                <p>Full Marks For Each Exam</p>
+                <apx-chart
+                  [series]="chartOptions2.series"
+                  [chart]="chartOptions2.chart"
+                  [labels]="chartOptions2.labels"
+                  [fill]="chartOptions2.fill"
+                  [dataLabels]="chartOptions2.dataLabels"
+                  [responsive]="chartOptions2.responsive"
+                  [theme]="chartOptions2.theme"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="spur-card-title">Term List Added</div>
-      </div>
-      <div class="card-body" *ngIf="termData">
-        <table class="table table-hover table-in-card">
-          <thead>
-            <tr>
-              <th scope="col" class="text"><span>#</span></th>
-              <th scope="col" class="text"><span>Term Name</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let val of termData.response; let i = index" routerLink="/dash/term/{{val.term_id}}">
-              <th class="text">
-                <span>{{ i + 1 }}</span>
-              </th>
-              <td class="text">
-                <span>{{ val.term_name }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
-  </div>
-  <div class="col-xl-6" *ngFor="let val of termData?.response">
-    <div class="card spur-card">
-        <div class="card-header bg-info text-white">
+    <div class="col-xl-6">
+      <div class="card spur-card">
+        <div class="card-header bg-primary text-white">
           <div class="spur-card-icon">
             <i class="fas fa-clipboard"></i>
           </div>
-          <div class="spur-card-title">No. Of Subjects in {{val.term_name}}</div>
+          <div class="spur-card-title">Subject List Added</div>
         </div>
-        <div class="card-body" *ngIf="allData">
-          <table class="table table-hover table-in-card">
+        <div class="card-body">
+          <div class="spinner text-center" *ngIf="!subjectList">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <table class="table table-hover table-in-card"  *ngIf="subjectList">
             <thead>
               <tr>
-                
-                <th scope="col" class="text"><span>#</span></th>
-                <th scope="col" class="text"><span>Subject Name</span></th>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Term</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let v of val.subjects;let i=index">
-                  
-                
-                <th class="text">
-                  <span>{{ i+1 }}</span>
-                </th>
-                <td class="text">
-                  <span>{{ v.sub_name }}</span>
-                </td>
-              
+              <tr *ngFor="let val of subjectList">
+                <ng-container>
+                  <th class="text">
+                    <span>{{ val.subject_name }}</span>
+                  </th>
+                  <td class="text">
+                    <span>{{ val.term_name }}</span>
+                  </td>
+                </ng-container>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </div>
+    <div class="col-xl-6">
+      <div class="card spur-card">
+        <div class="card-header bg-warning text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-clipboard"></i>
+          </div>
+          <div class="spur-card-title">Term List Added</div>
+        </div>
+        <div class="card-body" >
+          <div class="spinner text-center" *ngIf="!termData">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <table class="table table-hover table-in-card" *ngIf="termData">
+            <thead>
+              <tr>
+                <th scope="col" class="text"><span>#</span></th>
+                <th scope="col" class="text"><span>Term Name</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let val of termData.response; let i = index"
+                routerLink="/dash/term/{{ val.term_id }}"
+                class="cursor-pointer"
+              >
+                <th class="text">
+                  <span>{{ i + 1 }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ val.term_name }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6" *ngFor="let val of termData?.response">
+      <div class="card spur-card">
+        <div class="card-header bg-info text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-clipboard"></i>
+          </div>
+          <div class="spur-card-title">
+            No. Of Subjects in {{ val.term_name }}
+          </div>
+        </div>
+        <div class="card-body" *ngIf="allData">
+          <table class="table table-hover table-in-card">
+            <thead>
+              <tr>
+                <th scope="col" class="text"><span>#</span></th>
+                <th scope="col" class="text"><span>Subject Name</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of val.subjects; let i = index">
+                <th class="text">
+                  <span>{{ i + 1 }}</span>
+                </th>
+                <td class="text">
+                  <span>{{ v.sub_name }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -35,7 +35,7 @@ export class TermComponent implements OnInit {
 
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
-  termData=[]; 
+  termData; 
 
   constructor(private dataService: TermService, private route: ActivatedRoute, private router:Router) {}
 
@@ -154,5 +154,11 @@ export class TermComponent implements OnInit {
         max: 100,
       },
     };
+    //Fixing chart display issue for small screen
+    setTimeout(()=>{
+
+      window.dispatchEvent( new Event('resize'));
+    },100)
   }
+  
 }

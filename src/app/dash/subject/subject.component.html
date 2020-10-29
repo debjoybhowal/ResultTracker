@@ -1,37 +1,38 @@
-<div class="row">
-  <div class="col-xl-6">
-    <div class="card spur-card">
-      <div class="card-header">
-        <div class="spur-card-icon">
-          <i class="fas fa-chart-bar"></i>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="card spur-card">
+        <div class="card-header">
+          <div class="spur-card-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="spur-card-title">Subject Marks on each exam</div>
         </div>
-        <div class="spur-card-title">Subject Marks on each exam</div>
-      </div>
-      <div class="card-body">
-        <div id="chart1" *ngIf="chartOptions1">
-          <apx-chart
-            [series]="chartOptions1.series"
-            [chart]="chartOptions1.chart"
-            [dataLabels]="chartOptions1.dataLabels"
-            [plotOptions]="chartOptions1.plotOptions"
-            [yaxis]="chartOptions1.yaxis"
-            [fill]="chartOptions1.fill"
-            [xaxis]="chartOptions1.xaxis"
-          ></apx-chart>
+        <div class="card-body">
+          <div id="chart1" *ngIf="chartOptions1">
+            <apx-chart
+              [series]="chartOptions1.series"
+              [chart]="chartOptions1.chart"
+              [dataLabels]="chartOptions1.dataLabels"
+              [plotOptions]="chartOptions1.plotOptions"
+              [yaxis]="chartOptions1.yaxis"
+              [fill]="chartOptions1.fill"
+              [xaxis]="chartOptions1.xaxis"
+            ></apx-chart>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-xl-6">
-    <div class="card spur-card">
-      <div class="card-header">
-        <div class="spur-card-icon">
-          <i class="fas fa-chart-bar"></i>
+    <div class="col-xl-6">
+      <div class="card spur-card">
+        <div class="card-header">
+          <div class="spur-card-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="spur-card-title">Avg Marks on each exam</div>
         </div>
-        <div class="spur-card-title">Avg Marks on each exam</div>
-      </div>
-      <div class="card-body">
-        <div id="chart2" *ngIf="chartOptions2">
+        <div class="card-body">
+          <div id="chart2" *ngIf="chartOptions2">
             <apx-chart
               [series]="chartOptions2.series"
               [chart]="chartOptions2.chart"
@@ -42,11 +43,11 @@
               [xaxis]="chartOptions2.xaxis"
             ></apx-chart>
           </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 <!--</apx-chart> [legend]="chartOptions.legend"
       [tooltip]="chartOptions.tooltip"
       [stroke]="chartOptions.stroke"
