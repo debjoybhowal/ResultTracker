@@ -1,0 +1,13 @@
+.container{
+    position: relative;
+}
+
+
+tbody{
+    cursor: pointer;
+    
+}
+
+table{
+    text-align: center;
+}

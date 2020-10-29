@@ -5,7 +5,7 @@
         <div class="spur-card-icon">
           <i class="fas fa-chart-bar"></i>
         </div>
-        <div class="spur-card-title">Subject marks from Term</div>
+        <div class="spur-card-title">Subject marks from {{term_name}}</div>
       </div>
       <div class="card-body">
 
@@ -26,8 +26,34 @@
       </div>
     </div>
   </div>
+  <div class="col-xl-6 cardDetails">
+    <div class="card spur-card">
+      <div class="card-header bg-warning text-white">
+        <div class="spur-card-icon">
+          <i class="fas fa-clipboard"></i>
+        </div>
+        <div class="spur-card-title">Term List</div>
+      </div>
+      <div class="card-body">
+        <table class="table table-hover table-in-card">
+          <thead>
+            <tr>
+              <th scope="col" class="text"><span>#</span></th>
+              <th scope="col" class="text"><span>Term Name</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let val of termData; let i = index" routerLink = "/dash/term/{{val.term_id}}">
+              <th class="text">
+                <span>{{ i + 1 }}</span>
+              </th>
+              <td class="text">
+                <span>{{ val.term_name }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-<button class="btn btn-primary" routerLink="/dash/term/23">click</button>
-<select>
-    <option *ngFor="let web of websiteList">{{web}}</option>
-</select>

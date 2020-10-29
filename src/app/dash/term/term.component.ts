@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, ParamMap, Params } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -35,15 +35,18 @@ export class TermComponent implements OnInit {
 
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
+  termData=[]; 
 
-  constructor(private dataService: TermService, private route: ActivatedRoute) {}
+  constructor(private dataService: TermService, private route: ActivatedRoute, private router:Router) {}
 
   series: { name: string; data: number[] }[] = [];
 
   subjects: string[] = [];
   
   user_id: string;
+  paramLoaded:boolean=false;
   pwd: string;
+  term_name:string="";
   ngOnInit(): void {
     
     this.user_id = localStorage.getItem('user_id');
@@ -52,9 +55,17 @@ export class TermComponent implements OnInit {
 
     this.route.paramMap.subscribe((item:any)=>{
       if(item.params.id){
-        this.loadChart(item.params.id)
+        this.loadChart(item.params.id);
+        this.paramLoaded=true;
       }
     })
+
+    this.dataService
+        .getTermInfo(this.user_id,  this.pwd)
+        .subscribe((response : any) => {
+          if(!this.paramLoaded)
+          this.router.navigate(["dash","term",response.response[0].term_id])
+          this.termData = response.response;});
 
     
   }
@@ -70,6 +81,7 @@ export class TermComponent implements OnInit {
   setupData(data: any) {
     let exam = data.exam;
     console.log(data);
+    this.term_name=data.marks.length>0? (data.marks[0].length>0?data.marks[0][0].term_name:""):"";
     exam.forEach((exam_item: any) => {
       let full_marks = exam_item.full_marks;
       for (let i = 0; i < exam_item.exam_no; i++) {
