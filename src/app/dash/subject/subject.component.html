@@ -1,7 +1,8 @@
 <div class="container-fluid">
   <h1 class="dash-title">Subject</h1>
   <p class="mb-5">
-    Here you will find all the information about your subjects and select a subject to see deailed analysis.
+    Here you will find all the information about your subjects and select a
+    subject to see deailed analysis.
   </p>
   <div class="row">
     <div class="col-xl-6">
@@ -10,7 +11,9 @@
           <div class="spur-card-icon">
             <i class="fas fa-chart-bar"></i>
           </div>
-          <div class="spur-card-title">{{subjectLoaded}} marks on each exam</div>
+          <div class="spur-card-title">
+            {{ subjectLoaded }} marks on each exam
+          </div>
         </div>
         <div class="card-body">
           <div class="spinner text-center" *ngIf="!chartOptions1">
@@ -43,9 +46,14 @@
             <i class="fas fa-clipboard"></i>
           </div>
           <div class="spur-card-title">Subject List Added</div>
+          <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openSubjectModal()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body">
-          <div class="spinner text-center" *ngIf="!subjectList">
+          <div class="spinner text-center" *ngIf="!subjectListAny">
             <div
               class="spinner-grow text-secondary"
               style="width: 3rem; height: 3rem"
@@ -54,7 +62,10 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <table class="table table-hover table-in-card"  *ngIf="subjectList">
+          <table
+            class="table table-hover table-in-card"
+            *ngIf="subjectListAny && subjectListAny.length > 0"
+          >
             <thead>
               <tr>
                 <th scope="col" class="text"><span>Subject</span></th>
@@ -62,7 +73,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let val of subjectList" routerLink="/dash/subject/{{val.sub_id}}" class="cursor-pointer">
+              <tr
+                *ngFor="let val of subjectListAny"
+                routerLink="/dash/subject/{{ val.sub_id }}"
+                class="cursor-pointer"
+              >
                 <ng-container>
                   <th class="text">
                     <span>{{ val.subject_name }}</span>
@@ -74,8 +89,13 @@
               </tr>
             </tbody>
           </table>
-          
-          <p class="mt-4 " *ngIf="subjectList && subjectList.length<=0">Please enter a subject to see the subject in this list</p>
+
+          <p
+            class="mt-4 lead"
+            *ngIf="subjectListAny && subjectListAny.length <= 0"
+          >
+            Please enter a subject to see the subject in this list
+          </p>
         </div>
       </div>
     </div>
@@ -117,3 +137,74 @@
       [tooltip]="chartOptions.tooltip"
       [stroke]="chartOptions.stroke"
       -->
+
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showSubjectAddModal }"
+>
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form [formGroup]="addSubjectForm" (ngSubmit)="onAdd()">
+        <div class="modal-header">
+          <h5 class="m-0">Add a subject</h5>
+          <button
+            type="button"
+            class="close btn btn-danger"
+            data-dismiss="modal"
+            (click)="showSubjectAddModal = false"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="spinner text-center" *ngIf="!termList">
+              <div
+                class="spinner-grow text-secondary"
+                style="width: 3rem; height: 3rem"
+                role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div class="row" *ngIf="termList && termList.length>0">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Subject Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="sub_name"
+                    placeholder="eg. Physics"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="exampleFormControlSelect1">Select Term</label>
+                <select class="form-control"
+                formControlName="term_id" (change)="changeTermId($event)"  >
+                  <option [ngValue]="term.term_id"  *ngFor="let term of termList; let i=index" >{{term.term_name }}</option>
+                </select>
+              </div>
+            </div>
+            <p class="lead" *ngIf="termList && termList.length<=0">You need to add a term first before adding a subject.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" *ngIf="termList && termList.length>0">Add</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+            (click)="showSubjectAddModal = false"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

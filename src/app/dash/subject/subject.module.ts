@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SubjectRoutingModule } from './subject-routing.module';
 import { SubjectComponent } from './subject.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +12,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   imports: [
     CommonModule,
     SubjectRoutingModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SubjectModule { }
