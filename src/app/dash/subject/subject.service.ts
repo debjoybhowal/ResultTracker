@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class SubjectService {
 
-  private url="https://jsonblob.com/api/722b58bd-190b-11eb-8971-e7c4526873b0";
+  private url="https://atdebjoy.com/others/api/perform/get_subjects.php?stud_id=42&pass=1234abcd";
 
   
   private urlSubjects="https://atdebjoy.com/others/api/perform/get_subjects.php"
@@ -21,7 +21,6 @@ export class SubjectService {
   getAllSubjectData(user_id:string, pwd:string){
     return this.http.get(this.urlSubjects + `?stud_id=${user_id}&pass=${pwd}`);
   }
-
   getSubjectFromId(user_id:string, pwd:string, sub_id:string){
     return this.http.get(this.urlSubjects+`?stud_id=${user_id}&pass=${pwd}&subject=${sub_id}`);
   }

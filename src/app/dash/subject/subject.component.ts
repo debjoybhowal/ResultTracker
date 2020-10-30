@@ -1,5 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, } from '@angular/router';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -42,17 +43,17 @@ export class SubjectComponent implements OnInit {
   public chartOptions1: Partial<ChartOptions>;
   @ViewChild('chart2') chart2: ChartComponent;
   public chartOptions2: Partial<ChartOptions>;
-  constructor(private dataservice: SubjectService, private route:ActivatedRoute, private router:Router) {}
+  constructor(private dataservice: SubjectService, private route:ActivatedRoute,  private location: Location) {}
 
   ngOnInit() {
-    this.dataservice.getPosts2().subscribe((data)=>{
-      this.bdata= data;
-      this.chartData2();
-    })
     if (localStorage.getItem('user_id')) {
       this.user_id = localStorage.getItem('user_id');
       this.pwd = localStorage.getItem('pwd');
       
+    this.dataservice.getAllSubjectData(this.user_id,this.pwd).subscribe((data)=>{
+      this.bdata= data;
+      this.chartData2();
+    })
       this.route.paramMap.subscribe((route:any)=>{
         if(route.params.id){
           this.paramLoaded=true;
@@ -68,8 +69,8 @@ export class SubjectComponent implements OnInit {
 
 
       this.dataservice.getAllSubjectData(this.user_id, this.pwd).subscribe((response:any)=>{
-        if(!this.paramLoaded)
-        this.router.navigate(["dash","subject",response.response[0].sub_id]);
+        if(!this.paramLoaded && response.response.length>0)
+        this.location.go("/dash/subject/"+response.response[0].sub_id)
         this.subjectList=response.response;
       })
     }
@@ -154,6 +155,7 @@ export class SubjectComponent implements OnInit {
     let posts;
     let percent = [];
     let termsChart = [];
+    console.log(this.bdata)
     overall = this.bdata.average.response;
     posts = this.bdata.response;
     posts.forEach((character) => {
