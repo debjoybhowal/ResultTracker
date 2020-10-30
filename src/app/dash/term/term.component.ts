@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import {
   ApexAxisChartSeries,
@@ -28,60 +29,65 @@ export type ChartOptions = {
   styleUrls: ['./term.component.css'],
 })
 export class TermComponent implements OnInit {
-    
-
-  websiteList:any= ['chemistry', 'english', 'computer','biology']
-
+  websiteList: any = ['chemistry', 'english', 'computer', 'biology'];
 
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
-  termData; 
-
-  constructor(private dataService: TermService, private route: ActivatedRoute, private router:Router) {}
+  termData;
+  showTermModal = false;
+  constructor(
+    private dataService: TermService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   series: { name: string; data: number[] }[] = [];
 
   subjects: string[] = [];
-  
+
   user_id: string;
-  paramLoaded:boolean=false;
+  paramLoaded: boolean = false;
   pwd: string;
-  term_name:string="";
+  term_name: string = '';
   ngOnInit(): void {
-    
     this.user_id = localStorage.getItem('user_id');
     this.pwd = localStorage.getItem('pwd');
 
-
-    this.route.paramMap.subscribe((item:any)=>{
-      if(item.params.id){
+    this.route.paramMap.subscribe((item: any) => {
+      if (item.params.id) {
         this.loadChart(item.params.id);
-        this.paramLoaded=true;
+        this.paramLoaded = true;
       }
-    })
+    });
 
     this.dataService
-        .getTermInfo(this.user_id,  this.pwd)
-        .subscribe((response : any) => {
-          if(!this.paramLoaded)
-          this.router.navigate(["dash","term",response.response[0].term_id])
-          this.termData = response.response;});
-
-    
+      .getTermInfo(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        if (!this.paramLoaded)
+          this.router.navigate(['dash', 'term', response.response[0].term_id]);
+        this.termData = response.response;
+      });
   }
 
-  loadChart(term_id:number){
-    this.chartOptions=undefined;
-    this.subjects=[];
-    this.series=[];
-    this.dataService.getTermWiseSubject(this.user_id,this.pwd,term_id).subscribe((data: any) => {
-      this.setupData(data);
-    });
+  loadChart(term_id: number) {
+    this.chartOptions = undefined;
+    this.subjects = [];
+    this.series = [];
+    this.dataService
+      .getTermWiseSubject(this.user_id, this.pwd, term_id)
+      .subscribe((data: any) => {
+        this.setupData(data);
+      });
   }
   setupData(data: any) {
     let exam = data.exam;
     console.log(data);
-    this.term_name=data.marks.length>0? (data.marks[0].length>0?data.marks[0][0].term_name:""):"";
+    this.term_name =
+      data.marks.length > 0
+        ? data.marks[0].length > 0
+          ? data.marks[0][0].term_name
+          : ''
+        : '';
     exam.forEach((exam_item: any) => {
       let full_marks = exam_item.full_marks;
       for (let i = 0; i < exam_item.exam_no; i++) {
@@ -155,10 +161,35 @@ export class TermComponent implements OnInit {
       },
     };
     //Fixing chart display issue for small screen
-    setTimeout(()=>{
-
-      window.dispatchEvent( new Event('resize'));
-    },100)
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
   }
-  
+
+  form = new FormGroup({
+    Name: new FormControl('', [Validators.required]),
+  });
+
+  get Name() {
+    return this.form.get('Name');
+  }
+  onSubmit(data) {
+    if (this.form.valid) {
+      console.log(JSON.stringify(data));
+      this.showTermModal = false;
+
+      if (localStorage.getItem('user_id')) {
+        this.user_id = localStorage.getItem('user_id');
+        this.pwd = localStorage.getItem('pwd');
+        this.dataService
+          .addTerm(this.user_id, this.pwd, data)
+          .subscribe((response: any) => {
+            console.log(response);
+          });
+      }
+    }
+  }
+  openTermModal(){
+    this.showTermModal=true;
+  }
 }

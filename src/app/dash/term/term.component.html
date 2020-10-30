@@ -44,17 +44,22 @@
             <i class="fas fa-clipboard"></i>
           </div>
           <div class="spur-card-title">Term List</div>
+          <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openTermModal()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body">
-            <div class="spinner text-center" *ngIf="!termData">
-                <div
-                  class="spinner-grow text-secondary"
-                  style="width: 3rem; height: 3rem"
-                  role="status"
-                >
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </div>
+          <div class="spinner text-center" *ngIf="!termData">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
           <table class="table table-hover table-in-card" *ngIf="termData">
             <thead>
               <tr>
@@ -78,6 +83,67 @@
           </table>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<!-- The Modal -->
+<div class="modal" id="myModal" [ngClass]="{ show: showTermModal }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add Term</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="showTermModal = false"
+          data-dismiss="modal"
+        >
+          &times;
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form
+          #userpost="ngForm"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit(userpost.value)"
+        >
+          <div class="form-group">
+            <label for="exampleInputEmail1" class="font-weight-bold"
+              >Term Name :
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="Name"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter Term"
+            />
+            <div *ngIf="Name.touched && !Name.valid" class="alert alert-danger">
+              <div *ngIf="Name.errors?.required">Term Name is required</div>
+              <div *ngIf="Name.errors.maxlength">
+                Name must be maximum 30 characters
+              </div>
+            </div>
+          </div>
+          <div class="forms-group text-center">
+            <button
+              [disabled]="!form.valid"
+              class="btn btn-primary mr-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer 
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" (click)="showTermModal=false" data-dismiss="modal">Close</button>
+      </div>-->
     </div>
   </div>
 </div>

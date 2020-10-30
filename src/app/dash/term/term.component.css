@@ -11,3 +11,7 @@ tbody{
 table{
     text-align: center;
 }
+
+.modal.show{
+    display: block;
+} 
