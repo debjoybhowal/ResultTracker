@@ -23,5 +23,83 @@
         <i class="fas fa-user"></i>
       </a>
     </div>
+    <div class="dropdown tools-item">
+      <i (click)="openMapModal()" class="fas fa-question-circle"></i>
+    </div>
   </div>
 </header>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  [ngClass]="{ show: showMapModal }"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <i class="fas fa-info-circle"></i>&nbsp;&nbsp;
+          <span class="text-primary">Guide</span>
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="showMapModal = false"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <section class="sec-boxes" role="section">
+          <h4 class="text-success">Here are Some basic terminology Guide</h4>
+          <div class="box">
+            <h5 class="text-dark">Terms</h5>
+            <p class="text-secondary">
+              These are basically the academic period where the exam structure
+              remains the same and have same set of subjects.It can be also
+              called as an academic year. eg. Classes,Semesters, etc.
+            </p>
+          </div>
+          <div class="box">
+            <h5 class="text-dark">Exam Structure</h5>
+            <p class="text-secondary">
+              This is basically the set of exams which repeats every term. eg.
+              unit tests,internals,semesters,etc.
+            </p>
+          </div>
+          <div class="box">
+            <h5 class="text-dark">Subjects</h5>
+            <p class="text-secondary">
+              A group of Subjects will create a term and each subject will be
+              able to give any exam from exam structure once. eg. Physics
+              ,Chemistry etc.
+            </p>
+          </div>
+          <div class="box">
+            <h5 class="text-dark">Marks</h5>
+            <p class="text-secondary">
+              These are the most basic units of this app.Marks will be there for
+              every exam per subject.
+            </p>
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="showMapModal = false"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

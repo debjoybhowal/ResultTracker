@@ -1,3 +1,9 @@
-.menu-toggle{
-    cursor: pointer;
+.menu-toggle {
+  cursor: pointer;
+}
+.modal.show {
+  display: block;
+}
+.fas {
+  cursor: pointer;
 }
