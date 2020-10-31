@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   ApexAxisChartSeries,
@@ -53,8 +53,8 @@ export class SubjectComponent implements OnInit {
   ) {}
 
   addSubjectForm: FormGroup = new FormGroup({
-    sub_name: new FormControl(''),
-    term_id: new FormControl(''),
+    sub_name: new FormControl('', Validators.required),
+    term_id: new FormControl('',Validators.required),
   });
   ngOnInit() {
     if (localStorage.getItem('user_id')) {
@@ -270,6 +270,8 @@ export class SubjectComponent implements OnInit {
   }
 
   openSubjectModal() {
+    this.addSubjectForm.markAsUntouched();
+    this.addSubjectForm.get("sub_name").reset();  
     this.termList = undefined;
     this.showSubjectAddModal = true;
     this.dataservice

@@ -25,7 +25,14 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div id="chart1" *ngIf="chartOptions1 && subjectListWithMarks && subjectListWithMarks.response.length>0">
+          <div
+            id="chart1"
+            *ngIf="
+              chartOptions1 &&
+              subjectListWithMarks &&
+              subjectListWithMarks.response.length > 0
+            "
+          >
             <apx-chart
               [series]="chartOptions1.series"
               [chart]="chartOptions1.chart"
@@ -37,11 +44,15 @@
             ></apx-chart>
           </div>
           <p
-          class="mt-4 lead"
-          *ngIf="chartOptions1 && subjectListWithMarks && subjectListWithMarks.response.length <= 0"
-        >
-          Please enter marks in the selected subject to see the graph.
-        </p>
+            class="mt-4 lead"
+            *ngIf="
+              chartOptions1 &&
+              subjectListWithMarks &&
+              subjectListWithMarks.response.length <= 0
+            "
+          >
+            Please enter marks in the selected subject to see the graph.
+          </p>
         </div>
       </div>
     </div>
@@ -123,7 +134,12 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div id="chart2" *ngIf="chartOptions2 && subjectList && subjectList.response.length > 0">
+          <div
+            id="chart2"
+            *ngIf="
+              chartOptions2 && subjectList && subjectList.response.length > 0
+            "
+          >
             <apx-chart
               [series]="chartOptions2.series"
               [chart]="chartOptions2.chart"
@@ -135,11 +151,13 @@
             ></apx-chart>
           </div>
           <p
-          class="mt-4 lead"
-          *ngIf="chartOptions2 && subjectList && subjectList.response.length <= 0"
-        >
-          Please enter marks in any subjects to see this graph.
-        </p>
+            class="mt-4 lead"
+            *ngIf="
+              chartOptions2 && subjectList && subjectList.response.length <= 0
+            "
+          >
+            Please enter marks in any subjects to see this graph.
+          </p>
         </div>
       </div>
     </div>
@@ -182,7 +200,7 @@
                 <span class="sr-only">Loading...</span>
               </div>
             </div>
-            <div class="row" *ngIf="termList && termList.length>0">
+            <div class="row" *ngIf="termList && termList.length > 0">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="exampleFormControlInput1">Subject Name</label>
@@ -192,21 +210,56 @@
                     formControlName="sub_name"
                     placeholder="eg. Physics"
                   />
+                  <small
+                    *ngIf="
+                      addSubjectForm.get('sub_name').touched &&
+                      addSubjectForm.get('sub_name').invalid
+                    "
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="addSubjectForm.get('sub_name').errors.required">
+                      Please enter subject
+                    </div>
+                  </small>
                 </div>
               </div>
               <div class="col-md-6">
                 <label for="exampleFormControlSelect1">Select Term</label>
-                <select class="form-control"
-                formControlName="term_id" (change)="changeTermId($event)"  >
-                  <option [value]="term.term_id"  *ngFor="let term of termList" >{{term.term_name }}</option>
+                <select
+                  class="form-control"
+                  formControlName="term_id"
+                  (change)="changeTermId($event)"
+                ><option value="" selected>Select</option>
+                  <option [value]="term.term_id" *ngFor="let term of termList">
+                    {{ term.term_name }}
+                  </option>
                 </select>
+                <small
+                  *ngIf="
+                    addSubjectForm.get('term_id').touched &&
+                    addSubjectForm.get('term_id').invalid
+                  "
+                  class="form-text text-danger font-weight-bold"
+                >
+                  <div *ngIf="addSubjectForm.get('term_id').errors.required">
+                    Please select a term
+                  </div>
+                </small>
               </div>
             </div>
-            <p class="lead" *ngIf="termList && termList.length<=0">You need to add a term first before adding a subject.</p>
+            <p class="lead" *ngIf="termList && termList.length <= 0">
+              You need to add a term first before adding a subject.
+            </p>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" *ngIf="termList && termList.length>0">Add</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            *ngIf="termList && termList.length > 0"[disabled]="!addSubjectForm.valid"
+          >
+            Add
+          </button>
           <button
             type="button"
             class="btn btn-danger"

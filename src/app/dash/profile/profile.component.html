@@ -251,6 +251,7 @@
           </div>
         </div>
   </div>
+  <!--Term Wise Subjects Organised-->
     <div class="col-xl-6" *ngFor="let val of termData?.response">
       <div class="card spur-card">
         <div class="card-header bg-info text-white">
@@ -285,22 +286,22 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" 
-aria-labelledby="exampleModalCenterTitle" 
-aria-hidden="true" 
+
+<!--EXAM ADD MODAL -->
+<div class="modal fade"
 [ngClass]="{'show':showExamModal}">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered" >
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add Exam Structure</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showExamModal=false">
+        <h5 class="modal-title" >Add Exam Structure</h5>
+        <button type="button" class="close" (click)="showExamModal=false">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form [formGroup]="form">
           <div class="form-group">
-            <input type="text" formControlName="examname" class="form-control" id="formGroupExampleInput" placeholder="Exam Name">
+            <input type="text" formControlName="examname" class="form-control" placeholder="Exam Name">
             <small
             *ngIf="f.examname.touched && f.examname.invalid"
             class="form-text text-danger font-weight-bold"
@@ -311,7 +312,7 @@ aria-hidden="true"
             </small>
           </div>
           <div class="form-group">
-            <input type="text" formControlName="totalexam" class="form-control" id="formGroupExampleInput2" placeholder="Total No. Of Exams for Each Subject In a Term">
+            <input type="text" formControlName="totalexam" class="form-control"  placeholder="Total No. Of Exams for Each Subject In a Term">
             <small
             *ngIf="f.totalexam.touched && f.totalexam.invalid"
             class="form-text text-danger font-weight-bold"
