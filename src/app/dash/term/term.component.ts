@@ -35,8 +35,9 @@ export class TermComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   termData;
   showTermModal = false;
+  termMarks;
   constructor(
-    private dataService: TermService,
+    private termService: TermService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -59,12 +60,20 @@ export class TermComponent implements OnInit {
         this.paramLoaded = true;
       }
     });
+    this.loadTermData();
+  }
 
-    this.dataService
+  loadTermData() {
+    this.termData = undefined;
+    this.termService
       .getTermInfo(this.user_id, this.pwd)
       .subscribe((response: any) => {
-        if (!this.paramLoaded)
+        if (!this.paramLoaded && response.response.length > 0) {
           this.router.navigate(['dash', 'term', response.response[0].term_id]);
+        } else {
+          this.chartOptions = {};
+          this.termMarks=[];
+        }
         this.termData = response.response;
       });
   }
@@ -73,7 +82,7 @@ export class TermComponent implements OnInit {
     this.chartOptions = undefined;
     this.subjects = [];
     this.series = [];
-    this.dataService
+    this.termService
       .getTermWiseSubject(this.user_id, this.pwd, term_id)
       .subscribe((data: any) => {
         this.setupData(data);
@@ -81,6 +90,7 @@ export class TermComponent implements OnInit {
   }
   setupData(data: any) {
     let exam = data.exam;
+    this.termMarks = data.marks;
     console.log(data);
     this.term_name =
       data.marks.length > 0
@@ -167,11 +177,11 @@ export class TermComponent implements OnInit {
   }
 
   form = new FormGroup({
-    Name: new FormControl('', [Validators.required]),
+    term_name: new FormControl('', [Validators.required]),
   });
 
-  get Name() {
-    return this.form.get('Name');
+  get term_name_add() {
+    return this.form.get('term_name');
   }
   onSubmit(data) {
     if (this.form.valid) {
@@ -181,15 +191,15 @@ export class TermComponent implements OnInit {
       if (localStorage.getItem('user_id')) {
         this.user_id = localStorage.getItem('user_id');
         this.pwd = localStorage.getItem('pwd');
-        this.dataService
+        this.termService
           .addTerm(this.user_id, this.pwd, data)
           .subscribe((response: any) => {
-            console.log(response);
+            this.loadTermData();
           });
       }
     }
   }
-  openTermModal(){
-    this.showTermModal=true;
+  openTermModal() {
+    this.showTermModal = true;
   }
 }

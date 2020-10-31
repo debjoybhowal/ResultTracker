@@ -11,17 +11,13 @@ export class ProfileService {
   url3= 'https://atdebjoy.com/others/api/perform/get_exam.php';
   urlSubjects="https://atdebjoy.com/others/api/perform/get_subjects.php"  
   baseUrl="https://atdebjoy.com/others/api/perform/update_exam.php";
-  
+
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
     return this.http.get(this.url + `?profile&stud_id=${user_id}&pass=${pwd}`);
   }
 
 
-  getTermInfo(user_id: string, pwd: string) {
-    return this.http.get(this.url2 + `?profile&stud_id=${user_id}&pass=${pwd}`);
-  }
- 
   getExamInfo(user_id: string, pwd: string){
     return this.http.get(this.url3 + `?stud_id=${user_id}&pass=${pwd}`);
   }

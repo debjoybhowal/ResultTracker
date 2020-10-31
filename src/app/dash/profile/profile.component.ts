@@ -17,6 +17,8 @@ import {
   ApexLegend,
   ApexTheme,
 } from 'ng-apexcharts';
+import { SubjectService } from '../subject/subject.service';
+import { TermService } from '../term/term.service';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -52,8 +54,16 @@ export class ProfileComponent implements OnInit {
 
   form: FormGroup;
   showExamModal: boolean = false;
+  subjectListAny;
 
-  constructor(private dataservice: ProfileService, private fb: FormBuilder) {
+  showSubjectAddModal:boolean=false;
+
+  constructor(
+    private profileService: ProfileService,
+    private subjectService: SubjectService,
+    private termService:TermService,
+    private fb: FormBuilder
+  ) {
     this.form = this.fb.group({
       examname: new FormControl('', [Validators.required]),
       totalexam: new FormControl('', [
@@ -84,7 +94,7 @@ export class ProfileComponent implements OnInit {
         pass: this.pwd,
       };
       // console.log(JSON.stringify(this.examobj));
-      this.dataservice
+      this.profileService
         .addExamStruct(this.examobj)
         .subscribe((response: any) => {
           this.examData = response.response;
@@ -185,33 +195,33 @@ export class ProfileComponent implements OnInit {
     if (localStorage.getItem('user_id')) {
       this.user_id = localStorage.getItem('user_id');
       this.pwd = localStorage.getItem('pwd');
-      this.dataservice
+      this.profileService
         .getProfileInfo(this.user_id, this.pwd)
         .subscribe((response: any) => (this.profile = response.response));
 
-      this.dataservice
+      this.profileService
         .getAllBasicData(this.user_id, this.pwd)
         .subscribe((response: any) => (this.allData = response));
+      this.loadTermData();
 
-      this.dataservice
-        .getTermInfo(this.user_id, this.pwd)
-        .subscribe((response: any) => (this.termData = response));
-      this.loadPieChartData();
-
-      this.dataservice
+      this.profileService
         .getAllSubjectData(this.user_id, this.pwd)
         .subscribe((response: any) => {
           this.subjectList = response.response;
           this.subjectAverage = response.average.response;
         });
+      this.loadPieChartData();
+      this.loadSubjectListAny();
     }
   }
+
+  
   loadPieChartData() {
     this.PieData = undefined;
     this.chartOptions1 = undefined;
-    
+
     this.chartOptions2 = undefined;
-    this.dataservice
+    this.profileService
       .getExamInfo(this.user_id, this.pwd)
       .subscribe((response: any) => {
         this.PieData = response;
@@ -220,5 +230,79 @@ export class ProfileComponent implements OnInit {
   }
   openExamAddModal() {
     this.showExamModal = true;
+  }
+
+  /*Subject related*/ 
+  addSubjectForm: FormGroup = new FormGroup({
+    sub_name: new FormControl('', Validators.required),
+    term_id: new FormControl('',Validators.required),
+  });
+  termListDropDown;
+  loadSubjectListAny() {
+    this.subjectList = undefined;
+    this.subjectService
+      .getSubjectList(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.subjectListAny = response.response;
+      });
+  }
+
+  openSubjectModal() {
+    this.addSubjectForm.markAsUntouched();
+    this.addSubjectForm.get("sub_name").reset();  
+    this.termListDropDown = undefined;
+    this.showSubjectAddModal = true;
+    this.subjectService
+      .getTermList(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.termListDropDown = response.response;
+      });
+  }
+  onAddSubject() {
+    this.showSubjectAddModal = false;
+    this.subjectService
+      .addsub(this.user_id, this.pwd, this.addSubjectForm.value)
+      .subscribe((response: any) => {
+        this.loadSubjectListAny();
+      });
+  }
+
+
+  /*Term Related*/
+
+  showAddTermModal = false;
+  termAddForm = new FormGroup({
+    term_name: new FormControl('', [Validators.required]),
+  });
+
+  get term_name_add() {
+    return this.termAddForm.get('term_name');
+  }
+  loadTermData(){
+    this.termData=undefined;
+    this.termService
+    .getTermInfo(this.user_id, this.pwd)
+    .subscribe((response: any) => {
+      this.termData = response;
+    });
+  }
+  openTermAddModal(){
+    this.showAddTermModal=true;
+  }
+  onAddTerm() {
+    if (this.termAddForm.valid) {
+      console.log(JSON.stringify(this.termAddForm.value));
+      this.showAddTermModal = false;
+
+      if (localStorage.getItem('user_id')) {
+        this.user_id = localStorage.getItem('user_id');
+        this.pwd = localStorage.getItem('pwd');
+        this.termService
+          .addTerm(this.user_id, this.pwd, this.termAddForm.value)
+          .subscribe((response: any) => {
+            this.loadTermData()
+          });
+      }
+    }
   }
 }

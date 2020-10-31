@@ -32,18 +32,18 @@ export class HomeComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  constructor(private dataservice: HomeService) {}
+  constructor(private homeService: HomeService) {}
 
   
   ngOnInit(): void {
     if (localStorage.getItem('user_id')) {
       this.user_id = localStorage.getItem('user_id');
       this.pwd = localStorage.getItem('pwd');
-      this.dataservice
+      this.homeService
         .getProfileInfo(this.user_id, this.pwd)
         .subscribe((response: any) => (this.profile = response.response));
 
-      this.dataservice
+      this.homeService
         .getAllBasicData(this.user_id, this.pwd)
         .subscribe((response: any) => {
           this.allData = response;

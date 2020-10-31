@@ -47,7 +47,7 @@ export class SubjectComponent implements OnInit {
   @ViewChild('chart2') chart2: ChartComponent;
   public chartOptions2: Partial<ChartOptions>;
   constructor(
-    private dataservice: SubjectService,
+    private subjectService: SubjectService,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -67,7 +67,7 @@ export class SubjectComponent implements OnInit {
         }
       });
 
-      this.dataservice
+      this.subjectService
         .getAllSubjectData(this.user_id, this.pwd)
         .subscribe((response: any) => {
           if (!this.paramLoaded && response.response.length > 0){            
@@ -85,7 +85,7 @@ export class SubjectComponent implements OnInit {
       this.chartOptions1 = undefined;
 
       this.subjectListWithMarks = undefined;
-      this.dataservice
+      this.subjectService
         .getSubjectFromId(this.user_id, this.pwd,id)
         .subscribe((data: any) => {
           this.subjectListWithMarks = data;
@@ -94,7 +94,7 @@ export class SubjectComponent implements OnInit {
   }
   loadSubjectListAny() {
     this.subjectListAny = undefined;
-    this.dataservice
+    this.subjectService
       .getSubjectList(this.user_id, this.pwd)
       .subscribe((response: any) => {
         this.subjectListAny = response.response;
@@ -255,7 +255,7 @@ export class SubjectComponent implements OnInit {
 
   onAdd() {
     this.showSubjectAddModal = false;
-    this.dataservice
+    this.subjectService
       .addsub(this.user_id, this.pwd, this.addSubjectForm.value)
       .subscribe((response: any) => {
         this.loadSubjectListAny();
@@ -274,7 +274,7 @@ export class SubjectComponent implements OnInit {
     this.addSubjectForm.get("sub_name").reset();  
     this.termList = undefined;
     this.showSubjectAddModal = true;
-    this.dataservice
+    this.subjectService
       .getTermList(this.user_id, this.pwd)
       .subscribe((response: any) => {
         this.termList = response.response;

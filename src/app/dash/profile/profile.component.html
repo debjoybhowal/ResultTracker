@@ -102,9 +102,14 @@
             <i class="fas fa-clipboard"></i>
           </div>
           <div class="spur-card-title">Subject List Added</div>
+          <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openSubjectModal()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body">
-          <div class="spinner text-center" *ngIf="!subjectList">
+          <div class="spinner text-center" *ngIf="!subjectListAny">
             <div
               class="spinner-grow text-secondary"
               style="width: 3rem; height: 3rem"
@@ -113,15 +118,22 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <table class="table table-hover table-in-card"  *ngIf="subjectList">
+          <table
+            class="table table-hover table-in-card"
+            *ngIf="subjectListAny && subjectListAny.length > 0"
+          >
             <thead>
-              <tr >
+              <tr>
                 <th scope="col" class="text"><span>Subject</span></th>
                 <th scope="col" class="text"><span>Term</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let val of subjectList" routerLink="/dash/subject/{{val.sub_id}}" class="cursor-pointer">
+              <tr
+                *ngFor="let val of subjectListAny"
+                routerLink="/dash/subject/{{ val.sub_id }}"
+                class="cursor-pointer"
+              >
                 <ng-container>
                   <th class="text">
                     <span>{{ val.subject_name }}</span>
@@ -133,6 +145,13 @@
               </tr>
             </tbody>
           </table>
+
+          <p
+            class="mt-4 lead"
+            *ngIf="subjectListAny && subjectListAny.length <= 0"
+          >
+            Please enter a subject to see the subject in this list
+          </p>
         </div>
       </div>
     </div>
@@ -142,9 +161,14 @@
           <div class="spur-card-icon">
             <i class="fas fa-clipboard"></i>
           </div>
-          <div class="spur-card-title">Term List Added</div>
+          <div class="spur-card-title">Term List</div>
+          <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openTermAddModal()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
         </div>
-        <div class="card-body" >
+        <div class="card-body">
           <div class="spinner text-center" *ngIf="!termData">
             <div
               class="spinner-grow text-secondary"
@@ -154,7 +178,7 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <table class="table table-hover table-in-card" *ngIf="termData">
+          <table class="table table-hover table-in-card" *ngIf="termData?.response && termData?.response.length > 0">
             <thead>
               <tr>
                 <th scope="col" class="text"><span>#</span></th>
@@ -165,7 +189,6 @@
               <tr
                 *ngFor="let val of termData.response; let i = index"
                 routerLink="/dash/term/{{ val.term_id }}"
-                class="cursor-pointer"
               >
                 <th class="text">
                   <span>{{ i + 1 }}</span>
@@ -176,6 +199,12 @@
               </tr>
             </tbody>
           </table>
+          <p
+          class="mt-4 lead"
+          *ngIf="termData?.response && termData.response.length <= 0"
+        >
+          Please enter a term to see the term in this list
+        </p>
         </div>
       </div>
     </div>
@@ -198,7 +227,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let val of subjectList">
-                <ng-container *ngIf="val.average>=subjectAverage">
+                <ng-container *ngIf="val.average >= subjectAverage">
                   <th class="text">
                     <span>{{ val.subject_name }}</span>
                   </th>
@@ -214,44 +243,44 @@
           </table>
         </div>
       </div>
-  </div>
-      <div class="col-xl-6">
-        <div class="card spur-card">
-          <div class="card-header bg-danger text-white">
-            <div class="spur-card-icon">
-              <i class="fas fa-frown"></i>
-            </div>
-            <div class="spur-card-title">Subjects With Score Below Average</div>
+    </div>
+    <div class="col-xl-6">
+      <div class="card spur-card">
+        <div class="card-header bg-danger text-white">
+          <div class="spur-card-icon">
+            <i class="fas fa-frown"></i>
           </div>
-          <div class="card-body" *ngIf="subjectList">
-            <table class="table table-hover table-in-card">
-              <thead>
-                <tr>
-                  <th scope="col" class="text"><span>Subject</span></th>
-                  <th scope="col" class="text"><span>Term</span></th>
-                  <th scope="col" class="text"><span>Score Average</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let val of subjectList">
-                  <ng-container *ngIf="val.average<subjectAverage">
-                    <th class="text">
-                      <span>{{ val.subject_name }}</span>
-                    </th>
-                    <td class="text">
-                      <span>{{ val.term_name }}</span>
-                    </td>
-                    <td class="text">
-                      <span>{{ val.average }}</span>
-                    </td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="spur-card-title">Subjects With Score Below Average</div>
         </div>
-  </div>
-  <!--Term Wise Subjects Organised-->
+        <div class="card-body" *ngIf="subjectList">
+          <table class="table table-hover table-in-card">
+            <thead>
+              <tr>
+                <th scope="col" class="text"><span>Subject</span></th>
+                <th scope="col" class="text"><span>Term</span></th>
+                <th scope="col" class="text"><span>Score Average</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let val of subjectList">
+                <ng-container *ngIf="val.average < subjectAverage">
+                  <th class="text">
+                    <span>{{ val.subject_name }}</span>
+                  </th>
+                  <td class="text">
+                    <span>{{ val.term_name }}</span>
+                  </td>
+                  <td class="text">
+                    <span>{{ val.average }}</span>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--Term Wise Subjects Organised-->
     <div class="col-xl-6" *ngFor="let val of termData?.response">
       <div class="card spur-card">
         <div class="card-header bg-info text-white">
@@ -271,7 +300,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let v of val.subjects; let i = index" routerLink="/dash/subject/{{v.sub_id}}" class="cursor-pointer">
+              <tr
+                *ngFor="let v of val.subjects; let i = index"
+                routerLink="/dash/subject/{{ v.sub_id }}"
+                class="cursor-pointer"
+              >
                 <th class="text">
                   <span>{{ i + 1 }}</span>
                 </th>
@@ -288,64 +321,275 @@
 </div>
 
 <!--EXAM ADD MODAL -->
-<div class="modal fade"
-[ngClass]="{'show':showExamModal}">
-  <div class="modal-dialog modal-dialog-centered" >
+<div class="modal fade" [ngClass]="{ show: showExamModal }">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" >Add Exam Structure</h5>
-        <button type="button" class="close" (click)="showExamModal=false">
+        <h5 class="modal-title">Add Exam Structure</h5>
+        <button type="button" class="close" (click)="showExamModal = false">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form [formGroup]="form">
           <div class="form-group">
-            <input type="text" formControlName="examname" class="form-control" placeholder="Exam Name">
+            <input
+              type="text"
+              formControlName="examname"
+              class="form-control"
+              placeholder="Exam Name"
+            />
             <small
-            *ngIf="f.examname.touched && f.examname.invalid"
-            class="form-text text-danger font-weight-bold"
-          >
-            <div *ngIf="f.examname.errors.required">
-              Please Enter Exam Name
-            </div>
+              *ngIf="f.examname.touched && f.examname.invalid"
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="f.examname.errors.required">
+                Please Enter Exam Name
+              </div>
             </small>
           </div>
           <div class="form-group">
-            <input type="text" formControlName="totalexam" class="form-control"  placeholder="Total No. Of Exams for Each Subject In a Term">
+            <input
+              type="text"
+              formControlName="totalexam"
+              class="form-control"
+              placeholder="Total No. Of Exams for Each Subject In a Term"
+            />
             <small
-            *ngIf="f.totalexam.touched && f.totalexam.invalid"
-            class="form-text text-danger font-weight-bold"
-          >
-            <div *ngIf="f.totalexam.errors.required">
-              Please Enter Total Exams
-            </div>
-            <div *ngIf="f.totalexam.errors.pattern">
-              Can contain only Numeric value
-            </div>
+              *ngIf="f.totalexam.touched && f.totalexam.invalid"
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="f.totalexam.errors.required">
+                Please Enter Total Exams
+              </div>
+              <div *ngIf="f.totalexam.errors.pattern">
+                Can contain only Numeric value
+              </div>
             </small>
-            </div>
+          </div>
           <div class="form-group">
-            <input type="text" formControlName="exammarks" class="form-control" id="formGroupExampleInput3" placeholder="Full Marks">
+            <input
+              type="text"
+              formControlName="exammarks"
+              class="form-control"
+              id="formGroupExampleInput3"
+              placeholder="Full Marks"
+            />
             <small
-            *ngIf="f.exammarks.touched && f.exammarks.invalid"
-            class="form-text text-danger font-weight-bold"
-          >
-            <div *ngIf="f.exammarks.errors.required">
-              Please Enter Full Marks
-            </div>
-            <div *ngIf="f.exammarks.errors.pattern">
-              Can contain only Numeric value
-            </div>
+              *ngIf="f.exammarks.touched && f.exammarks.invalid"
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="f.exammarks.errors.required">
+                Please Enter Full Marks
+              </div>
+              <div *ngIf="f.exammarks.errors.pattern">
+                Can contain only Numeric value
+              </div>
             </small>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        
-        <button type="button"  class="btn btn-primary"[disabled]="!form.valid" (click)="addexam()">Add</button>
-        <button type="button" class="btn btn-danger" (click)="showExamModal=false" data-dismiss="modal">Close</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="!form.valid"
+          (click)="addexam()"
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="showExamModal = false"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!---Add subject Modal-->
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showSubjectAddModal }"
+>
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form [formGroup]="addSubjectForm" (ngSubmit)="onAddSubject()">
+        <div class="modal-header">
+          <h5 class="m-0">Add a subject</h5>
+          <button
+            type="button"
+            class="close btn btn-danger"
+            data-dismiss="modal"
+            (click)="showSubjectAddModal = false"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="spinner text-center" *ngIf="!termListDropDown">
+              <div
+                class="spinner-grow text-secondary"
+                style="width: 3rem; height: 3rem"
+                role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div
+              class="row"
+              *ngIf="termListDropDown && termListDropDown.length > 0"
+            >
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Subject Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="sub_name"
+                    placeholder="eg. Physics"
+                  />
+                  <small
+                    *ngIf="
+                      addSubjectForm.get('sub_name').touched &&
+                      addSubjectForm.get('sub_name').invalid
+                    "
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="addSubjectForm.get('sub_name').errors.required">
+                      Please enter subject
+                    </div>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="exampleFormControlSelect1">Select Term</label>
+                <select
+                  class="form-control"
+                  formControlName="term_id"
+                  (change)="changeTermId($event)"
+                >
+                  <option value="" selected>Select</option>
+                  <option
+                    [value]="term.term_id"
+                    *ngFor="let term of termListDropDown"
+                  >
+                    {{ term.term_name }}
+                  </option>
+                </select>
+                <small
+                  *ngIf="
+                    addSubjectForm.get('term_id').touched &&
+                    addSubjectForm.get('term_id').invalid
+                  "
+                  class="form-text text-danger font-weight-bold"
+                >
+                  <div *ngIf="addSubjectForm.get('term_id').errors.required">
+                    Please select a term
+                  </div>
+                </small>
+              </div>
+            </div>
+            <p
+              class="lead"
+              *ngIf="termListDropDown && termListDropDown.length <= 0"
+            >
+              You need to add a term first before adding a subject.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            *ngIf="termListDropDown && termListDropDown.length > 0"
+            [disabled]="!addSubjectForm.valid"
+          >
+            Add
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+            (click)="showSubjectAddModal = false"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--Add Term Modal-->
+<div class="modal" id="myModal" [ngClass]="{ show: showAddTermModal }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add Term</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="showAddTermModal = false"
+          data-dismiss="modal"
+        >
+          &times;
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form
+          #userpost="ngForm"
+          [formGroup]="termAddForm"
+          (ngSubmit)="onAddTerm()"
+        >
+          <div class="form-group">
+            <label for="exampleInputEmail1" class="font-weight-bold"
+              >Term Name :
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="term_name"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter Term"
+            />
+
+            <small
+              *ngIf="term_name_add.touched && term_name_add.invalid"
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="term_name_add.errors?.required">
+                Term Name is required
+              </div>
+            </small>
+          </div>
+          <div class="forms-group text-center">
+            <button
+              [disabled]="!termAddForm.valid"
+              class="btn btn-primary mr-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer 
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" (click)="showAddTermModal=false" data-dismiss="modal">Close</button>
+      </div>-->
     </div>
   </div>
 </div>

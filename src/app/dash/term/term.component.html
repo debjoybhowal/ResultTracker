@@ -23,7 +23,10 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div id="chart" *ngIf="chartOptions">
+          <div
+            id="chart"
+            *ngIf="chartOptions && termMarks && termMarks.length > 0"
+          >
             <apx-chart
               [series]="chartOptions.series"
               [chart]="chartOptions.chart"
@@ -34,6 +37,13 @@
               [stroke]="chartOptions.stroke"
             ></apx-chart>
           </div>
+          <p
+            class="mt-4 lead"
+            *ngIf="chartOptions && termMarks && termMarks.length <= 0"
+          >
+            Please add some marks in a subject of the selected term to view this
+            graph.
+          </p>
         </div>
       </div>
     </div>
@@ -60,7 +70,10 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <table class="table table-hover table-in-card" *ngIf="termData">
+          <table
+            class="table table-hover table-in-card"
+            *ngIf="termData && termData.length > 0"
+          >
             <thead>
               <tr>
                 <th scope="col" class="text"><span>#</span></th>
@@ -81,6 +94,12 @@
               </tr>
             </tbody>
           </table>
+          <p
+          class="mt-4 lead"
+          *ngIf="termData && termData.length <= 0"
+        >
+          Please enter a term to see the term in this list
+        </p>
         </div>
       </div>
     </div>
@@ -116,15 +135,17 @@
             <input
               type="text"
               class="form-control"
-              formControlName="Name"
+              formControlName="term_name"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Enter Term"
             />
-            <div *ngIf="Name.touched && !Name.valid" class="alert alert-danger">
-              <div *ngIf="Name.errors?.required">Term Name is required</div>
-              <div *ngIf="Name.errors.maxlength">
-                Name must be maximum 30 characters
+            <div
+              *ngIf="term_name_add.touched && !term_name_add.valid"
+              class="alert alert-danger"
+            >
+              <div *ngIf="term_name_add.errors?.required">
+                Term Name is required
               </div>
             </div>
           </div>
