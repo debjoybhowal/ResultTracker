@@ -25,7 +25,7 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div id="chart1" *ngIf="chartOptions1">
+          <div id="chart1" *ngIf="chartOptions1 && subjectListWithMarks && subjectListWithMarks.response.length>0">
             <apx-chart
               [series]="chartOptions1.series"
               [chart]="chartOptions1.chart"
@@ -36,6 +36,12 @@
               [xaxis]="chartOptions1.xaxis"
             ></apx-chart>
           </div>
+          <p
+          class="mt-4 lead"
+          *ngIf="chartOptions1 && subjectListWithMarks && subjectListWithMarks.response.length <= 0"
+        >
+          Please enter marks in the selected subject to see the graph.
+        </p>
         </div>
       </div>
     </div>
@@ -117,7 +123,7 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div id="chart2" *ngIf="chartOptions2">
+          <div id="chart2" *ngIf="chartOptions2 && subjectList && subjectList.response.length > 0">
             <apx-chart
               [series]="chartOptions2.series"
               [chart]="chartOptions2.chart"
@@ -128,6 +134,12 @@
               [xaxis]="chartOptions2.xaxis"
             ></apx-chart>
           </div>
+          <p
+          class="mt-4 lead"
+          *ngIf="chartOptions2 && subjectList && subjectList.response.length <= 0"
+        >
+          Please enter marks in any subjects to see this graph.
+        </p>
         </div>
       </div>
     </div>
@@ -186,7 +198,7 @@
                 <label for="exampleFormControlSelect1">Select Term</label>
                 <select class="form-control"
                 formControlName="term_id" (change)="changeTermId($event)"  >
-                  <option [ngValue]="term.term_id"  *ngFor="let term of termList; let i=index" >{{term.term_name }}</option>
+                  <option [value]="term.term_id"  *ngFor="let term of termList" >{{term.term_name }}</option>
                 </select>
               </div>
             </div>
