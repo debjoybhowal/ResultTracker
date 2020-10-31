@@ -284,6 +284,7 @@ export class ProfileComponent implements OnInit {
     .getTermInfo(this.user_id, this.pwd)
     .subscribe((response: any) => {
       this.termData = response;
+      console.log(this.termData)
     });
   }
   openTermAddModal(){
