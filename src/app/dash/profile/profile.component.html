@@ -48,6 +48,11 @@
             <i class="fas fa-chart-bar"></i>
           </div>
           <div class="spur-card-title text-white">Exam Structure</div>
+          <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openExamAddModal()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <div class="spinner text-center" *ngIf="!chartOptions1">
@@ -276,6 +281,69 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" 
+aria-labelledby="exampleModalCenterTitle" 
+aria-hidden="true" 
+[ngClass]="{'show':showExamModal}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Exam Structure</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showExamModal=false">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="form-group">
+            <input type="text" formControlName="examname" class="form-control" id="formGroupExampleInput" placeholder="Exam Name">
+            <small
+            *ngIf="f.examname.touched && f.examname.invalid"
+            class="form-text text-danger font-weight-bold"
+          >
+            <div *ngIf="f.examname.errors.required">
+              Please Enter Exam Name
+            </div>
+            </small>
+          </div>
+          <div class="form-group">
+            <input type="text" formControlName="totalexam" class="form-control" id="formGroupExampleInput2" placeholder="Total No. Of Exams for Each Subject In a Term">
+            <small
+            *ngIf="f.totalexam.touched && f.totalexam.invalid"
+            class="form-text text-danger font-weight-bold"
+          >
+            <div *ngIf="f.totalexam.errors.required">
+              Please Enter Total Exams
+            </div>
+            <div *ngIf="f.totalexam.errors.pattern">
+              Can contain only Numeric value
+            </div>
+            </small>
+            </div>
+          <div class="form-group">
+            <input type="text" formControlName="exammarks" class="form-control" id="formGroupExampleInput3" placeholder="Full Marks">
+            <small
+            *ngIf="f.exammarks.touched && f.exammarks.invalid"
+            class="form-text text-danger font-weight-bold"
+          >
+            <div *ngIf="f.exammarks.errors.required">
+              Please Enter Full Marks
+            </div>
+            <div *ngIf="f.exammarks.errors.pattern">
+              Can contain only Numeric value
+            </div>
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button"  class="btn btn-primary"[disabled]="!form.valid" (click)="addexam()">Add</button>
+        <button type="button" class="btn btn-danger" (click)="showExamModal=false" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

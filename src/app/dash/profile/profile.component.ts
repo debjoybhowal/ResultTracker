@@ -1,6 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from './profile.service';
 import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
+import {
   ApexNonAxisChartSeries,
   ChartComponent,
   ApexResponsive,
@@ -19,7 +26,7 @@ export type ChartOptions = {
   fill: ApexFill;
   legend: ApexLegend;
   dataLabels: ApexDataLabels;
-  theme:ApexTheme;
+  theme: ApexTheme;
 };
 @Component({
   selector: 'app-profile',
@@ -38,11 +45,54 @@ export class ProfileComponent implements OnInit {
   subjectAverage;
   termData;
   PieData;
+  examobj;
+  examData;
   user_id: string;
   pwd: string;
 
-  constructor(private dataservice: ProfileService) {}
+  form: FormGroup;
+  showExamModal: boolean = false;
 
+  constructor(private dataservice: ProfileService, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      examname: new FormControl('', [Validators.required]),
+      totalexam: new FormControl('', [
+        Validators.required,
+        Validators.pattern('[0-9]*'),
+      ]),
+      exammarks: new FormControl('', [
+        Validators.required,
+        Validators.pattern('[0-9]*'),
+      ]),
+    });
+  }
+
+  get f() {
+    return this.form.controls;
+  }
+
+  addexam() {
+    if (localStorage.getItem('user_id')) {
+      this.user_id = localStorage.getItem('user_id');
+      this.pwd = localStorage.getItem('pwd');
+      this.showExamModal = false;
+      this.examobj = {
+        exam_name: this.form.controls.examname.value,
+        full_marks: this.form.controls.exammarks.value,
+        exam_no: this.form.controls.totalexam.value,
+        stud_id: this.user_id,
+        pass: this.pwd,
+      };
+      // console.log(JSON.stringify(this.examobj));
+      this.dataservice
+        .addExamStruct(this.examobj)
+        .subscribe((response: any) => {
+          this.examData = response.response;
+          this.loadPieChartData();
+          console.log(this.examData);
+        });
+    }
+  }
   chartData() {
     let posts;
     console.log(this.PieData);
@@ -100,9 +150,9 @@ export class ProfileComponent implements OnInit {
       dataLabels: {
         enabled: false,
       },
-      theme:{
-        mode: 'light', 
-        palette: 'palette8', 
+      theme: {
+        mode: 'light',
+        palette: 'palette8',
       },
       labels: exam_name,
       fill: {
@@ -112,9 +162,9 @@ export class ProfileComponent implements OnInit {
         formatter: function (val, opts) {
           return val + ' - ' + opts.w.globals.series[opts.seriesIndex];
         },
-        markers:{
-          fillColors: ['#FCAE3F', '#8A3FFC']
-        }
+        markers: {
+          fillColors: ['#FCAE3F', '#8A3FFC'],
+        },
       },
       responsive: [
         {
@@ -146,19 +196,29 @@ export class ProfileComponent implements OnInit {
       this.dataservice
         .getTermInfo(this.user_id, this.pwd)
         .subscribe((response: any) => (this.termData = response));
+      this.loadPieChartData();
 
-      this.dataservice
-        .getExamInfo(this.user_id, this.pwd)
-        .subscribe((response: any) => {
-          this.PieData = response;
-          this.chartData();
-        });
       this.dataservice
         .getAllSubjectData(this.user_id, this.pwd)
         .subscribe((response: any) => {
-          this.subjectList = response.response;          
-          this.subjectAverage=response.average.response;
+          this.subjectList = response.response;
+          this.subjectAverage = response.average.response;
         });
     }
+  }
+  loadPieChartData() {
+    this.PieData = undefined;
+    this.chartOptions1 = undefined;
+    
+    this.chartOptions2 = undefined;
+    this.dataservice
+      .getExamInfo(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.PieData = response;
+        this.chartData();
+      });
+  }
+  openExamAddModal() {
+    this.showExamModal = true;
   }
 }

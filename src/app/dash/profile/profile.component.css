@@ -240,13 +240,6 @@
   padding: 0 20px;
   margin-bottom: 17px;
 }
-
-.btn {
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  line-height: 18px;
-}
 .desc-title {
   color: #427fed;
 }
@@ -259,3 +252,14 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.modal.show {
+  display: block;
+}
+.fa {
+  cursor: pointer;
+}
+.form-control.ng-touched.ng-invalid {
+  border: 2px solid red;
+}
+
