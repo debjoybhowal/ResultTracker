@@ -10,8 +10,8 @@ export class ProfileService {
   url2 = 'https://atdebjoy.com/others/api/perform/term_wise_subjects.php';
   url3= 'https://atdebjoy.com/others/api/perform/get_exam.php';
   urlSubjects="https://atdebjoy.com/others/api/perform/get_subjects.php"  
-  baseUrl="https://atdebjoy.com/others/api/perform/update_exam.php";
-
+  addExamUrl="https://atdebjoy.com/others/api/perform/update_exam.php";
+   deleteExamUrl="https://atdebjoy.com/others/api/perform/del_exam.php";
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
     return this.http.get(this.url + `?profile&stud_id=${user_id}&pass=${pwd}`);
@@ -32,6 +32,9 @@ export class ProfileService {
 
   
   addExamStruct(obj){
-    return this.http.post(this.baseUrl,JSON.stringify(obj));
+    return this.http.post(this.addExamUrl,JSON.stringify(obj));
+  }
+  deleteExamStruct(obj){
+    return this.http.post(this.deleteExamUrl,JSON.stringify(obj));
   }
 }

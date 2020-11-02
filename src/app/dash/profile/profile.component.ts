@@ -54,6 +54,7 @@ export class ProfileComponent implements OnInit {
 
   form: FormGroup;
   showExamModal: boolean = false;
+  showDeleteExamModal: boolean = false;
   subjectListAny;
 
   showSubjectAddModal:boolean=false;
@@ -105,7 +106,7 @@ export class ProfileComponent implements OnInit {
   }
   chartData() {
     let posts;
-    console.log(this.PieData);
+    console.log("Pie"+this.PieData.response);
     posts = this.PieData.response;
     let exam_name = [];
     let full_marks = [];
@@ -231,6 +232,39 @@ export class ProfileComponent implements OnInit {
   openExamAddModal() {
     this.showExamModal = true;
   }
+  deleteExamForm: FormGroup = new FormGroup({
+    exam_id: new FormControl('',Validators.required),
+  });
+  openExamDeleteModal() {
+    this.showDeleteExamModal = true;
+    
+    this.deleteExamForm.markAsUntouched();
+  }
+  changeWebsite(e) {
+    console.log(e.target.value);
+  }
+  onDeleteExam(){
+    console.log(this.deleteExamForm.controls.exam_id.value);
+    if (localStorage.getItem('user_id')) {
+      this.user_id = localStorage.getItem('user_id');
+      this.pwd = localStorage.getItem('pwd');
+      this.showDeleteExamModal = false;
+      this.examobj = {
+        ass_id: this.deleteExamForm.controls.exam_id.value,
+        stud_id: this.user_id,
+        pass: this.pwd,
+      };
+      // console.log(JSON.stringify(this.examobj));
+      this.profileService
+        .deleteExamStruct(this.examobj)
+        .subscribe((response: any) => {
+          this.examData = response.response;
+          this.loadPieChartData();
+          console.log(this.examData);
+        });
+    }
+  }
+  
 
   /*Subject related*/ 
   addSubjectForm: FormGroup = new FormGroup({
@@ -246,7 +280,9 @@ export class ProfileComponent implements OnInit {
         this.subjectListAny = response.response;
       });
   }
-
+  changeTermId(e) {
+    console.log(e.target.value);
+  }
   openSubjectModal() {
     this.addSubjectForm.markAsUntouched();
     this.addSubjectForm.get("sub_name").reset();  
