@@ -55,6 +55,7 @@ export class ProfileComponent implements OnInit {
   form: FormGroup;
   showExamModal: boolean = false;
   showDeleteExamModal: boolean = false;
+  showEditExamModal: boolean = false;
   subjectListAny;
 
   showSubjectAddModal:boolean=false;
@@ -214,6 +215,12 @@ export class ProfileComponent implements OnInit {
       this.loadPieChartData();
       this.loadSubjectListAny();
     }
+
+    this.EditExamForm.get('exam_id').valueChanges.subscribe(val => {
+      //compare value and set other control value
+      let exam_name=this.PieData.response.find((res)=>res.ass_id==val).exam_name
+      this.EditExamForm.get("new_exam_name").setValue(exam_name);
+    });
   }
 
   
@@ -232,6 +239,8 @@ export class ProfileComponent implements OnInit {
   openExamAddModal() {
     this.showExamModal = true;
   }
+
+  //Delete Exam Structure
   deleteExamForm: FormGroup = new FormGroup({
     exam_id: new FormControl('',Validators.required),
   });
@@ -240,9 +249,7 @@ export class ProfileComponent implements OnInit {
     
     this.deleteExamForm.markAsUntouched();
   }
-  changeWebsite(e) {
-    console.log(e.target.value);
-  }
+
   onDeleteExam(){
     console.log(this.deleteExamForm.controls.exam_id.value);
     if (localStorage.getItem('user_id')) {
@@ -264,8 +271,40 @@ export class ProfileComponent implements OnInit {
         });
     }
   }
-  
+  //Update Exam Modal
+  openExamEditModal() {
+    this.showEditExamModal = true;
+    
+    this.EditExamForm.markAsUntouched();
+  }
+  EditExamForm: FormGroup = new FormGroup({
+    exam_id: new FormControl('',Validators.required),
+    new_exam_name:new FormControl('',Validators.required)
+  });
 
+
+  onUpdateExam(){
+   // console.log(this.EditExamForm.controls.exam_id.value+" "+this.EditExamForm.controls.new_exam_name.value);
+   if (localStorage.getItem('user_id')) {
+    this.user_id = localStorage.getItem('user_id');
+    this.pwd = localStorage.getItem('pwd');
+    this.showEditExamModal = false;
+    this.examobj = {
+      ass_id: this.EditExamForm.controls.exam_id.value,
+      exam_name: this.EditExamForm.controls.new_exam_name.value,
+      stud_id: this.user_id,
+      pass: this.pwd,
+    };
+    // console.log(JSON.stringify(this.examobj));
+    this.profileService
+      .addExamStruct(this.examobj)
+      .subscribe((response: any) => {
+        this.examData = response.response;
+        this.loadPieChartData();
+        console.log(this.examData);
+      });
+  }
+  }
   /*Subject related*/ 
   addSubjectForm: FormGroup = new FormGroup({
     sub_name: new FormControl('', Validators.required),
