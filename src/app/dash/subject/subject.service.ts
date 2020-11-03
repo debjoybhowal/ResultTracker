@@ -45,7 +45,7 @@ export class SubjectService {​
     );
   }​
   getTermList(user_id: string, pwd: string){​
-    return this.http.get(this.urlTerm + `?stud_id=${​user_id}​&pass=${​pwd}​`);
+    return this.http.get(this.urlTerm +`?stud_id=${user_id}&pass=${pwd}`);
   }​
 }​
     
