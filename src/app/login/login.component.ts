@@ -48,7 +48,9 @@ export class LoginComponent implements OnInit {
   showLoading:boolean=false;
 
   showMyContainer: boolean = false;
-
+  
+  registerobj;
+  registerData
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
@@ -188,7 +190,28 @@ export class LoginComponent implements OnInit {
       },
     };
   }
+onRegister(){
+console.log(this.form.controls.username.value);
+console.log(this.form.controls.studentname.value);
+console.log(this.form.controls.primaryEmail.value);
+console.log(this.form.controls.pwd.value);
 
+  this.registerobj = {
+    username: this.form.controls.username.value,
+    name: this.form.controls.studentname.value,
+    email: this.form.controls.primaryEmail.value,
+    pwd: this.form.controls.pwd.value
+  };
+  console.log(JSON.stringify(this.registerobj));
+  this.loginService
+    .register(this.registerobj)
+    .subscribe((response: any) => {
+      this.registerData = response;
+      console.log(this.registerData);
+      this.showMyContainer=false;
+    });
+
+}
   get f() {
     return this.form.controls;
   }

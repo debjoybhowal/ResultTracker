@@ -12,6 +12,9 @@ export class LoginService {
   login(body){
     return this.http.post(this.baseUrl+"login.php", JSON.stringify(body));
   }
+  register(body){
+    return this.http.post(this.baseUrl+"register.php", JSON.stringify(body));
+  }
 
 
 }
