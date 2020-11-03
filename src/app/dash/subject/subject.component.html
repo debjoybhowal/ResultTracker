@@ -87,6 +87,8 @@
               <tr>
                 <th scope="col" class="text"><span>Subject</span></th>
                 <th scope="col" class="text"><span>Term</span></th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -102,11 +104,40 @@
                   <td class="text">
                     <span>{{ val.term_name }}</span>
                   </td>
+                  <td>
+                    <span
+                      ><button
+                        type="button"
+                        class="btn btn-danger"
+                        data-dismiss="modal"
+                        (click)="
+                          opendelSubjectModal(val.sub_id, val.subject_name)
+                        "
+                      >
+                        <i class="fas fa-minus"></i></button
+                    ></span>
+                  </td>
+                  <td>
+                    <span
+                      ><button
+                        type="button"
+                        class="btn btn-warning"
+                        (click)="
+                          openEditSubjectModal(
+                            val.sub_id,
+                            val.subject_name,
+                            val.term_name
+                          )
+                        "
+                      >
+                        Edit
+                      </button></span
+                    >
+                  </td>
                 </ng-container>
               </tr>
             </tbody>
           </table>
-
           <p
             class="mt-4 lead"
             *ngIf="subjectListAny && subjectListAny.length <= 0"
@@ -163,12 +194,47 @@
     </div>
   </div>
 </div>
-<!--</apx-chart> [legend]="chartOptions.legend"
-      [tooltip]="chartOptions.tooltip"
-      [stroke]="chartOptions.stroke"
-      -->
-
-<!---Add subject Modal-->
+<div
+  id="mymodal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: deleteSubjectAddModal }"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="m-0">Are you sure?</h5>
+        <button
+          type="button"
+          class="close btn btn-danger"
+          data-dismiss="modal"
+          (click)="deleteSubjectAddModal = false"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          {{ "This action will delete all the marks related to the subject  "
+          }}{{ this.current_sub }}
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="ondel()">
+          Delete
+        </button>
+        <button
+          type="button"
+          class=" btn btn-danger"
+          data-dismiss="modal"
+          (click)="deleteSubjectAddModal = false"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <div
   id="myModal"
   class="modal fade"
@@ -230,7 +296,8 @@
                   class="form-control"
                   formControlName="term_id"
                   (change)="changeTermId($event)"
-                ><option value="" selected>Select</option>
+                >
+                  <option value="" selected>Select</option>
                   <option [value]="term.term_id" *ngFor="let term of termList">
                     {{ term.term_name }}
                   </option>
@@ -257,7 +324,8 @@
           <button
             type="submit"
             class="btn btn-primary"
-            *ngIf="termList && termList.length > 0"[disabled]="!addSubjectForm.valid"
+            *ngIf="termList && termList.length > 0"
+            [disabled]="!addSubjectForm.valid"
           >
             Add
           </button>
@@ -268,6 +336,73 @@
             (click)="showSubjectAddModal = false"
           >
             Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--for edit-->
+<div
+  id="myodal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showSubjectEditModal }"
+>
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form [formGroup]="editSubjectForm" (ngSubmit)="onEdit()">
+        <div class="modal-header">
+          <h5 class="m-0">Edit a subject</h5>
+          <button
+            type="button"
+            class="close btn btn-danger"
+            data-dismiss="modal"
+            (click)="showSubjectEditModal = false"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="form-group">
+              <label for="exampleFormControlInput1"> New Subject Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="sub_name"
+              />
+              <small
+                *ngIf="
+                  editSubjectForm.get('sub_name').touched &&
+                  editSubjectForm.get('sub_name').invalid
+                "
+                class="form-text text-danger font-weight-bold"
+              >
+                <div *ngIf="editSubjectForm.get('sub_name').errors.required">
+                  Please enter subject
+                </div>
+              </small>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!editSubjectForm.valid"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+            (click)="showSubjectEditModal = false"
+          >
+            Cancel
           </button>
         </div>
       </form>
