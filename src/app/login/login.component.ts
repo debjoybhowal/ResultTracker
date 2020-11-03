@@ -45,12 +45,12 @@ export type ChartOptions = {
 export class LoginComponent implements OnInit {
   form;
   loginForm: FormGroup;
-  showLoading:boolean=false;
+  showLoading: boolean = false;
 
   showMyContainer: boolean = false;
-  
+
   registerobj;
-  registerData
+  registerData;
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
@@ -141,7 +141,7 @@ export class LoginComponent implements OnInit {
           color: undefined,
           fontFamily: 'Arial, sans-serif',
           fontWeight: 600,
-      },
+        },
       },
       grid: {
         borderColor: 'gold',
@@ -163,7 +163,7 @@ export class LoginComponent implements OnInit {
             fontFamily: 'Arial, sans-serif',
             fontWeight: 300,
             cssClass: 'apexcharts-yaxis-title',
-        },
+          },
         },
       },
       yaxis: {
@@ -175,11 +175,10 @@ export class LoginComponent implements OnInit {
             fontFamily: 'Arial, sans-serif',
             fontWeight: 100,
             cssClass: 'apexcharts-yaxis-title',
-        },
+          },
         },
         min: 5,
         max: 40,
-        
       },
       legend: {
         position: 'top',
@@ -190,28 +189,32 @@ export class LoginComponent implements OnInit {
       },
     };
   }
-onRegister(){
-console.log(this.form.controls.username.value);
-console.log(this.form.controls.studentname.value);
-console.log(this.form.controls.primaryEmail.value);
-console.log(this.form.controls.pwd.value);
+  onRegister() {
+    console.log(this.form.controls.username.value);
+    console.log(this.form.controls.studentname.value);
+    console.log(this.form.controls.primaryEmail.value);
+    console.log(this.form.controls.pwd.value);
 
-  this.registerobj = {
-    username: this.form.controls.username.value,
-    name: this.form.controls.studentname.value,
-    email: this.form.controls.primaryEmail.value,
-    pwd: this.form.controls.pwd.value
-  };
-  console.log(JSON.stringify(this.registerobj));
-  this.loginService
-    .register(this.registerobj)
-    .subscribe((response: any) => {
+    this.registerobj = {
+      username: this.form.controls.username.value,
+      name: this.form.controls.studentname.value,
+      email: this.form.controls.primaryEmail.value,
+      pwd: this.form.controls.pwd.value,
+    };
+    console.log(JSON.stringify(this.registerobj));
+    this.loginService.register(this.registerobj).subscribe((response: any) => {
       this.registerData = response;
-      console.log(this.registerData);
-      this.showMyContainer=false;
+      console.log(this.registerData.code);
+      if (this.registerData.code == 202) {
+        alert('Successfully Registered');
+        this.showMyContainer = !this.showMyContainer;
+      } else if (this.registerData.code == 261) {
+        alert('Email ID exists');
+      } else if (this.registerData.code == 263) {
+        alert('Username exists');
+      }
     });
-
-}
+  }
   get f() {
     return this.form.controls;
   }
@@ -220,8 +223,8 @@ console.log(this.form.controls.pwd.value);
   }
   onLogin() {
     console.log(this.loginForm.value);
-    
-    this.showLoading=true;
+
+    this.showLoading = true;
     this.loginService.login(this.loginForm.value).subscribe((result: any) => {
       if (result.code == 202) {
         console.log('Successfully Logged In');
@@ -237,7 +240,7 @@ console.log(this.form.controls.pwd.value);
       } else {
         console.log('Something went wrong');
       }
-      this.showLoading=false;
+      this.showLoading = false;
     });
   }
 
