@@ -1,3 +1,4 @@
+import { NavComponent } from './../nav/nav.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
@@ -34,6 +35,9 @@ export class TermComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   termData;
+  termList;
+  showEditTermModal=false;
+  deleteTermModal = false;
   showTermModal = false;
   termMarks;
   constructor(
@@ -42,13 +46,15 @@ export class TermComponent implements OnInit {
     private router: Router
   ) {}
 
+  
+
   series: { name: string; data: number[] }[] = [];
 
   subjects: string[] = [];
-
   user_id: string;
   paramLoaded: boolean = false;
   pwd: string;
+  term_id: number;
   term_name: string = '';
   ngOnInit(): void {
     this.user_id = localStorage.getItem('user_id');
@@ -176,6 +182,54 @@ export class TermComponent implements OnInit {
     }, 100);
   }
 
+  editTermForm: FormGroup = new FormGroup({​
+    term_name: new FormControl('', Validators.required),
+  }​);
+
+  opendelTermModal(id){​
+    this.deleteTermModal=true;
+    this.term_id=id;
+  }
+
+  openEditTermModel(id,name){​
+    this. showEditTermModal=true;
+    this.term_id=id;
+    this.term_name=name;
+    this.editTermForm.get("term_name").setValue(this.term_name);
+    this.termService
+      .getTermList(this.user_id, this.pwd)
+      .subscribe((response: any) => {​
+        this.termList = response.response;
+      }​);
+}​
+
+  ondel() {​
+    this.deleteTermModal = false;
+    console.log(this.user_id);
+    console.log(this.pwd);
+    console.log(this.term_id);
+    this.termService.delterm(parseInt(this.user_id),this.pwd,this.term_id).subscribe((response:any)=>{​
+    this.loadTermData();
+    console.log(response);
+    }​);
+  }​
+
+  onEdit(){​
+    this.showEditTermModal=false;
+    this.termService.editterm(parseInt(this.user_id),this.pwd,this.term_id,this.editTermForm.value.term_name).subscribe((response:any)=>{​
+      this.loadTermData();
+      console.log(response);
+          }​);
+    this.loadTermData();
+  }​
+
+
+
+  
+
+
+  
+
   form = new FormGroup({
     term_name: new FormControl('', [Validators.required]),
   });
@@ -202,4 +256,6 @@ export class TermComponent implements OnInit {
   openTermModal() {
     this.showTermModal = true;
   }
+
+  
 }

@@ -1,17 +1,23 @@
-.container{
-    position: relative;
+.container {
+  position: relative;
 }
 
-
-tbody{
-    cursor: pointer;
-    
+tbody {
+  cursor: pointer;
 }
 
-table{
-    text-align: center;
+table {
+  text-align: center;
 }
 
-.modal.show{
-    display: block;
-} 
+.modal.show {
+  display: block;
+}
+.para {
+  font-size: 120%;
+  text-align: center;
+}
+.form-control.ng-touched.ng-invalid {
+    border: 2px solid red;
+  }
+  
