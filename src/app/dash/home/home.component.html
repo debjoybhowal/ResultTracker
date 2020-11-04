@@ -14,7 +14,7 @@
           <div class="spur-card-icon">
             <i class="fas fa-chart-bar"></i>
           </div>
-          <div class="spur-card-title">Overal Average Score Percentage</div>
+          <div class="spur-card-title">Overall Average Score Percentage</div>
         </div>
         <div class="card-body">
           <div class="spinner text-center" *ngIf="!allData">
@@ -26,7 +26,7 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div class="row align-items-center" *ngIf="allData">
+          <div class="row align-items-center" *ngIf="allData&&allData.average.response.value != null">
             <div class="col-xl-6">
               <div class="text-center">
                 <circle-progress
@@ -50,6 +50,15 @@
               </p>
             </div>
           </div>
+          <p
+            class="mt-4 lead"
+            *ngIf="
+              allData &&
+              allData.average.response.value == null
+            "
+          >
+            Please enter marks to see the average in the graph.
+          </p>
         </div>
       </div>
     </div>
@@ -71,7 +80,8 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <table class="table table-hover table-in-card" *ngIf="allData">
+          <table class="table table-hover table-in-card" *ngIf="allData &&
+          allData.top_three.response.length > 0">
             <thead>
               <tr>
                 <th scope="col" class="text rank-list"><span>#</span></th>
@@ -97,6 +107,15 @@
               </tr>
             </tbody>
           </table>
+          <p
+            class="mt-4 lead"
+            *ngIf="
+              allData &&
+              allData.top_three.response.length <= 0
+            "
+          >
+            Please enter marks of atleast three subjects to see the Top 3 Subjects.
+          </p>
         </div>
       </div>
     </div>
@@ -118,7 +137,8 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <table class="table table-hover table-in-card" *ngIf="allData">
+          <table class="table table-hover table-in-card" *ngIf="allData &&
+          allData.bottom_three.response.length > 0">
             <thead>
               <tr>
                 <th scope="col" class="text rank-list"><span>#</span></th>
@@ -144,6 +164,15 @@
               </tr>
             </tbody>
           </table>
+          <p
+            class="mt-4 lead"
+            *ngIf="
+              allData &&
+              allData.bottom_three.response.length <= 0
+            "
+          >
+            Please enter marks of atleast three subjects to see the Bottom 3 Subjects.
+          </p>
         </div>
       </div>
     </div>
@@ -166,7 +195,9 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div id="chart" *ngIf="chartOptions">
+          <div id="chart" *ngIf="chartOptions &&
+          allData &&
+          allData.all.response.length > 0">
             <apx-chart
               [series]="chartOptions.series"
               [chart]="chartOptions.chart"
@@ -176,6 +207,16 @@
               [dataLabels]="chartOptions.dataLabels"
             ></apx-chart>
           </div>
+          <p
+            class="mt-4 lead"
+            *ngIf="
+              chartOptions &&
+              allData &&
+              allData.all.response.length <= 0
+            "
+          >
+            Please enter marks in the selected subject to see the graph.
+          </p>
         </div>
       </div>
     </div>

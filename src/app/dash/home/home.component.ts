@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
         .subscribe((response: any) => {
           this.allData = response;
           this.loadChartData();
+          console.log(this.allData);
         });
     }
   }
