@@ -58,10 +58,20 @@
             <button class="btn text-white" (click)="openExamDeleteModal()">
               <i class="fas fa-minus"></i>
             </button>
+            
+            
           </div>
           
+          
         </div>
-        <div class="card-body">
+        <div
+            class="card-body"
+            *ngIf="subjectListAny && subjectListAny.length <= 0"
+          >
+            Please add your exam structure details
+        </div>
+        <div class="card-body"*ngIf="subjectListAny && subjectListAny.length > 0">
+          
           <div class="spinner text-center" *ngIf="!chartOptions1">
             <div
               class="spinner-grow text-secondary"
@@ -84,7 +94,6 @@
                   [responsive]="chartOptions1.responsive"
                 ></apx-chart>
               </div>
-
               <div id="col" *ngIf="chartOptions2">
                 <p>Full Marks For Each Exam</p>
                 <apx-chart
@@ -152,7 +161,6 @@
               </tr>
             </tbody>
           </table>
-
           <p
             class="mt-4 lead"
             *ngIf="subjectListAny && subjectListAny.length <= 0"
@@ -224,7 +232,13 @@
           <div class="spur-card-title">Subjects With Score Above Average</div>
         </div>
         <div class="card-body" *ngIf="subjectList">
-          <table class="table table-hover table-in-card">
+          <p
+          class="mt-4 lead"
+          *ngIf="subjectListAny && subjectListAny.length <= 0"
+        >
+          Please enter the subjects,score details to view subjects with above average
+        </p>
+          <table class="table table-hover table-in-card"*ngIf="subjectListAny && subjectListAny.length > 0">
             <thead>
               <tr>
                 <th scope="col" class="text"><span>Subject</span></th>
@@ -257,10 +271,16 @@
           <div class="spur-card-icon">
             <i class="fas fa-frown"></i>
           </div>
-          <div class="spur-card-title">Subjects With Score Below Average</div>
+          <div class="spur-card-title" >Subjects With Score Below Average</div>
         </div>
         <div class="card-body" *ngIf="subjectList">
-          <table class="table table-hover table-in-card">
+          <p
+            class="mt-4 lead"
+            *ngIf="subjectListAny && subjectListAny.length <= 0"
+          >
+          Please enter the subjects,score details to view subjects with below average
+          </p>
+          <table class="table table-hover table-in-card" *ngIf="subjectListAny && subjectListAny.length > 0">
             <thead>
               <tr>
                 <th scope="col" class="text"><span>Subject</span></th>
@@ -326,7 +346,6 @@
     </div>
   </div>
 </div>
-
 <!--EXAM ADD MODAL -->
 <div class="modal fade" [ngClass]="{ show: showExamModal }">
   <div class="modal-dialog modal-dialog-centered">
@@ -418,7 +437,6 @@
   </div>
 </div>
 
-
 <!--EXAM Delete MODAL -->
 <div class="modal fade" [ngClass]="{ show: showDeleteExamModal }">
   <div class="modal-dialog modal-dialog-centered">
@@ -496,7 +514,6 @@
     </div>
   </div>
 </div>
-
 <!--EXAM Update MODAL -->
 <div class="modal fade" [ngClass]="{ show: showEditExamModal }">
   <div class="modal-dialog modal-dialog-centered">
@@ -553,7 +570,6 @@
                 </small>
             
       </div>
-
       <div class="col-md-6">
         <div class="form-group">
           <label for="exampleFormControlInput1">New Exam Name</label>
@@ -603,7 +619,6 @@
     </div>
   </div>
 </div>
-
 <!---Add subject Modal-->
 <div
   id="myModal"
@@ -721,7 +736,6 @@
     </div>
   </div>
 </div>
-
 <!--Add Term Modal-->
 <div class="modal" id="myModal" [ngClass]="{ show: showAddTermModal }">
   <div class="modal-dialog">
@@ -757,7 +771,6 @@
               aria-describedby="emailHelp"
               placeholder="Enter Term"
             />
-
             <small
               *ngIf="term_name_add.touched && term_name_add.invalid"
               class="form-text text-danger font-weight-bold"
@@ -778,7 +791,6 @@
           </div>
         </form>
       </div>
-
       <!-- Modal footer 
       <div class="modal-footer">
         <button type="submit" class="btn btn-danger" (click)="showAddTermModal=false" data-dismiss="modal">Close</button>
