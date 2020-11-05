@@ -13,6 +13,7 @@ import {
   ApexYAxis,
 } from 'ng-apexcharts';
 import { TermService } from './term.service';
+import { ToastrService } from 'ngx-toastr';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -36,17 +37,16 @@ export class TermComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   termData;
   termList;
-  showEditTermModal=false;
+  showEditTermModal = false;
   deleteTermModal = false;
   showTermModal = false;
   termMarks;
   constructor(
+    private toastr: ToastrService,
     private termService: TermService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
-  
 
   series: { name: string; data: number[] }[] = [];
 
@@ -74,13 +74,21 @@ export class TermComponent implements OnInit {
     this.termService
       .getTermInfo(this.user_id, this.pwd)
       .subscribe((response: any) => {
-        if (!this.paramLoaded && response.response.length > 0) {
-          this.router.navigate(['dash', 'term', response.response[0].term_id]);
+        if (response.code == 202) {
+          if (!this.paramLoaded && response.response.length > 0) {
+            this.router.navigate([
+              'dash',
+              'term',
+              response.response[0].term_id,
+            ]);
+          } else {
+            this.chartOptions = {};
+            this.termMarks = [];
+          }
+          this.termData = response.response;
         } else {
-          this.chartOptions = {};
-          this.termMarks=[];
+          this.toastr.error('Something went wrong!');
         }
-        this.termData = response.response;
       });
   }
 
@@ -91,7 +99,9 @@ export class TermComponent implements OnInit {
     this.termService
       .getTermWiseSubject(this.user_id, this.pwd, term_id)
       .subscribe((data: any) => {
-        this.setupData(data);
+        console.log(data);
+        if (data.code == 202) this.setupData(data);
+        else this.toastr.error('Something went wrong!');
       });
   }
   setupData(data: any) {
@@ -182,54 +192,59 @@ export class TermComponent implements OnInit {
     }, 100);
   }
 
-  editTermForm: FormGroup = new FormGroup({​
+  editTermForm: FormGroup = new FormGroup({
     term_name: new FormControl('', Validators.required),
-  }​);
+  });
 
-  opendelTermModal(id){​
-    this.deleteTermModal=true;
-    this.term_id=id;
+  opendelTermModal(id) {
+    this.deleteTermModal = true;
+    this.term_id = id;
   }
 
-  openEditTermModel(id,name){​
-    this. showEditTermModal=true;
-    this.term_id=id;
-    this.term_name=name;
-    this.editTermForm.get("term_name").setValue(this.term_name);
+  openEditTermModel(id, name) {
+    this.showEditTermModal = true;
+    this.term_id = id;
+    this.term_name = name;
+    this.editTermForm.get('term_name').setValue(this.term_name);
     this.termService
       .getTermList(this.user_id, this.pwd)
-      .subscribe((response: any) => {​
-        this.termList = response.response;
-      }​);
-}​
-
-  ondel() {​
+      .subscribe((response: any) => {
+        if (response.code == 202) this.termList = response.response;
+        else this.toastr.error('Something went wrong!');
+      });
+  }
+  ondel() {
     this.deleteTermModal = false;
     console.log(this.user_id);
     console.log(this.pwd);
     console.log(this.term_id);
-    this.termService.delterm(parseInt(this.user_id),this.pwd,this.term_id).subscribe((response:any)=>{​
-    this.loadTermData();
-    console.log(response);
-    }​);
-  }​
-
-  onEdit(){​
-    this.showEditTermModal=false;
-    this.termService.editterm(parseInt(this.user_id),this.pwd,this.term_id,this.editTermForm.value.term_name).subscribe((response:any)=>{​
-      this.loadTermData();
-      console.log(response);
-          }​);
-    this.loadTermData();
-  }​
-
-
-
-  
-
-
-  
-
+    this.termService
+      .delterm(parseInt(this.user_id), this.pwd, this.term_id)
+      .subscribe((response: any) => {
+        if (response.code == 202) {
+          this.loadTermData();
+          this.toastr.warning('Term deleted successfully');
+        } else this.toastr.error('Something went wrong!');
+      });
+  }
+  onEdit() {
+    this.showEditTermModal = false;
+    this.termService
+      .editterm(
+        parseInt(this.user_id),
+        this.pwd,
+        this.term_id,
+        this.editTermForm.value.term_name
+      )
+      .subscribe((response: any) => {
+        if (response.code == 202) {
+          this.toastr.success('Term updated successfully');
+          this.loadTermData();
+        } else {
+          this.toastr.error('Something went wrong!');
+        }
+      });
+  }
   form = new FormGroup({
     term_name: new FormControl('', [Validators.required]),
   });
@@ -248,7 +263,11 @@ export class TermComponent implements OnInit {
         this.termService
           .addTerm(this.user_id, this.pwd, data)
           .subscribe((response: any) => {
-            this.loadTermData();
+            if ((response.code = 202)) {
+              this.toastr.success('Term added successfully');
+              this.loadTermData();
+            }else
+            this.toastr.error("Something went wrong!");
           });
       }
     }
@@ -256,6 +275,4 @@ export class TermComponent implements OnInit {
   openTermModal() {
     this.showTermModal = true;
   }
-
-  
 }
