@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="spinner text-center" *ngIf="!chartOptions1">
+          <div class="spinner text-center" *ngIf="!chartOptions1 && this.paramLoaded">
             <div
               class="spinner-grow text-secondary"
               style="width: 3rem; height: 3rem"
