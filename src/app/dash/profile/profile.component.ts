@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from './profile.service';
 import {
-  FormArray,
   FormBuilder,
   FormGroup,
   FormControl,
@@ -19,6 +18,7 @@ import {
 } from 'ng-apexcharts';
 import { SubjectService } from '../subject/subject.service';
 import { TermService } from '../term/term.service';
+import { ToastrService } from 'ngx-toastr';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -58,13 +58,14 @@ export class ProfileComponent implements OnInit {
   showEditExamModal: boolean = false;
   subjectListAny;
 
-  showSubjectAddModal:boolean=false;
+  showSubjectAddModal: boolean = false;
 
   constructor(
     private profileService: ProfileService,
     private subjectService: SubjectService,
-    private termService:TermService,
-    private fb: FormBuilder
+    private termService: TermService,
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) {
     this.form = this.fb.group({
       examname: new FormControl('', [Validators.required]),
@@ -99,15 +100,19 @@ export class ProfileComponent implements OnInit {
       this.profileService
         .addExamStruct(this.examobj)
         .subscribe((response: any) => {
-          this.examData = response.response;
-          this.loadPieChartData();
-          console.log(this.examData);
+          if (response.code == 202) {
+            this.examData = response.response;
+            this.toastr.success('Successfully Added', this.examobj.exam_name);
+            this.loadPieChartData();
+            //console.log(this.examData);
+          } else this.toastr.error('Something went wrong!');
         });
+      this.form.reset();
     }
   }
   chartData() {
     let posts;
-    console.log("Pie"+this.PieData.response);
+    console.log('Pie' + this.PieData.response);
     posts = this.PieData.response;
     let exam_name = [];
     let full_marks = [];
@@ -216,14 +221,14 @@ export class ProfileComponent implements OnInit {
       this.loadSubjectListAny();
     }
 
-    this.EditExamForm.get('exam_id').valueChanges.subscribe(val => {
+    this.EditExamForm.get('exam_id').valueChanges.subscribe((val) => {
       //compare value and set other control value
-      let exam_name=this.PieData.response.find((res)=>res.ass_id==val).exam_name
-      this.EditExamForm.get("new_exam_name").setValue(exam_name);
+      let exam_name = this.PieData.response.find((res) => res.ass_id == val)
+        .exam_name;
+      this.EditExamForm.get('new_exam_name').setValue(exam_name);
     });
   }
 
-  
   loadPieChartData() {
     this.PieData = undefined;
     this.chartOptions1 = undefined;
@@ -234,23 +239,32 @@ export class ProfileComponent implements OnInit {
       .subscribe((response: any) => {
         this.PieData = response;
         this.chartData();
+        console.log('p' + this.PieData.response);
       });
   }
   openExamAddModal() {
     this.showExamModal = true;
   }
+  closeExamAddModal() {
+    this.showExamModal = false;
+    this.form.reset();
+  }
 
   //Delete Exam Structure
   deleteExamForm: FormGroup = new FormGroup({
-    exam_id: new FormControl('',Validators.required),
+    exam_id: new FormControl('', Validators.required),
   });
   openExamDeleteModal() {
     this.showDeleteExamModal = true;
-    
+
     this.deleteExamForm.markAsUntouched();
   }
+  closeExamDeleteModal() {
+    this.showDeleteExamModal = false;
 
-  onDeleteExam(){
+    this.deleteExamForm.reset();
+  }
+  onDeleteExam() {
     console.log(this.deleteExamForm.controls.exam_id.value);
     if (localStorage.getItem('user_id')) {
       this.user_id = localStorage.getItem('user_id');
@@ -265,50 +279,66 @@ export class ProfileComponent implements OnInit {
       this.profileService
         .deleteExamStruct(this.examobj)
         .subscribe((response: any) => {
-          this.examData = response.response;
-          this.loadPieChartData();
-          console.log(this.examData);
+          if (response.code == 202) {
+            this.examData = response.response;
+            this.loadPieChartData();
+            this.toastr.success('Exam Succesfully Deleted');
+            console.log(this.examData);
+          } else this.toastr.error('Something went wrong!');
         });
     }
+    this.deleteExamForm.reset();
   }
   //Update Exam Modal
   openExamEditModal() {
     this.showEditExamModal = true;
-    
+
     this.EditExamForm.markAsUntouched();
   }
+  closeExamEditModal() {
+    this.showEditExamModal = false;
+
+    this.EditExamForm.reset();
+  }
   EditExamForm: FormGroup = new FormGroup({
-    exam_id: new FormControl('',Validators.required),
-    new_exam_name:new FormControl('',Validators.required)
+    exam_id: new FormControl('', Validators.required),
+    new_exam_name: new FormControl('', Validators.required),
   });
 
-
-  onUpdateExam(){
-   // console.log(this.EditExamForm.controls.exam_id.value+" "+this.EditExamForm.controls.new_exam_name.value);
-   if (localStorage.getItem('user_id')) {
-    this.user_id = localStorage.getItem('user_id');
-    this.pwd = localStorage.getItem('pwd');
-    this.showEditExamModal = false;
-    this.examobj = {
-      ass_id: this.EditExamForm.controls.exam_id.value,
-      exam_name: this.EditExamForm.controls.new_exam_name.value,
-      stud_id: this.user_id,
-      pass: this.pwd,
-    };
-    // console.log(JSON.stringify(this.examobj));
-    this.profileService
-      .addExamStruct(this.examobj)
-      .subscribe((response: any) => {
-        this.examData = response.response;
-        this.loadPieChartData();
-        console.log(this.examData);
-      });
+  onUpdateExam() {
+    // console.log(this.EditExamForm.controls.exam_id.value+" "+this.EditExamForm.controls.new_exam_name.value);
+    if (localStorage.getItem('user_id')) {
+      this.user_id = localStorage.getItem('user_id');
+      this.pwd = localStorage.getItem('pwd');
+      this.showEditExamModal = false;
+      this.examobj = {
+        ass_id: this.EditExamForm.controls.exam_id.value,
+        exam_name: this.EditExamForm.controls.new_exam_name.value,
+        stud_id: this.user_id,
+        pass: this.pwd,
+      };
+      // console.log(JSON.stringify(this.examobj));
+      this.profileService
+        .addExamStruct(this.examobj)
+        .subscribe((response: any) => {
+          if (response.code == 202) {
+            this.examData = response.response;
+            this.toastr.success(
+              'Exam Name Succesfully Changed to ' + this.examobj.exam_name
+            );
+            this.loadPieChartData();
+            console.log(this.examData);
+          } else {
+            this.toastr.error('Something went wrong!');
+          }
+        });
+    }
+    this.EditExamForm.reset();
   }
-  }
-  /*Subject related*/ 
+  /*Subject related*/
   addSubjectForm: FormGroup = new FormGroup({
     sub_name: new FormControl('', Validators.required),
-    term_id: new FormControl('',Validators.required),
+    term_id: new FormControl('', Validators.required),
   });
   termListDropDown;
   loadSubjectListAny() {
@@ -320,11 +350,11 @@ export class ProfileComponent implements OnInit {
       });
   }
   changeTermId(e) {
-    console.log(e.target.value);
+    //console.log(e.target.value);
   }
   openSubjectModal() {
     this.addSubjectForm.markAsUntouched();
-    this.addSubjectForm.get("sub_name").reset();  
+    this.addSubjectForm.get('sub_name').reset();
     this.termListDropDown = undefined;
     this.showSubjectAddModal = true;
     this.subjectService
@@ -342,7 +372,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
   /*Term Related*/
 
   showAddTermModal = false;
@@ -353,17 +382,17 @@ export class ProfileComponent implements OnInit {
   get term_name_add() {
     return this.termAddForm.get('term_name');
   }
-  loadTermData(){
-    this.termData=undefined;
+  loadTermData() {
+    this.termData = undefined;
     this.termService
-    .getTermInfo(this.user_id, this.pwd)
-    .subscribe((response: any) => {
-      this.termData = response;
-      console.log(this.termData)
-    });
+      .getTermInfo(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.termData = response;
+        console.log(this.termData);
+      });
   }
-  openTermAddModal(){
-    this.showAddTermModal=true;
+  openTermAddModal() {
+    this.showAddTermModal = true;
   }
   onAddTerm() {
     if (this.termAddForm.valid) {
@@ -376,7 +405,8 @@ export class ProfileComponent implements OnInit {
         this.termService
           .addTerm(this.user_id, this.pwd, this.termAddForm.value)
           .subscribe((response: any) => {
-            this.loadTermData()
+            if (response.code == 202) this.loadTermData();
+            else this.toastr.error('Something went wrong!');
           });
       }
     }

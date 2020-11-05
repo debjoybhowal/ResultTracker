@@ -66,11 +66,11 @@
         </div>
         <div
             class="card-body"
-            *ngIf="subjectListAny && subjectListAny.length <= 0"
+            *ngIf="PieData && PieData.response.length <= 0"
           >
             Please add your exam structure details
         </div>
-        <div class="card-body"*ngIf="subjectListAny && subjectListAny.length > 0">
+        <div class="card-body"*ngIf="PieData && PieData.response.length > 0">
           
           <div class="spinner text-center" *ngIf="!chartOptions1">
             <div
@@ -352,7 +352,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Exam Structure</h5>
-        <button type="button" class="close" (click)="showExamModal = false">
+        <button type="button" class="close" (click)="closeExamAddModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -427,7 +427,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          (click)="showExamModal = false"
+          (click)="closeExamAddModal()"
           data-dismiss="modal"
         >
           Close
@@ -443,7 +443,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Delete Exam</h5>
-        <button type="button" class="close" (click)="showDeleteExamModal = false">
+        <button type="button" class="close" (click)="closeExamDeleteModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -505,7 +505,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          (click)="showDeleteExamModal = false"
+          (click)="closeExamDeleteModal()"
           data-dismiss="modal"
         >
           Close
@@ -520,7 +520,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Update Exam Name</h5>
-        <button type="button" class="close" (click)="showEditExamModal = false">
+        <button type="button" class="close" (click)="closeExamEditModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -610,7 +610,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          (click)="showEditExamModal = false"
+          (click)="closeExamEditModal()"
           data-dismiss="modal"
         >
           Close

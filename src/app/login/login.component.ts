@@ -10,6 +10,7 @@ import { CustomValidators } from './custom.validators';
 import { ConfirmedValidator } from './confirmed.validator';
 import { LoginService } from '../login.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -57,7 +58,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.form = this.fb.group(
       {
@@ -204,16 +206,17 @@ export class LoginComponent implements OnInit {
     console.log(JSON.stringify(this.registerobj));
     this.loginService.register(this.registerobj).subscribe((response: any) => {
       this.registerData = response;
-      console.log(this.registerData.code);
+      //console.log(this.registerData.code);
       if (this.registerData.code == 202) {
-        alert('Successfully Registered');
+        this.toastr.success('Successfully Registered');
         this.showMyContainer = !this.showMyContainer;
       } else if (this.registerData.code == 261) {
-        alert('Email ID exists');
+        this.toastr.error('Email-ID Exists');
       } else if (this.registerData.code == 263) {
-        alert('Username exists');
+        this.toastr.error('User Name Exists');
       }
     });
+    this.form.reset();
   }
   get f() {
     return this.form.controls;
@@ -222,25 +225,26 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
   onLogin() {
-    console.log(this.loginForm.value);
+    console.log('PS' + this.loginForm.value);
 
     this.showLoading = true;
     this.loginService.login(this.loginForm.value).subscribe((result: any) => {
       if (result.code == 202) {
-        console.log('Successfully Logged In');
+        this.toastr.info('Welcome '+result.username + ' ! 😀');
         localStorage.setItem('username', result.username);
         localStorage.setItem('pwd', this.loginForm.get('pwd').value);
         localStorage.setItem('user_id', result.user);
 
         this.router.navigate(['dash', 'home']);
       } else if (result.code == -302) {
-        console.log('INVALID USERNAME AND PASSWORD');
+        this.toastr.error('Invalid User Name Or Password');
       } else if (result.code == -9999) {
-        console.log('Parameter error');
+        this.toastr.error('Parameter Error');
       } else {
-        console.log('Something went wrong');
+        this.toastr.error('Something Went Wrong');
       }
       this.showLoading = false;
+      this.loginForm.reset();
     });
   }
 
