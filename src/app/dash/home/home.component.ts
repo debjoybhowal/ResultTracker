@@ -8,6 +8,8 @@ import {
   ApexDataLabels,
   ApexTooltip,
   ApexStroke,
+  ApexYAxis,
+  ApexAnnotations,
 } from 'ng-apexcharts';
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -15,7 +17,9 @@ export type ChartOptions = {
   xaxis: ApexXAxis;
   stroke: ApexStroke;
   tooltip: ApexTooltip;
+  yaxis: ApexYAxis;
   dataLabels: ApexDataLabels;
+  annotations:ApexAnnotations;
 };
 
 @Component({
@@ -48,7 +52,6 @@ export class HomeComponent implements OnInit {
         .subscribe((response: any) => {
           this.allData = response;
           this.loadChartData();
-          console.log(this.allData);
         });
     }
   }
@@ -61,9 +64,10 @@ export class HomeComponent implements OnInit {
     let marks = [];
     let termsChart = [];
     posts = this.allData.all.response;
+    console.log(this.allData.all)
     posts.forEach((character) => {
-      termsChart.push(character.term_name);
-      marks.push(Number(character.marks));
+      termsChart.push(".    "+character.term_name+"    .");
+      marks.push(Number(character.percentage));
     });
 
     this.chartOptions = {
@@ -88,11 +92,62 @@ export class HomeComponent implements OnInit {
         categories: termsChart,
         labels:{
           hideOverlappingLabels:true,
-          showDuplicates:true,
-          trim:true,
+          showDuplicates:false,
+          rotateAlways:false,
+          rotate:0,
+          trim:false,
+          formatter: function(value, timestamp) {
+            return value;
+          }
+        },
+        tooltip:{
+          enabled:false
         }
-        
+        // ,
+        // tooltip: {
+        //   formatter: function(val) {
+        //     return val + "..."
+        //   }
+        // }
       },
+      yaxis:{
+        min:0,
+        max:100
+      },
+      annotations: {
+        yaxis: [
+          {
+            y: this.allData.average.response.value,
+            borderColor: '#ac3fc4',
+            borderWidth:3,
+            label: {
+              borderColor: '#ac3fc4',
+              style: {
+                color: '#fff',
+                background: '#ac3fc4'
+              },
+              text: 'Avg : '+Math.round((Number(this.allData.average.response.value) + Number.EPSILON) * 10) / 10
+            }
+          }
+        ]
+      },
+      
+        tooltip: {
+          enabled:true,
+          x:{
+            formatter:   function(val, opts) {
+              return posts[val-1].subject_name+" - "+posts[val-1].exam_name+" #"+posts[val-1].exam_no;
+            }
+          },
+          y:{
+            formatter:   function(val, opts) {
+              return val+"%";
+            }
+          },
+
+          
+        }
+      
     };
   }
 }
