@@ -12,6 +12,8 @@ export class ProfileService {
   urlSubjects="https://atdebjoy.com/others/api/perform/get_subjects.php"  
   addExamUrl="https://atdebjoy.com/others/api/perform/update_exam.php";
    deleteExamUrl="https://atdebjoy.com/others/api/perform/del_exam.php";
+
+   marksUrl = 'https://atdebjoy.com/others/api/perform/basic_details.php';
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
     return this.http.get(this.url + `?profile&stud_id=${user_id}&pass=${pwd}`);
@@ -36,5 +38,9 @@ export class ProfileService {
   }
   deleteExamStruct(obj){
     return this.http.post(this.deleteExamUrl,JSON.stringify(obj));
+  }
+
+  getAllMarksData(user_id:string, pwd:string){
+    return this.http.get(this.marksUrl+`?stud_id=${user_id}&pass=${pwd}`);
   }
 }

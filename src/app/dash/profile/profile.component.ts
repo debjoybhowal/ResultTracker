@@ -206,6 +206,14 @@ export class ProfileComponent implements OnInit {
         .getProfileInfo(this.user_id, this.pwd)
         .subscribe((response: any) => (this.profile = response.response));
 
+        this.profileService
+        .getAllMarksData(this.user_id, this.pwd)
+        .subscribe((response: any) => {
+          this.allData = response;
+          this.loadTermData();
+          console.log(this.allData);
+        });
+
       this.profileService
         .getAllBasicData(this.user_id, this.pwd)
         .subscribe((response: any) => (this.allData = response));
