@@ -121,6 +121,11 @@
             <i class="fas fa-clipboard"></i>
           </div>
           <div class="spur-card-title">Your Marks List</div>
+          <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openMarksModal()">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body card-overflow">
           <div class="spinner text-center" *ngIf="!allData">
@@ -912,8 +917,12 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" (click)="ondel()" 
-          [disabled]="!deleteUserForm.valid">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            (click)="ondel()"
+            [disabled]="!deleteUserForm.valid"
+          >
             Delete
           </button>
           <button
@@ -926,6 +935,187 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!--Add Marks-->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+  [ngClass]="{ show: showMarksModal }"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeMarksModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="spinner text-center" *ngIf="!MarksTerm">
+            <div
+              class="spinner-grow text-secondary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <form [formGroup]="getMarksForm">
+            <div class="row" *ngIf="MarksTerm">
+              <div class="col-md-6">
+                <div class="form-group" *ngIf="MarksTerm.length>0">
+                  <label for="exampleFormControlSelect1">Select Term</label>
+                  <select
+                    class="form-control"
+                    formControlName="term_id"
+                    (change)="ontermselect($event)"
+                  >
+                    <option value="" >Select Term</option>
+                    <option
+                      [value]="i"
+                      *ngFor="let term of MarksTerm; let i=index"
+                    >
+                      {{ term.term_name }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      getMarksForm.get('term_id').touched &&
+                      getMarksForm.get('term_id').invalid
+                    "
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="getMarksForm.get('term_id').errors.required">
+                      Please select a Term
+                    </div>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group" *ngIf="MarksSubject?.length>0">
+                  <label for="exampleFormControlSelect2">Select Subject</label>
+                  <select
+                    class="form-control"
+                    formControlName="sub_id"
+                    (change)="onsubselect($event)"
+                  >
+                    <option value="" >Select Subject</option>
+                    <option
+                      [value]="i"
+                      *ngFor="let sub of MarksSubject; let i=index;"
+                    >
+                      {{ sub.sub_name }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      getMarksForm.get('sub_id').touched &&
+                      getMarksForm.get('sub_id').invalid
+                    "
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="getMarksForm.get('sub_id').errors.required">
+                      Please select a Subject
+                    </div>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group" *ngIf="MarksExam?.length>0">
+                  <label for="exampleFormControlSelect3">Select Exam</label>
+                  <select
+                    class="form-control"
+                    formControlName="ass_id"
+                    (change)="onexamselect($event)"
+                  >
+                    <option value="" >Select Exam</option>
+                    <option
+                      value="{{ i }}"
+                      *ngFor="let exam of MarksExam; let i = index"
+                    >
+                      {{ exam.ass_name + " " + exam.ass_no }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      getMarksForm.get('ass_id').touched &&
+                      getMarksForm.get('ass_id').invalid
+                    "
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="getMarksForm.get('ass_id').errors.required">
+                      Please select a Exam
+                    </div>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group" *ngIf="this.FullMarksExam">
+                  <label for="exampleFormControlInput1">Enter Marks</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    max="{{this.FullMarksExam}}"
+                    formControlName="marks"
+                    placeholder="out of {{this.FullMarksExam}} of the Subject"
+                  />
+                  <small
+                    *ngIf="
+                      getMarksForm.get('marks').touched &&
+                      getMarksForm.get('marks').invalid
+                    "
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="getMarksForm.get('marks').errors.required">
+                      Please enter Exam Marks
+                    </div>
+                    <div *ngIf="getMarksForm.get('marks').errors.min">
+                      Marks should be greater than 0
+                    </div>
+                    <div *ngIf="getMarksForm.get('marks').errors.max">
+                      Marks should be less than {{this.FullMarksExam}} for selected exam
+                    </div>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="getMarksForm.invalid"
+          (click)="AddMarksOfSubject()"
+        >
+          Add Marks
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="closeMarksModal()"
+        >
+          Close
+        </button>
+      </div>
     </div>
   </div>
 </div>

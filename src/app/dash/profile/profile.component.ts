@@ -5,6 +5,7 @@ import {
   FormGroup,
   FormControl,
   Validators,
+  AbstractControl,
 } from '@angular/forms';
 import {
   ApexNonAxisChartSeries,
@@ -209,19 +210,6 @@ export class ProfileComponent implements OnInit {
         .getProfileInfo(this.user_id, this.pwd)
         .subscribe((response: any) => (this.profile = response.response));
 
-        this.profileService
-        .getAllMarksData(this.user_id, this.pwd)
-        .subscribe((response: any) => {
-          this.allData = response;
-          this.loadTermData();
-          console.log(this.allData);
-        });
-
-      this.profileService
-        .getAllBasicData(this.user_id, this.pwd)
-        .subscribe((response: any) => (this.allData = response));
-      this.loadTermData();
-
       this.profileService
         .getAllSubjectData(this.user_id, this.pwd)
         .subscribe((response: any) => {
@@ -231,6 +219,8 @@ export class ProfileComponent implements OnInit {
       this.loadPieChartData();
       this.loadSubjectListAny();
     }
+
+    this.marksLoadData();
 
     this.EditExamForm.get('exam_id').valueChanges.subscribe((val) => {
       //compare value and set other control value
@@ -423,36 +413,178 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
   ///Delete User
-  delAcc=false;
-  userpass="";
-  deleteUserForm=new FormGroup({
-    pass:new FormControl('', [
+  delAcc = false;
+  deleteUserForm = new FormGroup({
+    pass: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(16),
       CustomValidators.notSpace,
-    ])
-  })
-  delacc(){
-    this.delAcc=true;
-    console.log("pressed");
+    ]),
+  });
+  delacc() {
+    this.delAcc = true;
   }
-  ondel(){
-    this.delAcc=false;
+  ondel() {
+    this.delAcc = false;
     console.log(this.deleteUserForm.value);
     this.profileService
-      .deluser(this.user_id,this.deleteUserForm.get("pass").value)
+      .deluser(this.user_id, this.deleteUserForm.get('pass').value)
       .subscribe((response: any) => {
         if (response.code == 202) {
           this.loadSubjectListAny();
           this.toastr.warning('good bye');
           this.router.navigate(['../', 'login']);
-        }else if(response.code==351){
-          this.toastr.error("Incorrect Password")
+        } else if (response.code == 351) {
+          this.toastr.error('Incorrect Password');
         } else this.toastr.error('Something went wrong!');
       });
-      this.deleteUserForm.reset();
+    this.deleteUserForm.reset();
+  }
+
+  marksLoadData(){
+    this.profileService
+    .getAllMarksData(this.user_id, this.pwd)
+    .subscribe((response: any) => {
+      this.allData = response;
+      this.loadTermData();
+    });
+  }
+
+  
+  //Marks add check
+
+  marksobj;
+  marksresponse;
+  MarksTerm;
+  MarksSubject;
+  MarksExam;
+  showMarksModal: boolean = false;
+  FullMarksExam;
+
+  SelectedTermId;
+  SelectedSubId;
+  SelectedAssId;
+  SelectedAssNo;
+  getMarksForm: FormGroup = new FormGroup({
+    term_id: new FormControl('', Validators.required),
+    sub_id: new FormControl('', Validators.required),
+    ass_id: new FormControl('', Validators.required),
+    marks: new FormControl('', [
+      Validators.required,
+      Validators.min(0),
+      (control: AbstractControl) => Validators.max(this.FullMarksExam)(control),
+    ]),
+  });
+  AddMarksOfSubject() {
+    console.log(this.getMarksForm.controls);
+    if (localStorage.getItem('user_id')) {
+      this.user_id = localStorage.getItem('user_id');
+      this.pwd = localStorage.getItem('pwd');
+      this.showExamModal = false;
+      this.marksobj = {
+        marks: parseInt(this.getMarksForm.controls.marks.value),
+        term_id: this.SelectedTermId,
+        sub_id: this.SelectedSubId,
+        ass_id: this.SelectedAssId,
+        ass_no: this.SelectedAssNo,
+        stud_id: parseInt(this.user_id),
+        pass: this.pwd,
+      };
+      console.log(JSON.stringify(this.marksobj));
+      this.profileService
+        .Add_Marks(this.marksobj)
+        .subscribe((response: any) => {
+          if (response.code == 202) {
+            this.toastr.success('Marks added successfully');
+            this.marksLoadData();
+          } else {
+            this.toastr.error('Something went wrong!');
+          }
+          this.closeMarksModal();
+        });
+    }
+  }
+  ontermselect(e) {
+    /*const found = this.MarksData.find(
+      (element) => element.term_id == e.target.value
+    );*/
+    const found = this.MarksTerm[e.target.value];
+    console.log(found);
+    if (found == undefined) {
+      this.MarksSubject = this.SelectedSubId = undefined;
+    } else {
+      this.SelectedTermId = found.term_id;
+      this.MarksSubject = found.term_sub;
+    }
+    this.MarksExam = this.SelectedAssId = this.SelectedAssNo = this.FullMarksExam = undefined;
+  }
+  onsubselect(e) {
+    /*const found = this.MarksSubject.find(
+      (element) => element.sub_id == e.target.value
+    ); */
+    const found = this.MarksSubject[e.target.value];
+    console.log(found);
+    if (found == undefined) {
+      this.MarksExam = this.SelectedAssId = this.SelectedAssNo = this.FullMarksExam = undefined;
+    } else {
+      this.SelectedSubId = found.sub_id;
+      this.MarksExam = found.sub_ass;
+    }
+    /*
+    let mymap = new Map();
+
+    this.distinctMarksExam = this.MarksExam.filter((el) => {
+      const val = mymap.get(el.ass_id);
+      if (val) {
+        if (el.ass_no < val) {
+          mymap.delete(el.ass_id);
+          mymap.set(el.ass_id, el.ass_no);
+          return true;
+        } else {
+          return false;
+        }
+      }
+      mymap.set(el.ass_id, el.ass_no);
+      return true;
+    });
+    console.log(this.distinctMarksExam);*/
+    // this.distinctMarksExam=this.MarksExam.filter(item=> item.ass_no==1);
+    //  console.log(this.distinctMarksExam);
+  }
+  onexamselect(e) {
+    /*const found = this.MarksExam.filter(
+      (element) => element.ass_id == e.target.value
+    );
+    console.log(found);
+    this.MarksNo = found;*/
+    this.SelectedAssId = this.MarksExam[e.target.value].ass_id;
+
+    this.SelectedAssNo = this.MarksExam[e.target.value].ass_no;
+    this.FullMarksExam = this.MarksExam[e.target.value].full_marks;
+  }
+  openMarksModal() {
+    this.showMarksModal = true;
+    this.MarksTerm = undefined;
+    this.profileService
+      .markscheckup(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.MarksTerm = response.response;
+        console.log('Pritam' + response.code);
+      });
+  }
+  closeMarksModal() {
+    this.showMarksModal = false;
+    this.MarksTerm = this.SelectedTermId = undefined;
+    this.MarksSubject = this.SelectedSubId = undefined;
+    this.MarksExam = this.SelectedAssId = this.SelectedAssNo = this.FullMarksExam = undefined;
+    this.getMarksForm.markAsUntouched();
+    this.getMarksForm.reset({
+      term_id: '',
+      sub_id: '',
+      ass_id: '',
+      marks: '',
+    });
   }
 }

@@ -12,8 +12,11 @@ export class ProfileService {
   addExamUrl = 'https://atdebjoy.com/others/api/perform/update_exam.php';
   deleteExamUrl = 'https://atdebjoy.com/others/api/perform/del_exam.php';
   delUserUrl = 'https://atdebjoy.com/others/api/perform/del_user.php';
-
+  marks_enter_checkurl =
+    'https://atdebjoy.com/others/api/perform/marks_enter_check.php';
   marksUrl = 'https://atdebjoy.com/others/api/perform/basic_details.php';
+  addmarks = 'https://atdebjoy.com/others/api/perform/add_marks.php';
+
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
     return this.http.get(this.url + `?profile&stud_id=${user_id}&pass=${pwd}`);
@@ -47,5 +50,14 @@ export class ProfileService {
       this.delUserUrl,
       JSON.stringify({ stud_id: user_id, pass: pwd })
     );
+  }
+
+  markscheckup(user_id: string, pwd: string) {
+    return this.http.get(
+      this.marks_enter_checkurl + `?stud_id=${user_id}&pass=${pwd}`
+    );
+  }
+  Add_Marks(obj) {
+    return this.http.post(this.addmarks, JSON.stringify(obj));
   }
 }
