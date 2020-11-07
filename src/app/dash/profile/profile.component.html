@@ -37,6 +37,15 @@
           <div class="desc">
             <span class="desc-title">Email:</span>&nbsp;{{ profile.email }}
           </div>
+          <div class="desc">
+            <button
+              class="btn btn-danger"
+              (click)="delacc()"
+              style="margin: 5px; border-radius: 20px"
+            >
+              Delete Account
+            </button>
+          </div>
         </div>
         <div class="bottom"></div>
       </div>
@@ -847,6 +856,76 @@
       <div class="modal-footer">
         <button type="submit" class="btn btn-danger" (click)="showAddTermModal=false" data-dismiss="modal">Close</button>
       </div>-->
+    </div>
+  </div>
+</div>
+
+<!--Delete User Account Modal-->
+<div id="mymodal" class="modal fade" role="dialog" [ngClass]="{ show: delAcc }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="deleteUserForm">
+        <div class="modal-header">
+          <h5 class="m-0">This action will delete your account</h5>
+          <button
+            type="button"
+            class="close btn btn-danger"
+            data-dismiss="modal"
+            (click)="delAcc = false"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="user_pass">Please confirm your password</label>
+            <input
+              type="password"
+              placeholder="enter password"
+              name="pass"
+              id="user_pass"
+              formControlName="pass"
+              class="form-control"
+            />
+            <small
+              *ngIf="
+                deleteUserForm.get('pass').touched &&
+                deleteUserForm.get('pass').invalid
+              "
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="deleteUserForm.get('pass').errors.required">
+                Please Enter User Name
+              </div>
+
+              <div
+                *ngIf="
+                  deleteUserForm.get('pass').errors.minlength ||
+                  deleteUserForm.get('pass').errors.maxlength ||
+                  deleteUserForm.get('pass').errors.noSpecial ||
+                  deleteUserForm.get('pass').errors.notSpace
+                "
+              >
+                Accepts Alphanumeric & Min 5 to Max 13 Characters
+              </div>
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" (click)="ondel()" 
+          [disabled]="!deleteUserForm.valid">
+            Delete
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+            (click)="delAcc = false"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

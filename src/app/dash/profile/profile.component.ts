@@ -19,6 +19,8 @@ import {
 import { SubjectService } from '../subject/subject.service';
 import { TermService } from '../term/term.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { CustomValidators } from 'src/app/login/custom.validators';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -65,7 +67,8 @@ export class ProfileComponent implements OnInit {
     private subjectService: SubjectService,
     private termService: TermService,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.form = this.fb.group({
       examname: new FormControl('', [Validators.required]),
@@ -418,5 +421,38 @@ export class ProfileComponent implements OnInit {
           });
       }
     }
+  }
+
+
+  ///Delete User
+  delAcc=false;
+  userpass="";
+  deleteUserForm=new FormGroup({
+    pass:new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(16),
+      CustomValidators.notSpace,
+    ])
+  })
+  delacc(){
+    this.delAcc=true;
+    console.log("pressed");
+  }
+  ondel(){
+    this.delAcc=false;
+    console.log(this.deleteUserForm.value);
+    this.profileService
+      .deluser(this.user_id,this.deleteUserForm.get("pass").value)
+      .subscribe((response: any) => {
+        if (response.code == 202) {
+          this.loadSubjectListAny();
+          this.toastr.warning('good bye');
+          this.router.navigate(['../', 'login']);
+        }else if(response.code==351){
+          this.toastr.error("Incorrect Password")
+        } else this.toastr.error('Something went wrong!');
+      });
+      this.deleteUserForm.reset();
   }
 }
