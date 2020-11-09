@@ -453,9 +453,10 @@ export class ProfileComponent implements OnInit {
         if (response.code == 202) {
           this.loadSubjectListAny();
           this.toastr.warning('good bye');
-          this.router.navigate(['../', 'login']);
+          this.logOut();
         } else if (response.code == 351) {
-          this.toastr.error('Incorrect Password');
+          this.toastr.error('Incorrect Password');          
+          this.logOut();
         } else this.toastr.error('Something went wrong!');
       });
     this.deleteUserForm.reset();
@@ -652,5 +653,63 @@ export class ProfileComponent implements OnInit {
       this.selectedFilterTerm = -1;
       this.closeMarksFilterModal();
     }
+  }
+
+  /* CHANGE PASSWORD*/
+  changePasswordModal: boolean = false;
+  pwdChangeForm = new FormGroup(
+    {
+      old_pass: new FormControl('', [Validators.required]),
+      new_pass: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(16),
+        CustomValidators.notSpace,
+      ]),
+      cnf_pass: new FormControl('', [Validators.required]),
+    },
+    this.pwdMatchValidator
+  );
+  pwdMatchValidator(frm: FormGroup) {
+    return frm.get('new_pass').value === frm.get('cnf_pass').value
+      ? null
+      : { mismatch: true };
+  }
+  openChangePasswordModal() {
+    this.changePasswordModal = true;
+  }
+  closeChangePasswordModal() {
+    this.changePasswordModal = false;
+    this.pwdChangeForm.reset();
+  }
+  changePassword() {
+    this.profileService
+      .changepassword(
+        this.user_id,
+        this.pwdChangeForm.get('old_pass').value,
+        this.pwdChangeForm.get('new_pass').value
+      )
+      .subscribe((response: any) => {
+        if (response.code == 202) {
+          this.toastr.success(
+            'Please login again using the new password',
+            'Password Changed'
+          );
+          this.logOut();
+        }else if(response.code==351){
+          this.toastr.error("Incorrect password");
+          this.logOut();
+        }else
+        this.toastr.error("Something went wrong!");
+        
+        this.closeChangePasswordModal();
+      });
+  }
+
+  logOut(){
+    localStorage.removeItem("username");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("pwd");
+    this.router.navigate(['login']);
   }
 }

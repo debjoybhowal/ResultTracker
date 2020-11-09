@@ -16,6 +16,7 @@ export class ProfileService {
     'https://atdebjoy.com/others/api/perform/marks_enter_check.php';
   marksUrl = 'https://atdebjoy.com/others/api/perform/basic_details.php';
   addmarks = 'https://atdebjoy.com/others/api/perform/add_marks.php';
+  changepass = 'https://atdebjoy.com/others/api/perform/register.php';
 
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
@@ -59,5 +60,11 @@ export class ProfileService {
   }
   Add_Marks(obj) {
     return this.http.post(this.addmarks, JSON.stringify(obj));
+  }
+  changepassword(user_id: string, pwd: string, newpassword: string) {
+    return this.http.post(
+      this.changepass,
+      JSON.stringify({ stud_id: user_id, pass: pwd, newpass: newpassword })
+    );
   }
 }

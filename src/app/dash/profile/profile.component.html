@@ -39,11 +39,18 @@
           </div>
           <div class="desc">
             <button
-              class="btn btn-danger"
+              class="btn btn-danger mt-3 mx-1 mb-1"
               (click)="delacc()"
-              style="margin: 5px; border-radius: 20px"
+              style="border-radius: 20px"
             >
               Delete Account
+            </button>
+            <button
+              class="btn btn-warning mt-3 mx-1 mb-1"
+              (click)="openChangePasswordModal()"
+              style="border-radius: 20px"
+            >
+              Change Password
             </button>
           </div>
         </div>
@@ -165,13 +172,15 @@
                   <span>{{ val.subject_name }}</span>
                 </td>
                 <td class="text">
-                  <span>{{ val.exam_name + ((val.exam_no>1)?(" "+val.exam_no):"")}}</span>
+                  <span>{{
+                    val.exam_name + (val.exam_no > 1 ? " " + val.exam_no : "")
+                  }}</span>
                 </td>
                 <td class="text">
                   <span>{{ val.term_name }}</span>
                 </td>
                 <td class="text">
-                  <span>{{ val.marks }}</span>
+                  <span>{{ val.marks + " / " + val.full_marks }}</span>
                 </td>
               </tr>
             </tbody>
@@ -1167,7 +1176,10 @@
                       *ngFor="let exam of examFilterList; let i = index"
                       [value]="i"
                     >
-                      {{ exam.exam_name + ((exam.exam_no>1)?(" "+exam.exam_no):"") }}
+                      {{
+                        exam.exam_name +
+                          (exam.exam_no > 1 ? " " + exam.exam_no : "")
+                      }}
                     </option>
                   </select>
                 </div>
@@ -1235,6 +1247,141 @@
             (click)="closeMarksFilterModal()"
           >
             Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--change password modal-->
+<div
+  id="mmodal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: changePasswordModal }"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="pwdChangeForm">
+        <div class="modal-header">
+          <h5 class="m-0">This action will change password</h5>
+          <button
+            type="button"
+            class="close btn btn-danger"
+            data-dismiss="modal"
+            (click)="closeChangePasswordModal()"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="old_pass">Please confirm your old password</label>
+            <input
+              type="password"
+              id="old_pass"
+              class="form-control"
+              formControlName="old_pass"
+              placeholder="enter old password"
+            />
+            <small
+              *ngIf="
+                pwdChangeForm.get('old_pass').touched &&
+                pwdChangeForm.get('old_pass').invalid
+              "
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="pwdChangeForm.get('old_pass').errors?.required">
+                Please enter old password
+              </div>
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="new_pass">Please enter your new password</label>
+            <input
+              type="password"
+              id="new_pass"
+              class="form-control"
+              formControlName="new_pass"
+              placeholder="enter new password"
+            />
+            <small
+              *ngIf="
+                pwdChangeForm.get('new_pass').touched &&
+                pwdChangeForm.get('new_pass').invalid
+              "
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="pwdChangeForm.get('new_pass').errors?.required">
+                Please enter new password
+              </div>
+
+              <div
+                *ngIf="
+                  pwdChangeForm.get('new_pass').errors?.minlength ||
+                  pwdChangeForm.get('new_pass').errors?.maxlength
+                "
+              >
+                Accepts Min 8 to Max 16 Characters
+              </div>
+              <div *ngIf="pwdChangeForm.get('new_pass').errors?.notSpace">
+                Password Cannot Contain Space
+              </div>
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="cnf_pass">Please confirm your new password</label>
+            <input
+              type="password"
+              id="cnf_pass"
+              class="form-control"
+              [ngClass]="{
+                'ng-invalid':
+                  pwdChangeForm.get('cnf_pass').touched &&
+                  (pwdChangeForm.get('cnf_pass').invalid ||
+                    pwdChangeForm.errors?.mismatch)
+              }"
+              formControlName="cnf_pass"
+              placeholder="confirm new password"
+            />
+            <small
+              *ngIf="
+              pwdChangeForm.get('cnf_pass').touched &&
+              (pwdChangeForm.get('cnf_pass').invalid ||
+                pwdChangeForm.errors?.mismatch)
+              "
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf="pwdChangeForm.get('cnf_pass').errors?.required">
+                Please enter new password
+              </div>
+
+              <div
+                *ngIf="
+                pwdChangeForm.errors?.mismatch
+                "
+              >
+                Passwords didn't match.
+              </div>
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-warning"
+            [disabled]="pwdChangeForm.invalid"
+            (click)="changePassword()"
+          >
+            confirm
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+            (click)="closeChangePasswordModal()"
+          >
+            Cancel
           </button>
         </div>
       </form>
