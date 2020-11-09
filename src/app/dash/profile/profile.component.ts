@@ -471,6 +471,7 @@ export class ProfileComponent implements OnInit {
       .subscribe((response: any) => {
         this.allData = response;
         this.filteredMarksList = this.allData.all.response;
+        this.applyMarksFilter();
         this.loadTermData();
       });
   }
@@ -713,5 +714,71 @@ export class ProfileComponent implements OnInit {
     localStorage.removeItem("user_id");
     localStorage.removeItem("pwd");
     this.router.navigate(['login']);
+  }
+
+
+  //Delete marks
+
+  marks_up_del_id;
+  marks_value;
+  showEditMarksModal: boolean = false;
+  deleteMarksModal: boolean = false;
+  FullMarksEdit;
+  openMarksDeleteModal(id) {
+    this.deleteMarksModal = true;
+    this.marks_up_del_id = id;
+    console.log("id="+id);
+  }
+
+  onDeleteMarks() {
+    this.deleteMarksModal = false;
+    console.log(this.user_id);
+    console.log(this.pwd);
+    console.log(this.marks_up_del_id);
+    this.profileService
+      .delMarks(parseInt(this.user_id), this.pwd, this.marks_up_del_id)
+      .subscribe((response: any) => {
+        console.log(response);
+        if (response.code == 202) {
+          //this.loadTermData();
+          this.toastr.warning('Marks deleted successfully');
+          this.marksLoadData();
+        } else this.toastr.error('Something went wrong!');
+      });
+  }
+
+  //update marks
+
+  editMarksForm: FormGroup = new FormGroup({
+    marks: new FormControl('', [Validators.required,
+      Validators.min(0),
+      (control: AbstractControl) => Validators.max(this.FullMarksEdit)(control),]),
+  });
+
+  openMarksUpdateModal(id,name,full_marks){
+    this.showEditMarksModal = true;
+    this.marks_up_del_id = id;
+    this.marks_value = name;
+    this.FullMarksEdit = full_marks;
+    this.editMarksForm.get('marks').setValue(this.marks_value);
+  }
+
+  onEdit() {
+    this.showEditMarksModal = false;
+    this.profileService
+      .editMarks(
+        parseInt(this.user_id),
+        this.pwd,
+        parseInt(this.marks_up_del_id),
+        parseInt(this.editMarksForm.value.marks)
+      )
+      .subscribe((response: any) => {
+        if (response.code == 202) {
+          this.toastr.success('Marks updated successfully');          
+          this.marksLoadData();
+        } else {
+          this.toastr.error('Something went wrong!');
+        }
+      });
   }
 }

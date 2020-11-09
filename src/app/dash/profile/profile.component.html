@@ -148,7 +148,7 @@
             </div>
           </div>
           <table
-            class="table table-hover table-in-card"
+            class="table  table-in-card"
             *ngIf="filteredMarksList && filteredMarksList.length > 0"
           >
             <thead>
@@ -158,12 +158,12 @@
                 <th scope="col" class="text"><span>Exam</span></th>
                 <th scope="col" class="text"><span>Term</span></th>
                 <th scope="col" class="text"><span>Marks</span></th>
+                <th scope="col" class="text"><span></span></th>
               </tr>
             </thead>
             <tbody>
               <tr
                 *ngFor="let val of filteredMarksList; let i = index"
-                class="cursor-pointer"
               >
                 <th scope="row" class="text rank-list">
                   <span>{{ i + 1 }}</span>
@@ -181,6 +181,26 @@
                 </td>
                 <td class="text">
                   <span>{{ val.marks + " / " + val.full_marks }}</span>
+                </td>
+                <td class="text">
+                  <span>
+                    <button
+                      class="btn text-danger"
+                      data-dismiss="modal"
+                      (click)="openMarksDeleteModal(val.marks_id)"
+                    >
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </span>
+                  <span>
+                    <button
+                      class="btn text-warning"
+                      data-dismiss="modal"
+                      (click)="openMarksUpdateModal(val.marks_id,val.marks, val.full_marks)"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -452,7 +472,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="form">
-          <div class="form-group">            
+          <div class="form-group">
             <label for="exampleFormControlInput1">Enter Exam Name</label>
             <input
               type="text"
@@ -471,11 +491,11 @@
                 Exam Name Cannot Contain Special Characters
               </div>
               <div *ngIf="f.examname.errors.notNumber">
-                Exam Name cannot Contain Numbers 
+                Exam Name cannot Contain Numbers
               </div>
             </small>
           </div>
-          <div class="form-group">            
+          <div class="form-group">
             <label for="exampleFormControlInput2">Enter No.Of Exams</label>
             <input
               type="text"
@@ -495,7 +515,7 @@
               </div>
             </small>
           </div>
-          <div class="form-group">            
+          <div class="form-group">
             <label for="exampleFormControlInput3">Enter Full Marks</label>
             <input
               type="text"
@@ -1355,9 +1375,9 @@
             />
             <small
               *ngIf="
-              pwdChangeForm.get('cnf_pass').touched &&
-              (pwdChangeForm.get('cnf_pass').invalid ||
-                pwdChangeForm.errors?.mismatch)
+                pwdChangeForm.get('cnf_pass').touched &&
+                (pwdChangeForm.get('cnf_pass').invalid ||
+                  pwdChangeForm.errors?.mismatch)
               "
               class="form-text text-danger font-weight-bold"
             >
@@ -1365,11 +1385,7 @@
                 Please enter new password
               </div>
 
-              <div
-                *ngIf="
-                pwdChangeForm.errors?.mismatch
-                "
-              >
+              <div *ngIf="pwdChangeForm.errors?.mismatch">
                 Passwords didn't match.
               </div>
             </small>
@@ -1382,7 +1398,7 @@
             [disabled]="pwdChangeForm.invalid"
             (click)="changePassword()"
           >
-            confirm
+            Confirm
           </button>
           <button
             type="button"
@@ -1393,6 +1409,86 @@
             Cancel
           </button>
         </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Marks Delete modal-->
+<div id="myModal" class="modal fade" role="dialog" [ngClass]="{ show: deleteMarksModal }">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Marks</h4>
+        <button type="button" class="close" (click)="deleteMarksModal=false" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class= "para">Are you sure? This action will remove the marks of the selected Subject.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onDeleteMarks()" data-dismiss="modal">Yes! Delete</button>
+        <button type="button" class="btn btn-danger" (click)="deleteMarksModal=false" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--Marks Update Modal-->
+
+<div id="myModal" class="modal fade" role="dialog" [ngClass]="{ show: showEditMarksModal }">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form [formGroup]="editMarksForm"    (ngSubmit)="onEdit()">
+        <div class="modal-header">
+          <h5 class="m-0">Edit your marks</h5>
+          <button
+            type="button"
+            class="close btn btn-danger"
+            data-dismiss="modal"
+            (click)="showEditMarksModal = false"
+          >
+            &times;
+          </button>
+        </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="form-group" *ngIf="FullMarksEdit">
+            <label for="exampleFormControlInput1">Edit marks out of {{this.FullMarksEdit}}</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="marks"
+              max="FullMarksEdit"
+              placeholder="Enter marks here"
+            />
+            <small
+              *ngIf="
+                editMarksForm.get('marks').touched &&
+                editMarksForm.get('marks').invalid
+              "
+              class="form-text text-danger font-weight-bold"
+            >
+              <div *ngIf = "editMarksForm.get('marks').errors.required">Required Field</div>
+              <div *ngIf="editMarksForm.get('marks').errors.min">
+                Marks should be greater than 0
+              </div>
+              <div *ngIf="editMarksForm.get('marks').errors.max">
+                Marks should be less than {{ FullMarksEdit }} for
+                selected exam
+              </div>
+            </small>
+          </div>
+
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="!editMarksForm.valid" data-dismiss="modal">Save</button>
+        <button type="submit" class="btn btn-danger" (click)="showEditMarksModal=false" data-dismiss="modal">Close</button>
+      </div>
       </form>
     </div>
   </div>

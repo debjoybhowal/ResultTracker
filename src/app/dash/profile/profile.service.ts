@@ -17,6 +17,9 @@ export class ProfileService {
   marksUrl = 'https://atdebjoy.com/others/api/perform/basic_details.php';
   addmarks = 'https://atdebjoy.com/others/api/perform/add_marks.php';
   changepass = 'https://atdebjoy.com/others/api/perform/register.php';
+  delMarksUrl = 'https://atdebjoy.com/others/api/perform/del_marks.php';
+
+  updateMarksUrl = 'https://atdebjoy.com/others/api/perform/update_marks_value.php';
 
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
@@ -66,5 +69,16 @@ export class ProfileService {
       this.changepass,
       JSON.stringify({ stud_id: user_id, pass: pwd, newpass: newpassword })
     );
+  }
+
+  delMarks(user_id: number, pwd: string, marks_id:number){​
+    console.log(marks_id);
+    return this.http.post(this.delMarksUrl,
+      JSON.stringify({​ marks_id: marks_id, stud_id: user_id, pass: pwd }​)
+    );
+  }​
+
+  editMarks( user_id: number, pwd: string, id1:number,marks:number ){​
+    return this.http.post(this.updateMarksUrl,JSON.stringify({marks:marks, marks_id:id1, stud_id:user_id, pass:pwd,}​));
   }
 }
