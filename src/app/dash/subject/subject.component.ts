@@ -15,6 +15,7 @@ import {
 } from 'ng-apexcharts';
 import { ToastrService } from 'ngx-toastr';
 import { SubjectService } from './subject.service';
+import { CustomValidators } from 'src/app/login/custom.validators';
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -56,11 +57,17 @@ export class SubjectComponent implements OnInit {
     private toastr: ToastrService
   ) {}
   addSubjectForm: FormGroup = new FormGroup({
-    sub_name: new FormControl('', Validators.required),
+    sub_name: new FormControl('', [
+      Validators.required,
+      CustomValidators.noSpecial
+    ]),
     term_id: new FormControl('', Validators.required),
   });
   editSubjectForm: FormGroup = new FormGroup({
-    sub_name: new FormControl('', Validators.required),
+    sub_name: new FormControl('', [
+      Validators.required,
+      CustomValidators.noSpecial
+    ]),
   });
   ngOnInit() {
     if (localStorage.getItem('user_id')) {

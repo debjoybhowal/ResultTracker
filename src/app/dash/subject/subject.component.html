@@ -287,6 +287,9 @@
                     <div *ngIf="addSubjectForm.get('sub_name').errors.required">
                       Please enter subject
                     </div>
+                    <div *ngIf="addSubjectForm.get('sub_name').errors.noSpecial">
+                      Subject Name Cannot Contain Special Characters
+                    </div>
                   </small>
                 </div>
               </div>
@@ -381,7 +384,10 @@
                 class="form-text text-danger font-weight-bold"
               >
                 <div *ngIf="editSubjectForm.get('sub_name').errors.required">
-                  Please enter subject
+                  Please enter Subject Name
+                </div>
+                <div *ngIf="editSubjectForm.get('sub_name').errors.noSpecial">
+                  Subject Name Cannot Contain Special Characters
                 </div>
               </small>
             </div>

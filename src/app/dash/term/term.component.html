@@ -169,6 +169,9 @@
               <div *ngIf="term_name_add.errors?.required">
                 Term Name is required
               </div>
+              <div *ngIf="term_name_add.errors?.noSpecial">
+                Term Name Cannot Contain Special Characters
+              </div>
             </div>
           </div>
           <div class="forms-group text-center">
@@ -249,6 +252,9 @@
             >
               <div *ngIf="editTermForm.get('term_name').errors.required">
                 Please enter a term
+              </div>
+              <div *ngIf="editTermForm.get('term_name').errors.noSpecial">
+                Term Name Cannot Contain Special Characters
               </div>
             </small>
           </div>

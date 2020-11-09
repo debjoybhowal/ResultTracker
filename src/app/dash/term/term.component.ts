@@ -2,6 +2,7 @@ import { NavComponent } from './../nav/nav.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
+import { CustomValidators } from 'src/app/login/custom.validators';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -193,7 +194,10 @@ export class TermComponent implements OnInit {
   }
 
   editTermForm: FormGroup = new FormGroup({
-    term_name: new FormControl('', Validators.required),
+    term_name: new FormControl('', [
+      Validators.required,
+      CustomValidators.noSpecial
+    ]),
   });
 
   opendelTermModal(id) {
@@ -246,7 +250,10 @@ export class TermComponent implements OnInit {
       });
   }
   form = new FormGroup({
-    term_name: new FormControl('', [Validators.required]),
+    term_name: new FormControl('', [
+      Validators.required,
+      CustomValidators.noSpecial
+    ]),
   });
 
   get term_name_add() {

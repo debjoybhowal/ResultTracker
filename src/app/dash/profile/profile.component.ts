@@ -73,7 +73,9 @@ export class ProfileComponent implements OnInit {
     private router: Router
   ) {
     this.form = this.fb.group({
-      examname: new FormControl('', [Validators.required]),
+      examname: new FormControl('', [Validators.required,
+        CustomValidators.noSpecial,
+        CustomValidators.notNumber]),
       totalexam: new FormControl('', [
         Validators.required,
         Validators.pattern('[0-9]*'),

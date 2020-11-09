@@ -452,7 +452,8 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="form">
-          <div class="form-group">
+          <div class="form-group">            
+            <label for="exampleFormControlInput1">Enter Exam Name</label>
             <input
               type="text"
               formControlName="examname"
@@ -466,9 +467,16 @@
               <div *ngIf="f.examname.errors.required">
                 Please Enter Exam Name
               </div>
+              <div *ngIf="f.examname.errors.noSpecial">
+                Exam Name Cannot Contain Special Characters
+              </div>
+              <div *ngIf="f.examname.errors.notNumber">
+                Exam Name cannot Contain Numbers 
+              </div>
             </small>
           </div>
-          <div class="form-group">
+          <div class="form-group">            
+            <label for="exampleFormControlInput2">Enter No.Of Exams</label>
             <input
               type="text"
               formControlName="totalexam"
@@ -487,7 +495,8 @@
               </div>
             </small>
           </div>
-          <div class="form-group">
+          <div class="form-group">            
+            <label for="exampleFormControlInput3">Enter Full Marks</label>
             <input
               type="text"
               formControlName="exammarks"
