@@ -22,6 +22,7 @@ import { TermService } from '../term/term.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/login/custom.validators';
+import { CurrencyPipe } from '@angular/common';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -240,7 +241,24 @@ export class ProfileComponent implements OnInit {
       .subscribe((response: any) => {
         this.PieData = response;
         this.chartData();
-        console.log('p' + this.PieData.response);
+        this.examFilterList = this.PieData.response.reduce(
+          (acc: any[], cur: any) => {
+            return [
+              ...acc,
+              ...Array(Number(cur.exam_no))
+                .fill({
+                  exam_id: cur.ass_id,
+                  exam_name: cur.exam_name,
+                  exam_no: 1,
+                })
+                .map((item, index) => ({ ...item, exam_no: index + 1 })),
+            ];
+          },
+          []
+        );
+        response.response.forEach((element) => {});
+        console.log(this.examFilterList);
+        console.log(this.PieData.response);
       });
   }
   openExamAddModal() {
@@ -443,16 +461,17 @@ export class ProfileComponent implements OnInit {
     this.deleteUserForm.reset();
   }
 
-  marksLoadData(){
+  marksLoadData() {
+    this.filteredMarksList = undefined;
     this.profileService
-    .getAllMarksData(this.user_id, this.pwd)
-    .subscribe((response: any) => {
-      this.allData = response;
-      this.loadTermData();
-    });
+      .getAllMarksData(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.allData = response;
+        this.filteredMarksList = this.allData.all.response;
+        this.loadTermData();
+      });
   }
 
-  
   //Marks add check
 
   marksobj;
@@ -507,9 +526,6 @@ export class ProfileComponent implements OnInit {
     }
   }
   ontermselect(e) {
-    /*const found = this.MarksData.find(
-      (element) => element.term_id == e.target.value
-    );*/
     const found = this.MarksTerm[e.target.value];
     console.log(found);
     if (found == undefined) {
@@ -521,9 +537,6 @@ export class ProfileComponent implements OnInit {
     this.MarksExam = this.SelectedAssId = this.SelectedAssNo = this.FullMarksExam = undefined;
   }
   onsubselect(e) {
-    /*const found = this.MarksSubject.find(
-      (element) => element.sub_id == e.target.value
-    ); */
     const found = this.MarksSubject[e.target.value];
     console.log(found);
     if (found == undefined) {
@@ -532,33 +545,8 @@ export class ProfileComponent implements OnInit {
       this.SelectedSubId = found.sub_id;
       this.MarksExam = found.sub_ass;
     }
-    /*
-    let mymap = new Map();
-
-    this.distinctMarksExam = this.MarksExam.filter((el) => {
-      const val = mymap.get(el.ass_id);
-      if (val) {
-        if (el.ass_no < val) {
-          mymap.delete(el.ass_id);
-          mymap.set(el.ass_id, el.ass_no);
-          return true;
-        } else {
-          return false;
-        }
-      }
-      mymap.set(el.ass_id, el.ass_no);
-      return true;
-    });
-    console.log(this.distinctMarksExam);*/
-    // this.distinctMarksExam=this.MarksExam.filter(item=> item.ass_no==1);
-    //  console.log(this.distinctMarksExam);
   }
   onexamselect(e) {
-    /*const found = this.MarksExam.filter(
-      (element) => element.ass_id == e.target.value
-    );
-    console.log(found);
-    this.MarksNo = found;*/
     this.SelectedAssId = this.MarksExam[e.target.value].ass_id;
 
     this.SelectedAssNo = this.MarksExam[e.target.value].ass_no;
@@ -586,5 +574,83 @@ export class ProfileComponent implements OnInit {
       ass_id: '',
       marks: '',
     });
+  }
+
+  /*Marks Filter*/
+
+  examFilterList;
+  subjectFilterList;
+
+  selectedFilterExamID: Number = -1;
+  selectedFilterExamNo: Number = -1;
+  selectedFilterTerm: Number = -1;
+  selectedFilterSubject: Number = -1;
+
+  filteredMarksList;
+
+  marksFilterModal: boolean = false;
+  openMarksFilterModal() {
+    this.marksFilterModal = true;
+  }
+  closeMarksFilterModal() {
+    this.marksFilterModal = false;
+  }
+
+  onTermFilterSelect(e) {
+    this.subjectFilterList = undefined;
+    this.selectedFilterSubject = -1;
+    if (e.target.value > -1) {
+      this.subjectFilterList = this.termData.response[e.target.value].subjects;
+      this.selectedFilterTerm = this.termData.response[e.target.value].term_id;
+    } else {
+      this.selectedFilterTerm = e.target.value;
+    }
+  }
+  onExamFilterSelect(e) {
+    if (e.target.value > -1) {
+      this.selectedFilterExamID = this.examFilterList[e.target.value].exam_id;
+      this.selectedFilterExamNo = this.examFilterList[e.target.value].exam_no;
+    } else {
+      this.selectedFilterExamID = e.target.value;
+      this.selectedFilterExamNo = e.target.value;
+    }
+  }
+  onSubjectFilterSelect(e) {
+    if (e.target.value > -1) {
+      this.selectedFilterSubject = this.subjectFilterList[
+        e.target.value
+      ].sub_id;
+    } else {
+      this.selectedFilterSubject = e.target.value;
+    }
+  }
+  applyMarksFilter() {
+    this.resetMarksFilter();
+    this.filteredMarksList = this.filteredMarksList.filter((item) => {
+      return (
+        (this.selectedFilterExamID == -1 ||
+          this.selectedFilterExamID == item.exam_id) &&
+        (this.selectedFilterExamNo == -1 ||
+          this.selectedFilterExamNo == item.exam_no) &&
+        (this.selectedFilterSubject == -1 ||
+          this.selectedFilterSubject == item.sub_id) &&
+        (this.selectedFilterTerm == -1 ||
+          this.selectedFilterTerm == item.term_id)
+      );
+    });
+    this.closeMarksFilterModal();
+  }
+  resetMarksFilter(marksFilterForm?) {
+    this.filteredMarksList = this.allData.all.response;
+    if (marksFilterForm) {
+      marksFilterForm.reset();
+
+      this.subjectFilterList = undefined;
+      this.selectedFilterSubject = -1;
+      this.selectedFilterExamNo = -1;
+      this.selectedFilterExamID = -1;
+      this.selectedFilterTerm = -1;
+      this.closeMarksFilterModal();
+    }
   }
 }

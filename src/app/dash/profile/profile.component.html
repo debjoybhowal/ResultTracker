@@ -122,13 +122,16 @@
           </div>
           <div class="spur-card-title">Your Marks List</div>
           <div class="spur-card-menu">
+            <button class="btn text-white" (click)="openMarksFilterModal()">
+              <i class="fas fa-filter"></i>
+            </button>
             <button class="btn text-white" (click)="openMarksModal()">
               <i class="fas fa-plus"></i>
             </button>
           </div>
         </div>
         <div class="card-body card-overflow">
-          <div class="spinner text-center" *ngIf="!allData">
+          <div class="spinner text-center" *ngIf="!filteredMarksList">
             <div
               class="spinner-grow"
               style="width: 3rem; height: 3rem"
@@ -139,7 +142,7 @@
           </div>
           <table
             class="table table-hover table-in-card"
-            *ngIf="allData && allData.all.response.length > 0"
+            *ngIf="filteredMarksList && filteredMarksList.length > 0"
           >
             <thead>
               <tr>
@@ -152,7 +155,7 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let val of allData.all.response; let i = index"
+                *ngFor="let val of filteredMarksList; let i = index"
                 class="cursor-pointer"
               >
                 <th scope="row" class="text rank-list">
@@ -162,7 +165,7 @@
                   <span>{{ val.subject_name }}</span>
                 </td>
                 <td class="text">
-                  <span>{{ val.exam_name }}</span>
+                  <span>{{ val.exam_name + ((val.exam_no>1)?(" "+val.exam_no):"")}}</span>
                 </td>
                 <td class="text">
                   <span>{{ val.term_name }}</span>
@@ -175,7 +178,7 @@
           </table>
           <p
             class="mt-4 lead"
-            *ngIf="allData && allData.all.response.length <= 0"
+            *ngIf="filteredMarksList && filteredMarksList.length <= 0"
           >
             Please enter some marks of the subjects to view this list.
           </p>
@@ -954,7 +957,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Marks</h5>
         <button
           type="button"
           class="close"
@@ -979,17 +982,17 @@
           <form [formGroup]="getMarksForm">
             <div class="row" *ngIf="MarksTerm">
               <div class="col-md-6">
-                <div class="form-group" *ngIf="MarksTerm.length>0">
+                <div class="form-group" *ngIf="MarksTerm.length > 0">
                   <label for="exampleFormControlSelect1">Select Term</label>
                   <select
                     class="form-control"
                     formControlName="term_id"
                     (change)="ontermselect($event)"
                   >
-                    <option value="" >Select Term</option>
+                    <option value="">Select Term</option>
                     <option
                       [value]="i"
-                      *ngFor="let term of MarksTerm; let i=index"
+                      *ngFor="let term of MarksTerm; let i = index"
                     >
                       {{ term.term_name }}
                     </option>
@@ -1008,17 +1011,17 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group" *ngIf="MarksSubject?.length>0">
+                <div class="form-group" *ngIf="MarksSubject?.length > 0">
                   <label for="exampleFormControlSelect2">Select Subject</label>
                   <select
                     class="form-control"
                     formControlName="sub_id"
                     (change)="onsubselect($event)"
                   >
-                    <option value="" >Select Subject</option>
+                    <option value="">Select Subject</option>
                     <option
                       [value]="i"
-                      *ngFor="let sub of MarksSubject; let i=index;"
+                      *ngFor="let sub of MarksSubject; let i = index"
                     >
                       {{ sub.sub_name }}
                     </option>
@@ -1037,14 +1040,14 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <div class="form-group" *ngIf="MarksExam?.length>0">
+                <div class="form-group" *ngIf="MarksExam?.length > 0">
                   <label for="exampleFormControlSelect3">Select Exam</label>
                   <select
                     class="form-control"
                     formControlName="ass_id"
                     (change)="onexamselect($event)"
                   >
-                    <option value="" >Select Exam</option>
+                    <option value="">Select Exam</option>
                     <option
                       value="{{ i }}"
                       *ngFor="let exam of MarksExam; let i = index"
@@ -1071,9 +1074,9 @@
                   <input
                     type="number"
                     class="form-control"
-                    max="{{this.FullMarksExam}}"
+                    max="{{ this.FullMarksExam }}"
                     formControlName="marks"
-                    placeholder="out of {{this.FullMarksExam}} of the Subject"
+                    placeholder="out of {{ this.FullMarksExam }} of the Subject"
                   />
                   <small
                     *ngIf="
@@ -1089,7 +1092,8 @@
                       Marks should be greater than 0
                     </div>
                     <div *ngIf="getMarksForm.get('marks').errors.max">
-                      Marks should be less than {{this.FullMarksExam}} for selected exam
+                      Marks should be less than {{ this.FullMarksExam }} for
+                      selected exam
                     </div>
                   </small>
                 </div>
@@ -1116,6 +1120,124 @@
           Close
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!--Marks Filter Modal-->
+
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+  [ngClass]="{ show: marksFilterModal }"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form #marksFilterForm>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Filter Marks</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeMarksFilterModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group" *ngIf="examFilterList">
+                  <label for="marks_filter_exam">Exam Name</label>
+                  <select
+                    name="marks_filter_exam"
+                    id="marks_filter_exam"
+                    class="form-control"
+                    (change)="onExamFilterSelect($event)"
+                  >
+                    <option [value]="-1">All</option>
+                    <option
+                      *ngFor="let exam of examFilterList; let i = index"
+                      [value]="i"
+                    >
+                      {{ exam.exam_name + ((exam.exam_no>1)?(" "+exam.exam_no):"") }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group" *ngIf="termData">
+                  <label for="marks_filter_term">Term Name</label>
+                  <select
+                    name="marks_filter_term"
+                    id="marks_filter_term"
+                    class="form-control"
+                    (change)="onTermFilterSelect($event)"
+                  >
+                    <option [value]="-1">All</option>
+                    <option
+                      *ngFor="let term of termData.response; let i = index"
+                      [value]="i"
+                    >
+                      {{ term.term_name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group" *ngIf="subjectFilterList">
+                  <label for="marks_filter_term">Subject Name</label>
+                  <select
+                    name="marks_filter_term"
+                    id="marks_filter_term"
+                    class="form-control"
+                    (change)="onSubjectFilterSelect($event)"
+                  >
+                    <option [value]="-1">All</option>
+                    <option
+                      *ngFor="let sub of subjectFilterList; let i = index"
+                      [value]="i"
+                    >
+                      {{ sub.sub_name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="applyMarksFilter()"
+          >
+            Apply Filter
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="resetMarksFilter(marksFilterForm)"
+          >
+            Reset Filter
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="closeMarksFilterModal()"
+          >
+            Close
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
