@@ -91,7 +91,7 @@
           </div>
           <div class="container">
             <div class="row">
-              <div class="col" *ngIf="chartOptions1">
+              <div class="col-md-6" *ngIf="chartOptions1">
                 <p>Total No. Of Exams For Each Subjects</p>
                 <apx-chart
                   [series]="chartOptions1.series"
@@ -102,7 +102,7 @@
                   [responsive]="chartOptions1.responsive"
                 ></apx-chart>
               </div>
-              <div class="col" *ngIf="chartOptions2">
+              <div class="col-md-6" *ngIf="chartOptions2">
                 <p>Full Marks For Each Exam</p>
                 <apx-chart
                   [series]="chartOptions2.series"

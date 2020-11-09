@@ -135,7 +135,7 @@ export class ProfileComponent implements OnInit {
     this.chartOptions1 = {
       series: exam_no,
       chart: {
-        width: 380,
+        width: 300,
         type: 'donut',
       },
       dataLabels: {
@@ -152,7 +152,7 @@ export class ProfileComponent implements OnInit {
       },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 768,
           options: {
             chart: {
               width: 200,
@@ -168,7 +168,7 @@ export class ProfileComponent implements OnInit {
     this.chartOptions2 = {
       series: full_marks,
       chart: {
-        width: 380,
+        width: 300,
         type: 'donut',
       },
       dataLabels: {
@@ -192,7 +192,7 @@ export class ProfileComponent implements OnInit {
       },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 768,
           options: {
             chart: {
               width: 200,
