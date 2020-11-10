@@ -1,175 +1,205 @@
-<div class="container-fluid background-image" [ngStyle]="{'background-image': 'url(./assets/images/background-pencil.jpg)'}">
+<div
+  class="container-fluid background-image"
+  [ngStyle]="{
+    'background-image': 'url(./assets/images/background-pencil.jpg)'
+  }"
+>
   <div class="container">
     <div class="row align-items-center full-height">
-      <div class="col-sm-6 mb-5" >
+      <div class="col-sm-6 mb-5">
         <div class="form-screen">
           <a href="index.html" class="spur-logo mb-3"
-            ><i class="fas fa-chart-line  text-primary"></i> <span>Result Tracker</span></a
+            ><i class="fas fa-chart-line text-primary"></i>
+            <span>Result Tracker</span></a
           >
 
           <div class="card account-dialog" *ngIf="showMyContainer">
             <div class="card-header bg-primary text-white position-relative">
               Please Register
-              <div class="spinner-border text-light spinner-border-sm position-absolute" role="status" style="top:18px; right:22px" *ngIf="showLoading">
+              <div
+                class="spinner-border text-light spinner-border-sm position-absolute"
+                role="status"
+                style="top: 18px; right: 22px"
+                *ngIf="showLoading"
+              >
                 <span class="sr-only">Loading...</span>
               </div>
             </div>
             <div class="card-body">
               <form [formGroup]="form">
-                <div class="form-group">
-                  <input
-                    formControlName="username"
-                    type="name"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Enter User Name"
-                  />
-                  <small
-                    *ngIf="f.username.touched && f.username.invalid"
-                    class="form-text text-danger font-weight-bold"
-                  >
-                    <div *ngIf="f.username.errors.required">
-                      Please Enter User Name
+                <div class="container-fluid">
+                  <div class="row no-gutters">
+                    <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label for="username_register">Enter username</label>
+                        <input
+                          formControlName="username"
+                          type="name"
+                          class="form-control"
+                          id="username_register"
+                          placeholder="eg. Alice"
+                        />
+                        <small
+                          *ngIf="f.username.touched && f.username.invalid"
+                          class="form-text text-danger font-weight-bold"
+                        >
+                          <div *ngIf="f.username.errors.required">
+                            Please Enter User Name
+                          </div>
+
+                          <div
+                            *ngIf="
+                              f.username.errors.minlength ||
+                              f.username.errors.maxlength ||
+                              f.username.errors.noSpecial ||
+                              f.username.errors.notSpace
+                            "
+                          >
+                            Accepts Alphanumeric & Min 5 to Max 13 Characters
+                          </div>
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                      <div class="form-group">
+                        <label for="name_register">Enter name</label>
+                        <input
+                          formControlName="studentname"
+                          type="name"
+                          class="form-control"
+                          id="name_register"
+                          placeholder="eg. Alice Chase"
+                        />
+                        <small
+                          *ngIf="f.studentname.touched && f.studentname.invalid"
+                          class="form-text text-danger font-weight-bold"
+                        >
+                          <div *ngIf="f.studentname.errors.required">
+                            Please Enter Student Name
+                          </div>
+
+                          <div
+                            *ngIf="
+                              f.studentname.errors.minlength ||
+                              f.studentname.errors.maxlength ||
+                              f.studentname.noSpecial ||
+                              f.studentname.notNumber
+                            "
+                          >
+                            Accepts Alphabets & Min 5 to Max 30 Characters
+                          </div>
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="register_email">Enter email</label>
+                        <input
+                          formControlName="primaryEmail"
+                          type="email"
+                          class="form-control"
+                          id="register_email"
+                          aria-describedby="emailHelp"
+                          placeholder="eg. someone@somewhere.com"
+                        />
+                        <small
+                          *ngIf="
+                            f.primaryEmail.touched && f.primaryEmail.invalid
+                          "
+                          class="form-text text-danger font-weight-bold"
+                        >
+                          <div *ngIf="f.primaryEmail.errors.required">
+                            Please Enter Email
+                          </div>
+                          <div *ngIf="f.primaryEmail.errors.email">
+                            Please Enter The Correct Email
+                          </div>
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label for="register_pass">Enter password</label>
+                        <input
+                          formControlName="pwd"
+                          type="password"
+                          class="form-control"
+                          id="register_pass"
+                          placeholder="Enter Password"
+                        />
+                        <small
+                          *ngIf="f.pwd.touched && f.pwd.invalid"
+                          class="form-text text-danger font-weight-bold"
+                        >
+                          <div *ngIf="f.pwd.errors.required">
+                            Please Enter Password
+                          </div>
+
+                          <div
+                            *ngIf="
+                              f.pwd.errors.minlength || f.pwd.errors.maxlength
+                            "
+                          >
+                            Accepts Min 8 to Max 16 Characters
+                          </div>
+                          <div *ngIf="f.pwd.errors.notSpace">
+                            Password Cannot Contain Space
+                          </div>
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                      <div class="form-group">
+                        <label for="register_cnf">Confirm password</label>
+                        <input
+                          formControlName="cpwd"
+                          type="password"
+                          class="form-control"
+                          id="exampleFormControlInput5"
+                          placeholder="Confirm Password"
+                        />
+                        <small
+                          *ngIf="f.cpwd.touched && f.cpwd.invalid"
+                          class="form-text text-danger font-weight-bold"
+                        >
+                          <div *ngIf="f.cpwd.errors.required">
+                            Password is required.
+                          </div>
+                          <div *ngIf="f.cpwd.errors.confirmedValidator">
+                            Password and Confirm Password must be match.
+                          </div>
+                        </small>
+                      </div>
                     </div>
 
-                    <div
-                      *ngIf="
-                        f.username.errors.minlength ||
-                        f.username.errors.maxlength ||
-                        f.username.errors.noSpecial ||
-                        f.username.errors.notSpace
-                      "
-                    >
-                      Accepts Alphanumeric & Min 5 to Max 13 Characters
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="customCheck1"
+                        />
+                        <label class="custom-control-label" for="customCheck1"
+                          >Remember me</label
+                        >
+                      </div>
                     </div>
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <input
-                    formControlName="studentname"
-                    type="name"
-                    class="form-control"
-                    id="exampleFormControlInput2"
-                    placeholder="Enter Name"
-                  />
-                  <small
-                    *ngIf="f.studentname.touched && f.studentname.invalid"
-                    class="form-text text-danger font-weight-bold"
-                  >
-                    <div *ngIf="f.studentname.errors.required">
-                      Please Enter Student Name
+                    <div class="account-dialog-actions">
+                      <button
+                        [disabled]="!form.valid"
+                        type="submit"
+                        class="btn btn-primary"
+                        (click)="onRegister()"
+                      >
+                        Register
+                      </button>
+                      <a
+                        class="account-dialog-link"
+                        (click)="showMyContainer = !showMyContainer"
+                        >If You Have an Account.Sign In</a
+                      >
                     </div>
-
-                    <div
-                      *ngIf="
-                        f.studentname.errors.minlength ||
-                        f.studentname.errors.maxlength ||
-                        f.studentname.noSpecial ||
-                        f.studentname.notNumber
-                      "
-                    >
-                      Accepts Alphabets & Min 5 to Max 30 Characters
-                    </div>
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <input
-                    formControlName="primaryEmail"
-                    type="email"
-                    class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
-                  />
-                  <small
-                    *ngIf="f.primaryEmail.touched && f.primaryEmail.invalid"
-                    class="form-text text-danger font-weight-bold"
-                  >
-                    <div *ngIf="f.primaryEmail.errors.required">
-                      Please Enter Email
-                    </div>
-                    <div *ngIf="f.primaryEmail.errors.email">
-                      Please Enter The Correct Email
-                    </div>
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <input
-                    formControlName="pwd"
-                    type="password"
-                    class="form-control"
-                    id="exampleFormControlInput4"
-                    placeholder="Enter Password"
-                  />
-                  <small
-                    *ngIf="f.pwd.touched && f.pwd.invalid"
-                    class="form-text text-danger font-weight-bold"
-                  >
-                    <div *ngIf="f.pwd.errors.required">
-                      Please Enter Password
-                    </div>
-
-                    <div
-                      *ngIf="f.pwd.errors.minlength || f.pwd.errors.maxlength"
-                    >
-                      Accepts Min 8 to Max 16 Characters
-                    </div>
-                    <div *ngIf="f.pwd.errors.notSpace">
-                      Password Cannot Contain Space
-                    </div>
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <input
-                    formControlName="cpwd"
-                    type="password"
-                    class="form-control"
-                    id="exampleFormControlInput5"
-                    placeholder="Confirm Password"
-                  />
-                  <small
-                    *ngIf="f.cpwd.touched && f.cpwd.invalid"
-                    class="form-text text-danger font-weight-bold"
-                  >
-                    <div *ngIf="f.cpwd.errors.required">
-                      Password is required.
-                    </div>
-                    <div *ngIf="f.cpwd.errors.confirmedValidator">
-                      Password and Confirm Password must be match.
-                    </div>
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <div class="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customCheck1"
-                    />
-                    <label class="custom-control-label" for="customCheck1"
-                      >Remember me</label
-                    >
                   </div>
-                </div>
-                <div class="account-dialog-actions">
-                  <button
-                    [disabled]="!form.valid"
-                    type="submit"
-                    class="btn btn-primary"
-                    (click)="onRegister()"
-                  >
-                    Register
-                  </button>
-                  <a
-                    class="account-dialog-link"
-                    (click)="showMyContainer = !showMyContainer"
-                    >If You Have an Account.Sign In</a
-                  >
                 </div>
               </form>
             </div>
@@ -177,19 +207,25 @@
           <div class="card account-dialog" *ngIf="!showMyContainer">
             <div class="card-header bg-primary text-white position-relative">
               Please Login
-              <div class="spinner-border text-light spinner-border-sm position-absolute" role="status" style="top:18px; right:22px" *ngIf="showLoading">
+              <div
+                class="spinner-border text-light spinner-border-sm position-absolute"
+                role="status"
+                style="top: 18px; right: 22px"
+                *ngIf="showLoading"
+              >
                 <span class="sr-only">Loading...</span>
               </div>
             </div>
             <div class="card-body">
               <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-                <div class="form-group">
+                <div class="form-group" *ngIf="!isEmailLogin">
+                  <label for="login_username">Enter username</label>
                   <input
                     formControlName="username"
                     type="name"
                     class="form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Enter User Name"
+                    id="login_username"
+                    placeholder="eg. Alice"
                   />
                   <small
                     *ngIf="fl.username.touched && f.username.invalid"
@@ -211,12 +247,46 @@
                     </div>
                   </small>
                 </div>
+                <div class="form-group" *ngIf="isEmailLogin">
+                  <label for="login_email">Enter email</label>
+                  <input
+                    formControlName="email"
+                    type="email"
+                    class="form-control"
+                    id="login_email"
+                    aria-describedby="emailHelp"
+                    placeholder="eg. someone@somewhere.com"
+                  />
+                  <small
+                    *ngIf="fl.email.touched && fl.email.invalid"
+                    class="form-text text-danger font-weight-bold"
+                  >
+                    <div *ngIf="fl.email.errors.required">
+                      Please Enter Email
+                    </div>
+                    <div *ngIf="fl.email.errors.email">
+                      Please Enter The Correct Email
+                    </div>
+                  </small>
+                </div>
+                <div class="custom-control custom-switch mb-2 ">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input "
+                    id="email_mode"
+                    (change)="toggleEmail($event)"
+                  />
+                  <label class="custom-control-label cursor-pointer" for="email_mode"
+                    >Login using email</label
+                  >
+                </div>
                 <div class="form-group">
+                  <label for="login_pass">Enter password</label>
                   <input
                     formControlName="pwd"
                     type="password"
                     class="form-control"
-                    id="exampleFormControlInput4"
+                    id="login_pass"
                     placeholder="Enter Password"
                   />
                   <small
@@ -249,7 +319,7 @@
                 <a
                   class="account-dialog-link"
                   (click)="showMyContainer = !showMyContainer"
-                  >If You Don't Have an Account.Sign Up</a
+                  >If you don't have an account, Sign Up</a
                 >
               </form>
             </div>

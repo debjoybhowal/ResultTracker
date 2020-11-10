@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-.modal{
-    background-color: rgba(0,0,0,0.3);
+.modal {
+  background-color: rgba(0, 0, 0, 0.3);
 }
-.modal-header{
-    align-items: stretch;
+.modal-header {
+  align-items: stretch;
+}
+.cursor-pointer {
+  cursor: pointer;
 }

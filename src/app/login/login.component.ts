@@ -192,11 +192,6 @@ export class LoginComponent implements OnInit {
     };
   }
   onRegister() {
-    console.log(this.form.controls.username.value);
-    console.log(this.form.controls.studentname.value);
-    console.log(this.form.controls.primaryEmail.value);
-    console.log(this.form.controls.pwd.value);
-
     this.registerobj = {
       username: this.form.controls.username.value,
       name: this.form.controls.studentname.value,
@@ -230,7 +225,7 @@ export class LoginComponent implements OnInit {
     this.showLoading = true;
     this.loginService.login(this.loginForm.value).subscribe((result: any) => {
       if (result.code == 202) {
-        this.toastr.info('Welcome '+result.username + ' ! 😀');
+        this.toastr.info('Welcome ' + result.username + ' ! 😀');
         localStorage.setItem('username', result.username);
         localStorage.setItem('pwd', this.loginForm.get('pwd').value);
         localStorage.setItem('user_id', result.user);
@@ -246,6 +241,30 @@ export class LoginComponent implements OnInit {
       this.showLoading = false;
       this.loginForm.reset();
     });
+  }
+  isEmailLogin: boolean = false;
+  toggleEmail(e) {
+    if (e.target.checked) {
+      this.isEmailLogin = true;
+      this.loginForm.removeControl('username');
+      this.loginForm.addControl(
+        'email',
+        new FormControl('', [Validators.required, Validators.email])
+      );
+    } else {
+      this.isEmailLogin = false;
+      this.loginForm.removeControl('email');
+      this.loginForm.addControl(
+        'username',
+        new FormControl('', [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(13),
+          CustomValidators.noSpecial,
+          CustomValidators.notSpace,
+        ])
+      );
+    }
   }
 
   ngOnInit(): void {}

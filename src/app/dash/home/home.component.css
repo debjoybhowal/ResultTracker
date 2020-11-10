@@ -10,7 +10,5 @@
   .circle-progress::ng-deep svg{
       width:100%;
   }
-  .cursor-pointer {
-    cursor: pointer;
-  }
+ 
   
