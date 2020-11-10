@@ -133,7 +133,7 @@
 
     <div class="col-xl-12 third">
       <div class="card spur-card">
-        <div class="card-header bg-warning text-white">
+        <div class="card-header bg-info text-white">
           <div class="spur-card-icon">
             <i class="fas fa-clipboard"></i>
           </div>
@@ -202,7 +202,7 @@
                   </span>
                   <span>
                     <button
-                      class="btn text-warning"
+                      class="btn text-primary"
                       data-dismiss="modal"
                       (click)="
                         openMarksUpdateModal(
@@ -228,121 +228,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-6">
-      <div class="card spur-card">
-        <div class="card-header bg-primary text-white">
-          <div class="spur-card-icon">
-            <i class="fas fa-clipboard"></i>
-          </div>
-          <div class="spur-card-title">Subject List Added</div>
-          <div class="spur-card-menu">
-            <button class="btn text-white" (click)="openSubjectModal()">
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="spinner text-center" *ngIf="!subjectListAny">
-            <div
-              class="spinner-grow text-secondary"
-              style="width: 3rem; height: 3rem"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-          <table
-            class="table table-hover table-in-card"
-            *ngIf="subjectListAny && subjectListAny.length > 0"
-          >
-            <thead>
-              <tr>
-                <th scope="col" class="text"><span>Subject</span></th>
-                <th scope="col" class="text"><span>Term</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let val of subjectListAny"
-                routerLink="/dash/subject/{{ val.sub_id }}"
-                class="cursor-pointer"
-              >
-                <ng-container>
-                  <th class="text">
-                    <span>{{ val.subject_name }}</span>
-                  </th>
-                  <td class="text">
-                    <span>{{ val.term_name }}</span>
-                  </td>
-                </ng-container>
-              </tr>
-            </tbody>
-          </table>
-          <p
-            class="mt-4 lead"
-            *ngIf="subjectListAny && subjectListAny.length <= 0"
-          >
-            Please enter a subject to see the subject in this list
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-6">
-      <div class="card spur-card">
-        <div class="card-header bg-warning text-white">
-          <div class="spur-card-icon">
-            <i class="fas fa-clipboard"></i>
-          </div>
-          <div class="spur-card-title">Term List</div>
-          <div class="spur-card-menu">
-            <button class="btn text-white" (click)="openTermAddModal()">
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="spinner text-center" *ngIf="!termData">
-            <div
-              class="spinner-grow text-secondary"
-              style="width: 3rem; height: 3rem"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-          <table
-            class="table table-hover table-in-card"
-            *ngIf="termData?.response && termData?.response.length > 0"
-          >
-            <thead>
-              <tr>
-                <th scope="col" class="text"><span>#</span></th>
-                <th scope="col" class="text"><span>Term Name</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let val of termData.response; let i = index"
-                routerLink="/dash/term/{{ val.term_id }}"
-              >
-                <th class="text">
-                  <span>{{ i + 1 }}</span>
-                </th>
-                <td class="text">
-                  <span>{{ val.term_name }}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p
-            class="mt-4 lead"
-            *ngIf="termData?.response && termData.response.length <= 0"
-          >
-            Please enter a term to see the term in this list
-          </p>
-        </div>
-      </div>
-    </div>
+
     <div class="col-xl-6">
       <div class="card spur-card">
         <div class="card-header bg-success text-white">
@@ -435,19 +321,53 @@
         </div>
       </div>
     </div>
+
+    
+    <div class="col-xl-12">
+      <nav class="navbar navbar-light bg-light mb-3 w-100">
+        <a class="navbar-brand"
+          ><i class="fas fa-clipboard "></i> Term list</a
+        >
+        <form class="form-inline">
+          <button
+            class="btn btn-primary "
+            type="submit"
+            (click)="openTermAddModal()"
+          >
+            Add Term <i class="fas fa-plus"></i>
+          </button>
+        </form>
+      </nav>
+    </div>
     <!--Term Wise Subjects Organised-->
     <div class="col-xl-6" *ngFor="let val of termData?.response">
       <div class="card spur-card">
-        <div class="card-header bg-info text-white">
+        <div class="card-header bg-primary text-white">
           <div class="spur-card-icon">
             <i class="fas fa-clipboard"></i>
           </div>
           <div class="spur-card-title">
-            No. Of Subjects in {{ val.term_name }}
+            No. of subjects in <a  class="text-white"
+            routerLink="/dash/term/{{ val.term_id }}">{{ val.term_name }}</a>
+          </div>
+          <div class="spur-card-menu">
+            <button
+              class="btn text-white"
+              (click)="openSubjectModal(val.term_id, val.term_name)"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+            <a
+              class="btn text-white cursor-pointer"
+              routerLink="/dash/term/{{ val.term_id }}"
+            >
+              <i class="fas fa-external-link-square-alt"></i>
+          </a>
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-in-card">
+          <table class="table table-hover table-in-card" 
+          *ngIf="val.subjects && val.subjects.length > 0">
             <thead>
               <tr>
                 <th scope="col" class="text"><span>#</span></th>
@@ -469,6 +389,12 @@
               </tr>
             </tbody>
           </table>
+          <p
+          class="mt-4 lead"
+          *ngIf="val.subjects && val.subjects.length <= 0"
+        >
+          Please enter a subject to see the subject in this list
+        </p>
         </div>
       </div>
     </div>
@@ -752,7 +678,7 @@
     <div class="modal-content">
       <form [formGroup]="addSubjectForm" (ngSubmit)="onAddSubject()">
         <div class="modal-header">
-          <h5 class="m-0">Add a subject</h5>
+          <h5 class="m-0">Add a subject in {{ termname }}</h5>
           <button
             type="button"
             class="close btn btn-danger"
@@ -764,82 +690,36 @@
         </div>
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="spinner text-center" *ngIf="!termListDropDown">
-              <div
-                class="spinner-grow text-secondary"
-                style="width: 3rem; height: 3rem"
-                role="status"
+            <div class="form-group">
+              <label
+                for="exampleFormControlInput1"
+                class="text-center font-weight-bold"
+                >Subject Name</label
               >
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div>
-            <div
-              class="row"
-              *ngIf="termListDropDown && termListDropDown.length > 0"
-            >
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Subject Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="sub_name"
-                    placeholder="eg. Physics"
-                  />
-                  <small
-                    *ngIf="
-                      addSubjectForm.get('sub_name').touched &&
-                      addSubjectForm.get('sub_name').invalid
-                    "
-                    class="form-text text-danger font-weight-bold"
-                  >
-                    <div *ngIf="addSubjectForm.get('sub_name').errors.required">
-                      Please enter subject
-                    </div>
-                  </small>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="sub_name"
+                placeholder="eg. Physics"
+              />
+              <small
+                *ngIf="
+                  addSubjectForm.get('sub_name').touched &&
+                  addSubjectForm.get('sub_name').invalid
+                "
+                class="form-text text-danger font-weight-bold"
+              >
+                <div *ngIf="addSubjectForm.get('sub_name').errors.required">
+                  Please enter subject
                 </div>
-              </div>
-              <div class="col-md-6">
-                <label for="exampleFormControlSelect1">Select Term</label>
-                <select
-                  class="form-control"
-                  formControlName="term_id"
-                  (change)="changeTermId($event)"
-                >
-                  <option value="" selected>Select</option>
-                  <option
-                    [value]="term.term_id"
-                    *ngFor="let term of termListDropDown"
-                  >
-                    {{ term.term_name }}
-                  </option>
-                </select>
-                <small
-                  *ngIf="
-                    addSubjectForm.get('term_id').touched &&
-                    addSubjectForm.get('term_id').invalid
-                  "
-                  class="form-text text-danger font-weight-bold"
-                >
-                  <div *ngIf="addSubjectForm.get('term_id').errors.required">
-                    Please select a term
-                  </div>
-                </small>
-              </div>
+              </small>
             </div>
-            <p
-              class="lead"
-              *ngIf="termListDropDown && termListDropDown.length <= 0"
-            >
-              You need to add a term first before adding a subject.
-            </p>
           </div>
         </div>
         <div class="modal-footer">
           <button
             type="submit"
             class="btn btn-primary"
-            *ngIf="termListDropDown && termListDropDown.length > 0"
             [disabled]="!addSubjectForm.valid"
           >
             Add

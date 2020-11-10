@@ -393,9 +393,7 @@ export class ProfileComponent implements OnInit {
   /*Subject related*/
   addSubjectForm: FormGroup = new FormGroup({
     sub_name: new FormControl('', Validators.required),
-    term_id: new FormControl('', Validators.required),
   });
-  termListDropDown;
   loadSubjectListAny() {
     this.subjectListAny = undefined;
     this.subjectService
@@ -407,23 +405,27 @@ export class ProfileComponent implements OnInit {
   changeTermId(e) {
     //console.log(e.target.value);
   }
-  openSubjectModal() {
+  termid;
+  termname;
+  openSubjectModal(id, name) {
     this.addSubjectForm.markAsUntouched();
     this.addSubjectForm.get('sub_name').reset();
-    this.termListDropDown = undefined;
     this.showSubjectAddModal = true;
-    this.subjectService
-      .getTermList(this.user_id, this.pwd)
-      .subscribe((response: any) => {
-        this.termListDropDown = response.response;
-      });
+    this.termid = id;
+    this.termname = name;
   }
   onAddSubject() {
     this.showSubjectAddModal = false;
+    let obj = {
+      term_id: this.termid,
+      sub_name: this.addSubjectForm.controls.sub_name.value,
+    };
     this.subjectService
-      .addsub(this.user_id, this.pwd, this.addSubjectForm.value)
+      .addsub(this.user_id, this.pwd, obj)
       .subscribe((response: any) => {
         this.loadSubjectListAny();
+        this.loadTermData();
+        console.log(response);
       });
   }
 
