@@ -363,7 +363,7 @@ export class ProfileComponent implements OnInit {
   });
   termListDropDown;
   loadSubjectListAny() {
-    this.subjectList = undefined;
+    this.subjectListAny = undefined;
     this.subjectService
       .getSubjectList(this.user_id, this.pwd)
       .subscribe((response: any) => {
