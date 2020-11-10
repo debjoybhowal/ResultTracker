@@ -23,10 +23,13 @@
     <div class="dropdown tools-item">
       <i (click)="openMapModal()" class="fas fa-question-circle"></i>
     </div>
+    <div class="dropdown tools-item">
+      <i (click)="openContactModal()" class="fas fa-phone-square"></i>
+    </div>
   </div>
 </header>
 
-<!-- Modal -->
+<!-- Map Modal -->
 <div
   class="modal fade"
   [ngClass]="{ show: showMapModal }"
@@ -91,6 +94,73 @@
         <button
           type="button"
           (click)="showMapModal = false"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div
+  class="modal fade"
+  [ngClass]="{ show: showContactModal }"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <i class="fas fa-envelope-open-text"></i>&nbsp;&nbsp;
+          <span class="text-primary">Contact Us</span>
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeContactModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Message</label>
+            <textarea
+              formControlName="message"
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea>
+          </div>
+          <small
+            *ngIf="f.message.touched && f.message.invalid"
+            class="form-text text-danger font-weight-bold"
+          >
+            <div *ngIf="f.message.errors.required">Please Enter Message</div>
+          </small>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          [disabled]="!form.valid"
+          (click)="onSend()"
+          class="btn btn-success"
+        >
+          Send
+        </button>
+        <button
+          type="button"
+          (click)="closeContactModal()"
           class="btn btn-secondary"
           data-dismiss="modal"
         >
