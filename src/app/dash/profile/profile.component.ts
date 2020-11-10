@@ -55,6 +55,8 @@ export class ProfileComponent implements OnInit {
   examData;
   user_id: string;
   pwd: string;
+  email: string;
+  username: string;
 
   form: FormGroup;
   showExamModal: boolean = false;
@@ -73,9 +75,11 @@ export class ProfileComponent implements OnInit {
     private router: Router
   ) {
     this.form = this.fb.group({
-      examname: new FormControl('', [Validators.required,
+      examname: new FormControl('', [
+        Validators.required,
         CustomValidators.noSpecial,
-        CustomValidators.notNumber]),
+        CustomValidators.notNumber,
+      ]),
       totalexam: new FormControl('', [
         Validators.required,
         Validators.pattern('[0-9]*'),
@@ -209,10 +213,9 @@ export class ProfileComponent implements OnInit {
     if (localStorage.getItem('user_id')) {
       this.user_id = localStorage.getItem('user_id');
       this.pwd = localStorage.getItem('pwd');
-      this.profileService
-        .getProfileInfo(this.user_id, this.pwd)
-        .subscribe((response: any) => (this.profile = response.response));
-
+      this.email = localStorage.getItem('email');
+      this.username = localStorage.getItem('username');
+      this.loadProfileInfo();
       this.profileService
         .getAllSubjectData(this.user_id, this.pwd)
         .subscribe((response: any) => {
@@ -231,6 +234,37 @@ export class ProfileComponent implements OnInit {
         .exam_name;
       this.EditExamForm.get('new_exam_name').setValue(exam_name);
     });
+  }
+
+  loadProfileInfo() {
+    this.editProfileForm = undefined;
+    this.profile = undefined;
+
+    this.profileService
+      .getProfileInfo(this.user_id, this.pwd)
+      .subscribe((response: any) => {
+        this.profile = response.response;
+        this.editProfileForm = new FormGroup({
+          username: new FormControl(this.profile.username, [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.maxLength(13),
+            CustomValidators.noSpecial,
+            CustomValidators.notSpace,
+          ]),
+          studentname: new FormControl(this.profile.full_name, [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.maxLength(30),
+            CustomValidators.noSpecial,
+            CustomValidators.notNumber,
+          ]),
+          primaryEmail: new FormControl(this.profile.email, [
+            Validators.required,
+            Validators.email,
+          ]),
+        });
+      });
   }
 
   loadPieChartData() {
@@ -457,7 +491,7 @@ export class ProfileComponent implements OnInit {
           this.toastr.warning('good bye');
           this.logOut();
         } else if (response.code == 351) {
-          this.toastr.error('Incorrect Password');          
+          this.toastr.error('Incorrect Password');
           this.logOut();
         } else this.toastr.error('Something went wrong!');
       });
@@ -699,23 +733,21 @@ export class ProfileComponent implements OnInit {
             'Password Changed'
           );
           this.logOut();
-        }else if(response.code==351){
-          this.toastr.error("Incorrect password");
+        } else if (response.code == 351) {
+          this.toastr.error('Incorrect password');
           this.logOut();
-        }else
-        this.toastr.error("Something went wrong!");
-        
+        } else this.toastr.error('Something went wrong!');
+
         this.closeChangePasswordModal();
       });
   }
 
-  logOut(){
-    localStorage.removeItem("username");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("pwd");
+  logOut() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('pwd');
     this.router.navigate(['login']);
   }
-
 
   //Delete marks
 
@@ -727,7 +759,7 @@ export class ProfileComponent implements OnInit {
   openMarksDeleteModal(id) {
     this.deleteMarksModal = true;
     this.marks_up_del_id = id;
-    console.log("id="+id);
+    console.log('id=' + id);
   }
 
   onDeleteMarks() {
@@ -750,12 +782,14 @@ export class ProfileComponent implements OnInit {
   //update marks
 
   editMarksForm: FormGroup = new FormGroup({
-    marks: new FormControl('', [Validators.required,
+    marks: new FormControl('', [
+      Validators.required,
       Validators.min(0),
-      (control: AbstractControl) => Validators.max(this.FullMarksEdit)(control),]),
+      (control: AbstractControl) => Validators.max(this.FullMarksEdit)(control),
+    ]),
   });
 
-  openMarksUpdateModal(id,name,full_marks){
+  openMarksUpdateModal(id, name, full_marks) {
     this.showEditMarksModal = true;
     this.marks_up_del_id = id;
     this.marks_value = name;
@@ -774,11 +808,50 @@ export class ProfileComponent implements OnInit {
       )
       .subscribe((response: any) => {
         if (response.code == 202) {
-          this.toastr.success('Marks updated successfully');          
+          this.toastr.success('Marks updated successfully');
           this.marksLoadData();
         } else {
           this.toastr.error('Something went wrong!');
         }
+      });
+  }
+
+  /* edit profile*/
+  editProfileModal: boolean = false;
+
+  editProfileForm: FormGroup;
+
+  openEditProfileModal() {
+    this.editProfileModal = true;
+  }
+  closeeditProfileModal() {
+    this.editProfileModal = false;
+  }
+  editprofile() {
+    this.closeeditProfileModal();
+    console.log(this.editProfileForm.controls.value);
+    this.profileService
+      .edituser(
+        this.user_id,
+        this.pwd,
+        this.editProfileForm.get('username').value,
+        this.editProfileForm.get('primaryEmail').value,
+        this.editProfileForm.get('studentname').value
+      )
+      .subscribe((response: any) => {
+        console.log(this.user_id);
+        if (response.code == 202) {
+          this.toastr.success('Success', 'Profile details has been updated');
+          this.loadProfileInfo();
+        } else if (response.code == 263) {
+          this.toastr.warning('Username exists!');
+        } else if (response.code == 261) {
+          this.toastr.warning('Email ID exists!');
+        } else if (response.code == 351) {
+          this.toastr.error('Incorrect password');
+          this.logOut();
+        } else this.toastr.error('Something went wrong!');
+        this.closeeditProfileModal();
       });
   }
 }

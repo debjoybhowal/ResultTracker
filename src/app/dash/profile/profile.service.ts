@@ -16,7 +16,7 @@ export class ProfileService {
     'https://atdebjoy.com/others/api/perform/marks_enter_check.php';
   marksUrl = 'https://atdebjoy.com/others/api/perform/basic_details.php';
   addmarks = 'https://atdebjoy.com/others/api/perform/add_marks.php';
-  changepass = 'https://atdebjoy.com/others/api/perform/register.php';
+  updateProfileUrl = 'https://atdebjoy.com/others/api/perform/register.php';
   delMarksUrl = 'https://atdebjoy.com/others/api/perform/del_marks.php';
 
   updateMarksUrl = 'https://atdebjoy.com/others/api/perform/update_marks_value.php';
@@ -66,7 +66,7 @@ export class ProfileService {
   }
   changepassword(user_id: string, pwd: string, newpassword: string) {
     return this.http.post(
-      this.changepass,
+      this.updateProfileUrl,
       JSON.stringify({ stud_id: user_id, pass: pwd, newpass: newpassword })
     );
   }
@@ -80,5 +80,24 @@ export class ProfileService {
 
   editMarks( user_id: number, pwd: string, id1:number,marks:number ){​
     return this.http.post(this.updateMarksUrl,JSON.stringify({marks:marks, marks_id:id1, stud_id:user_id, pass:pwd,}​));
+  }
+
+  edituser(
+    user_id: string,
+    pwd: string,
+    username: string,
+    email: string,
+    studentname: string
+  ) {
+    return this.http.post(
+      this.updateProfileUrl,
+      JSON.stringify({
+        stud_id: user_id,
+        pass: pwd,
+        name: studentname,
+        username: username,
+        email: email,
+      })
+    );
   }
 }

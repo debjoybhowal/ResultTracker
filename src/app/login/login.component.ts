@@ -229,6 +229,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('username', result.username);
         localStorage.setItem('pwd', this.loginForm.get('pwd').value);
         localStorage.setItem('user_id', result.user);
+        localStorage.setItem('email', result.email);
 
         this.router.navigate(['dash', 'home']);
       } else if (result.code == -302) {
