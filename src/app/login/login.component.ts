@@ -136,15 +136,6 @@ export class LoginComponent implements OnInit {
       stroke: {
         curve: 'smooth',
       },
-      title: {
-        text: 'Yearly app subscribers progression',
-        align: 'center',
-        style: {
-          color: undefined,
-          fontFamily: 'Arial, sans-serif',
-          fontWeight: 600,
-        },
-      },
       grid: {
         borderColor: 'gold',
         row: {
