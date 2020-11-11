@@ -276,3 +276,11 @@
 .subj{
   text-align: center;
 }
+.table-responsive{
+   width:calc(100vw - 68px);
+}
+@media only screen and (min-width:700px){
+  .table-responsive{
+    display:table;
+  }
+}

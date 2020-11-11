@@ -1,4 +1,3 @@
-import { ElementSchemaRegistry } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import {
   CanActivate,

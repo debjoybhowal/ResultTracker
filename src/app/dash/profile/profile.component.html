@@ -158,39 +158,39 @@
             </div>
           </div>
           <table
-            class="table table-in-card"
+            class="table table-in-card table-responsive"
             *ngIf="filteredMarksList && filteredMarksList.length > 0"
           >
             <thead>
               <tr>
-                <th scope="col" class="text rank-list"><span>#</span></th>
-                <th scope="col" class="text"><span>Subject</span></th>
-                <th scope="col" class="text"><span>Exam</span></th>
-                <th scope="col" class="text"><span>Term</span></th>
-                <th scope="col" class="text"><span>Marks</span></th>
-                <th scope="col" class="text"><span></span></th>
+                <th scope="col" class=""><span>#</span></th>
+                <th scope="col" class=""><span>Subject</span></th>
+                <th scope="col" class=""><span>Exam</span></th>
+                <th scope="col" class=""><span>Term</span></th>
+                <th scope="col" class=""><span>Marks</span></th>
+                <th scope="col" class=""><span></span></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let val of filteredMarksList; let i = index">
-                <th scope="row" class="text rank-list">
+                <th scope="row" class="">
                   <span>{{ i + 1 }}</span>
                 </th>
-                <td class="text">
+                <td class="">
                   <span>{{ val.subject_name }}</span>
                 </td>
-                <td class="text">
+                <td class="">
                   <span>{{
                     val.exam_name + (val.exam_no > 1 ? " " + val.exam_no : "")
                   }}</span>
                 </td>
-                <td class="text">
+                <td class="">
                   <span>{{ val.term_name }}</span>
                 </td>
-                <td class="text">
+                <td class="">
                   <span>{{ val.marks + " / " + val.full_marks }}</span>
                 </td>
-                <td class="text">
+                <td class="">
                   <span>
                     <button
                       class="btn text-danger"
@@ -322,15 +322,12 @@
       </div>
     </div>
 
-    
     <div class="col-xl-12">
       <nav class="navbar navbar-light bg-light mb-3 w-100">
-        <a class="navbar-brand"
-          ><i class="fas fa-clipboard "></i> Term list</a
-        >
+        <a class="navbar-brand"><i class="fas fa-clipboard"></i> Term list</a>
         <form class="form-inline">
           <button
-            class="btn btn-primary "
+            class="btn btn-primary"
             type="submit"
             (click)="openTermAddModal()"
           >
@@ -347,8 +344,10 @@
             <i class="fas fa-clipboard"></i>
           </div>
           <div class="spur-card-title">
-            No. of subjects in <a  class="text-white"
-            routerLink="/dash/term/{{ val.term_id }}">{{ val.term_name }}</a>
+            No. of subjects in
+            <a class="text-white" routerLink="/dash/term/{{ val.term_id }}">{{
+              val.term_name
+            }}</a>
           </div>
           <div class="spur-card-menu">
             <button
@@ -362,12 +361,14 @@
               routerLink="/dash/term/{{ val.term_id }}"
             >
               <i class="fas fa-external-link-square-alt"></i>
-          </a>
+            </a>
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-in-card" 
-          *ngIf="val.subjects && val.subjects.length > 0">
+          <table
+            class="table table-hover table-in-card"
+            *ngIf="val.subjects && val.subjects.length > 0"
+          >
             <thead>
               <tr>
                 <th scope="col" class="text"><span>#</span></th>
@@ -389,12 +390,9 @@
               </tr>
             </tbody>
           </table>
-          <p
-          class="mt-4 lead"
-          *ngIf="val.subjects && val.subjects.length <= 0"
-        >
-          Please enter a subject to see the subject in this list
-        </p>
+          <p class="mt-4 lead" *ngIf="val.subjects && val.subjects.length <= 0">
+            Please enter a subject to see the subject in this list
+          </p>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
 >
   <div class="container">
     <div class="row align-items-center full-height">
-      <div class="col-sm-6 mb-5">
+      <div class="col-sm-6 my-5">
         <div class="form-screen">
           <a href="index.html" class="spur-logo mb-3"
             ><i class="fas fa-chart-line text-primary"></i>
@@ -184,7 +184,7 @@
                         >
                       </div>
                     </div>
-                    <div class="account-dialog-actions">
+                    <div class="account-dialog-actions d-flex align-items-start">
                       <button
                         [disabled]="!form.valid"
                         type="submit"
@@ -269,14 +269,16 @@
                     </div>
                   </small>
                 </div>
-                <div class="custom-control custom-switch mb-2 ">
+                <div class="custom-control custom-switch mb-2">
                   <input
                     type="checkbox"
-                    class="custom-control-input "
+                    class="custom-control-input"
                     id="email_mode"
                     (change)="toggleEmail($event)"
                   />
-                  <label class="custom-control-label cursor-pointer" for="email_mode"
+                  <label
+                    class="custom-control-label cursor-pointer"
+                    for="email_mode"
                     >Login using email</label
                   >
                 </div>
@@ -309,18 +311,20 @@
                     </div>
                   </small>
                 </div>
-                <button
-                  [disabled]="!loginForm.valid"
-                  type="submit"
-                  class="btn btn-primary"
-                >
-                  Login
-                </button>
-                <a
-                  class="account-dialog-link"
-                  (click)="showMyContainer = !showMyContainer"
-                  >If you don't have an account, Sign Up</a
-                >
+                <div class="d-flex align-items-start">
+                  <button
+                    [disabled]="!loginForm.valid"
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    Login
+                  </button>
+                  <a
+                    class="account-dialog-link"
+                    (click)="showMyContainer = !showMyContainer"
+                    >If you don't have an account, Sign Up</a
+                  >
+                </div>
               </form>
             </div>
           </div>
