@@ -8,16 +8,16 @@
     >
   </header>
   <nav class="dash-nav-list">
-    <a routerLink="/dash/home" class="dash-nav-item">
-      <i class="fas fa-home"></i> Dashboard
+    <a routerLink="/dash/home" (click)="toggleSideMobile('mobile')"  class="dash-nav-item">
+      <i class="fas fa-home" ></i> Dashboard
     </a>
-    <a routerLink="/dash/term"  class="dash-nav-item">
+    <a routerLink="/dash/term"  (click)="toggleSideMobile('mobile')" class="dash-nav-item">
         <i class="fas fa-chart-bar"></i>  Terms
     </a>
-    <a routerLink="/dash/subject"  class="dash-nav-item">
+    <a routerLink="/dash/subject" (click)="toggleSideMobile('mobile')"  class="dash-nav-item">
         <i class="fas fa-book"></i>  Subjects
     </a>
-    <a routerLink="/dash/profile"  class="dash-nav-item">
+    <a routerLink="/dash/profile"  (click)="toggleSideMobile()" class="dash-nav-item">
         <i class="fas fa-user"></i>  Profile
     </a>
     <a class="dash-nav-item" (click)="logOut()">

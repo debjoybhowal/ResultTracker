@@ -11,3 +11,9 @@
 .form-control.ng-touched.ng-invalid {
   border: 2px solid red;
 }
+.table .text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 0;
+}

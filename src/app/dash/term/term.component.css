@@ -6,9 +6,6 @@ tbody {
   cursor: pointer;
 }
 
-table {
-  text-align: center;
-}
 
 .modal.show {
   display: block;
@@ -18,6 +15,14 @@ table {
   text-align: center;
 }
 .form-control.ng-touched.ng-invalid {
-    border: 2px solid red;
-  }
-  
+  border: 2px solid red;
+}
+.table .text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 0;
+}
+.rank-list{
+  width:35px;
+}

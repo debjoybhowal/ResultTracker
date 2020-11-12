@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   @Input() showMobile:boolean;
   @Output() showMobileChange=new EventEmitter();
+  innerWidth;
   constructor(private router:Router) { }
 
   ngOnInit(): void {
@@ -20,9 +21,15 @@ export class NavComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  toggleSideMobile(){
-    this.showMobile=!this.showMobile;
-    this.showMobileChange.emit(this.showMobile);
+  toggleSideMobile(nav?){
+    if((this.innerWidth<992 && nav) || !nav){
+      this.showMobile=!this.showMobile;
+      this.showMobileChange.emit(this.showMobile);
+    }
   }
-
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+  }
 }

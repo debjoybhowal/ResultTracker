@@ -76,8 +76,9 @@
           >
             <thead>
               <tr>
-                <th scope="col" class="text"><span>#</span></th>
+                <th scope="col" class="text rank-list"><span>#</span></th>
                 <th scope="col" class="text"><span>Term Name</span></th>
+                <th scope="col" class="text"><span></span></th>
               </tr>
             </thead>
             <tbody>
@@ -85,29 +86,28 @@
                 *ngFor="let val of termData; let i = index"
                 routerLink="/dash/term/{{ val.term_id }}"
               >
-                <th class="text">
+                <th class="text rank-list">
                   <span>{{ i + 1 }}</span>
                 </th>
                 <td class="text">
                   <span>{{ val.term_name }}</span>
-                  <td><span
-                    ><button
-                      type="button"
-                      class="btn btn-danger"
-                      data-dismiss="modal"
-                      (click)="
-                      opendelTermModal(val.term_id)"
-                    >
-                      <i class="fas fa-minus"></i></button
-                  ></span>
                 </td>
-                <td>
+
+                <td class="text">
                   <span
                     ><button
                       type="button"
-                      class="btn btn-warning"
-                      (click)="
-                      openEditTermModel(val.term_id, val.term_name)"
+                      class="btn btn-danger btn-sm mr-1"
+                      data-dismiss="modal"
+                      (click)="opendelTermModal(val.term_id)"
+                    >
+                      <i class="fas fa-minus"></i></button
+                  ></span>
+                  <span
+                    ><button
+                      type="button"
+                      class="btn btn-warning btn-sm"
+                      (click)="openEditTermModel(val.term_id, val.term_name)"
                     >
                       Edit
                     </button></span
@@ -116,12 +116,9 @@
               </tr>
             </tbody>
           </table>
-          <p
-          class="mt-4 lead"
-          *ngIf="termData && termData.length <= 0"
-        >
-          Please enter a term to see the term in this list
-        </p>
+          <p class="mt-4 lead" *ngIf="termData && termData.length <= 0">
+            Please enter a term to see the term in this list
+          </p>
         </div>
       </div>
     </div>
@@ -195,34 +192,65 @@
 </div>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog" [ngClass]="{ show: deleteTermModal }">
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: deleteTermModal }"
+>
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Delete Term</h4>
-        <button type="button" class="close" (click)="deleteTermModal=false" data-dismiss="modal">&times;</button>
+        <button
+          type="button"
+          class="close"
+          (click)="deleteTermModal = false"
+          data-dismiss="modal"
+        >
+          &times;
+        </button>
       </div>
       <div class="modal-body">
-        <p class= "para">Are you sure? This action will remove all subjects in this term as well as all marks related to this term.</p>
+        <p class="para">
+          Are you sure? This action will remove all subjects in this term as
+          well as all marks related to this term.
+        </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="ondel()" data-dismiss="modal">Yes! Delete</button>
-        <button type="button" class="btn btn-danger" (click)="deleteTermModal=false" data-dismiss="modal">Close</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="ondel()"
+          data-dismiss="modal"
+        >
+          Yes! Delete
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteTermModal = false"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog" [ngClass]="{ show: showEditTermModal  }">
+<div
+  id="myModal"
+  class="modal fade"
+  role="dialog"
+  [ngClass]="{ show: showEditTermModal }"
+>
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
-      <form [formGroup]="editTermForm"  (ngSubmit)="onEdit()">
+      <form [formGroup]="editTermForm" (ngSubmit)="onEdit()">
         <div class="modal-header">
           <h5 class="m-0">Edit a Term</h5>
           <button
@@ -234,37 +262,50 @@
             &times;
           </button>
         </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="form-group">
-            <label for="exampleFormControlInput1"> New Term Name</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="term_name"
-            />
-            <small
-              *ngIf="
-                editTermForm.get('term_name').touched &&
-                editTermForm.get('term_name').invalid
-              "
-              class="form-text text-danger font-weight-bold"
-            >
-              <div *ngIf="editTermForm.get('term_name').errors.required">
-                Please enter a term
-              </div>
-              <div *ngIf="editTermForm.get('term_name').errors.noSpecial">
-                Term Name Cannot Contain Special Characters
-              </div>
-            </small>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="form-group">
+              <label for="exampleFormControlInput1"> New Term Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="term_name"
+              />
+              <small
+                *ngIf="
+                  editTermForm.get('term_name').touched &&
+                  editTermForm.get('term_name').invalid
+                "
+                class="form-text text-danger font-weight-bold"
+              >
+                <div *ngIf="editTermForm.get('term_name').errors.required">
+                  Please enter a term
+                </div>
+                <div *ngIf="editTermForm.get('term_name').errors.noSpecial">
+                  Term Name Cannot Contain Special Characters
+                </div>
+              </small>
+            </div>
           </div>
-
-        </div> 
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="!editTermForm.valid" data-dismiss="modal">Save</button>
-        <button type="submit" class="btn btn-danger" (click)="showEditTermModal=false" data-dismiss="modal">Close</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!editTermForm.valid"
+            data-dismiss="modal"
+          >
+            Save
+          </button>
+          <button
+            type="submit"
+            class="btn btn-danger"
+            (click)="showEditTermModal = false"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
       </form>
     </div>
   </div>
