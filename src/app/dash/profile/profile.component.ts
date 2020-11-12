@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from './profile.service';
+
 import {
   FormBuilder,
   FormGroup,
@@ -52,6 +53,7 @@ export class ProfileComponent implements OnInit {
   termData;
   PieData;
   examobj;
+  imageobj;
   examData;
   user_id: string;
   pwd: string;
@@ -244,6 +246,7 @@ export class ProfileComponent implements OnInit {
       .getProfileInfo(this.user_id, this.pwd)
       .subscribe((response: any) => {
         this.profile = response.response;
+        this.img_number = parseInt(this.profile.image);
         this.editProfileForm = new FormGroup({
           username: new FormControl(this.profile.username, [
             Validators.required,
@@ -526,6 +529,8 @@ export class ProfileComponent implements OnInit {
   SelectedSubId;
   SelectedAssId;
   SelectedAssNo;
+
+  img_number;
   getMarksForm: FormGroup = new FormGroup({
     term_id: new FormControl('', Validators.required),
     sub_id: new FormControl('', Validators.required),
@@ -855,5 +860,41 @@ export class ProfileComponent implements OnInit {
         } else this.toastr.error('Something went wrong!');
         this.closeeditProfileModal();
       });
+  }
+
+
+  //Profile Image Edit Part
+  editProfileImageModal: boolean = false;
+  listOfImages=[ ...Array(24).keys() ].map( i => i+1+"");
+  openEditProfileImageModal() {
+    this.editProfileImageModal = true;
+  }
+  closeEditProfileImageModal() {
+    this.editProfileImageModal = false;
+  }
+  onimg(image) {
+    console.log(image);
+    this.img_number = parseInt(image);
+  }
+  onimagechange() {
+    if (localStorage.getItem('user_id')) {
+      this.user_id = localStorage.getItem('user_id');
+      this.pwd = localStorage.getItem('pwd');
+      this.editProfileImageModal = false;
+      this.imageobj = {
+        stud_id: parseInt(this.user_id),
+        pass: this.pwd,
+        image: parseInt(this.img_number),
+      };
+      this.profileService
+        .changeimage(this.imageobj)
+        .subscribe((response: any) => {
+          if (response.code == 202) {
+            this.loadProfileInfo();
+            this.toastr.success('Profile Picture Changed');
+            console.log(response);
+          } else this.toastr.error('Something went wrong!');
+        });
+    }
   }
 }

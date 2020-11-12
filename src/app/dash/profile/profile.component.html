@@ -8,11 +8,8 @@
     <div class="col-xl-4">
       <div class="card-custom hovercard-custom card spur-card">
         <div class="card-customheader card-body"></div>
-        <div class="avatar">
-          <img
-            alt=""
-            src="assets/profile/3.jpg"
-          />
+        <div class="avatar"  *ngIf="profile">
+          <img alt="" src="assets/profile/{{ profile.image }}.jpg" />
         </div>
         <div class="spinner text-center" *ngIf="!profile">
           <div
@@ -61,6 +58,14 @@
               style="border-radius: 20px"
             >
               Edit your Profile
+            </button>
+            <button
+              class="btn btn-success mt-3 mx-1 mb-1"
+              style="padding: 25px"
+              (click)="openEditProfileImageModal()"
+              style="border-radius: 20px"
+            >
+              Change Profile Picture
             </button>
           </div>
         </div>
@@ -1582,6 +1587,56 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!--edit profile image-->
+<div
+  id="mmodall"
+  class="modal fade profilemodal"
+  role="dialog"
+  [ngClass]="{ show: editProfileImageModal }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="m-0">Change Profile Picture</h5>
+        <button
+          type="button"
+          class="close btn btn-danger"
+          data-dismiss="modal"
+          (click)="closeEditProfileImageModal()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="image-holder text-center">
+          <div class="image-item" *ngFor="let img of listOfImages" [class.selected]="img==img_number">
+            <img
+              alt="{{img}}"
+              (click)="onimg(img)"
+              class="profile_img "
+              src="./../../../assets/profile/{{img}}.jpg"
+            />
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" (click)="onimagechange()">
+          Change
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="closeEditProfileImageModal()"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   </div>
 </div>

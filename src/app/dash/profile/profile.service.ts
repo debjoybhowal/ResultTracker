@@ -19,7 +19,10 @@ export class ProfileService {
   updateProfileUrl = 'https://atdebjoy.com/others/api/perform/register.php';
   delMarksUrl = 'https://atdebjoy.com/others/api/perform/del_marks.php';
 
-  updateMarksUrl = 'https://atdebjoy.com/others/api/perform/update_marks_value.php';
+  updateMarksUrl =
+    'https://atdebjoy.com/others/api/perform/update_marks_value.php';
+  changeimageurl =
+    'https://atdebjoy.com/others/api/perform/update_profile_image.php';
 
   constructor(private http: HttpClient) {}
   getProfileInfo(user_id: string, pwd: string) {
@@ -71,15 +74,23 @@ export class ProfileService {
     );
   }
 
-  delMarks(user_id: number, pwd: string, marks_id:number){​
+  delMarks(user_id: number, pwd: string, marks_id: number) {
     console.log(marks_id);
-    return this.http.post(this.delMarksUrl,
-      JSON.stringify({​ marks_id: marks_id, stud_id: user_id, pass: pwd }​)
+    return this.http.post(
+      this.delMarksUrl,
+      JSON.stringify({ marks_id: marks_id, stud_id: user_id, pass: pwd })
     );
-  }​
-
-  editMarks( user_id: number, pwd: string, id1:number,marks:number ){​
-    return this.http.post(this.updateMarksUrl,JSON.stringify({marks:marks, marks_id:id1, stud_id:user_id, pass:pwd,}​));
+  }
+  editMarks(user_id: number, pwd: string, id1: number, marks: number) {
+    return this.http.post(
+      this.updateMarksUrl,
+      JSON.stringify({
+        marks: marks,
+        marks_id: id1,
+        stud_id: user_id,
+        pass: pwd,
+      })
+    );
   }
 
   edituser(
@@ -99,5 +110,8 @@ export class ProfileService {
         email: email,
       })
     );
+  }
+  changeimage(obj) {
+    return this.http.post(this.changeimageurl, JSON.stringify(obj));
   }
 }
