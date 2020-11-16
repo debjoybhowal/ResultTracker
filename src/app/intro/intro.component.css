@@ -1,0 +1,116 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+.logo1 :hover {
+  background: #fff;
+  color: #7cc576;
+  text-decoration: none;
+}
+.body1 {
+  background-image: url("https://image.freepik.com/free-photo/international-day-literacy-concept-with-learning-tools_1150-24438.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+#hero {
+  width: 100%;
+  height: 100vh;
+  background: url(https://cdpn.io/sashank12/img/hero-bg.png), rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+section {
+  padding: 60px 0;
+  overflow: hidden;
+}
+#hero .hero-container {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 15px;
+}
+#hero .hero-logo {
+  margin-bottom: 30px;
+}
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+#hero h1 {
+  margin: 0 0 30px 0;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 56px;
+  color: #fff;
+}
+#hero h2 {
+  color: #aeaeae;
+  margin-bottom: 30px;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+#hero .btn-get-started {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 14px 30px;
+  border-radius: 3px;
+  transition: 0.5s;
+  margin: 10px;
+  color: #fff;
+  background: black;
+  text-decoration: none;
+}
+#hero .btn-get-started:hover {
+  background: #fff;
+  color: #7cc576;
+}
+.logo {
+  font-size: 40px;
+  color: black;
+}
+
+#myDIV {
+  width: 50%;
+  padding: 20px 0;
+  text-align: center;
+  background-color: lightblue;
+  margin-top: 20px;
+}
+/*.row{
+    background-color:white;
+  }*/
+.side1 {
+  background-image: url("https://img.techpowerup.org/201116/screenshot-2020-11-12-150059.png");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+.side2 {
+  background-image: url("https://img.techpowerup.org/201116/profile.png");
+
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}

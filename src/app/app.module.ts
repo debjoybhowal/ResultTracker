@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {HttpClientModule} from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { IntroComponent } from './intro/intro.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    IntroComponent,
   ],
   imports: [
     BrowserModule,

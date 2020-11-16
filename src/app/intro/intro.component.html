@@ -1,0 +1,78 @@
+<div class="container-fluid body1">
+  <section id="hero">
+    <div class="hero-container">
+      <div class="logo1">
+        <a href="index.html" class="hero-logo logo"
+          ><i class="fas fa-chart-line text-primary mr-2"></i> <span class="text-white">Result Tracker</span></a
+        >
+      </div>
+      <h1>Welcome To Result Tracker</h1>
+      <h2 data-aos="fade-up" class="aos-init aos-animate">
+        Here we provide you with one step solution for your self-evaluation
+        <br />
+        and improvement by simply tracking your own academic scores.
+      </h2>
+      <a
+        data-aos="fade-up"
+        href="#about"
+        class="btn-get-started scrollto aos-init aos-animate"
+        >Get Started</a
+      >
+      <a
+        type="button"
+        class="btn-get-started scrollto aos-init aos-animate"
+        (click)="isLearnMoreOpen=!isLearnMoreOpen"
+      >
+        Learn More
+    </a>
+      <div id="myDIV" *ngIf="isLearnMoreOpen" class="p-3">
+        This app allows you to keep the track of your scores from all academic
+        years by providing you with a graphical view of your progress,
+        subject-wise and term wise.
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="row container-fluid">
+  <div class="col-lg-7 side1"></div>
+  <div class="col-lg-5 p-5 d-flex flex-column justify-content-center">
+    <h3 style="color: green">What is Result Tracker?</h3>
+    <p
+      style="
+        font-family: 'Fredericka the Great', cursive;
+        line-height: 35px;
+        font-weight: 550;
+      "
+    >
+      Result Tracker is an app that collects the data you enter regarding your
+      terms, marks, subjects and provide you with a graphical representations of
+      each subject's score for better understanding of the data. It analyses
+      your scores in each subject and provides you with information like, what
+      are your best performance and in which subjects your performance is below
+      average. It keeps all your data in a systematically organized way, where
+      only you can access the information by providing correct Username or Email
+      and Password.
+    </p>
+  </div>
+  <div class="col-lg-7 side2"></div>
+  <div class="col-lg-5 p-5 d-flex flex-column justify-content-center">
+    <h3 style="color: green">
+      How the Result Tracker app can be useful for students?
+    </h3>
+    <p
+      style="
+        font-family: 'Fredericka the Great', cursive;
+        line-height: 35px;
+        font-weight: 550;
+      "
+    >
+      Result Tracker app provides you with an over-view of your performance
+      throughout a term, irrespective of the user being a school student or a
+      college student. It provides you with the freedom to choose your term
+      name, subject name and exam structure as well. So any student can enter
+      the required details and enjoy the wonderful functionalities of the
+      application.
+    </p>
+  </div>
+</div>

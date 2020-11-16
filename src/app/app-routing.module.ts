@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { IntroComponent } from './intro/intro.component';
 import { LoginGuard } from './login.guard';
 
 const routes: Routes = [
@@ -12,6 +13,10 @@ const routes: Routes = [
     path: 'dash',
     canActivate:[LoginGuard],
     loadChildren: () => import('./dash/dash.module').then((m) => m.DashModule),
+  },
+  {
+    path:'intro',
+    component:IntroComponent
   },
   {
     path: '',
