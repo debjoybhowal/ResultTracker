@@ -1,6 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Inject,
+  HostListener,
+} from '@angular/core';
 import { ProfileService } from './profile.service';
-
+import { DOCUMENT } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -59,7 +65,7 @@ export class ProfileComponent implements OnInit {
   pwd: string;
   email: string;
   username: string;
-
+  windowScrolled: boolean;
   form: FormGroup;
   showExamModal: boolean = false;
   showDeleteExamModal: boolean = false;
@@ -74,7 +80,8 @@ export class ProfileComponent implements OnInit {
     private termService: TermService,
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.form = this.fb.group({
       examname: new FormControl('', [
@@ -862,10 +869,9 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
   //Profile Image Edit Part
   editProfileImageModal: boolean = false;
-  listOfImages=[ ...Array(24).keys() ].map( i => i+1+"");
+  listOfImages = [...Array(24).keys()].map((i) => i + 1 + '');
   openEditProfileImageModal() {
     this.editProfileImageModal = true;
   }
@@ -897,4 +903,6 @@ export class ProfileComponent implements OnInit {
         });
     }
   }
+
+  
 }

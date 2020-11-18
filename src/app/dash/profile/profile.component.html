@@ -8,7 +8,7 @@
     <div class="col-xl-4">
       <div class="card-custom hovercard-custom card spur-card">
         <div class="card-customheader card-body"></div>
-        <div class="avatar"  *ngIf="profile">
+        <div class="avatar" *ngIf="profile">
           <img alt="" src="assets/profile/{{ profile.image }}.jpg" />
         </div>
         <div class="spinner text-center" *ngIf="!profile">
@@ -22,9 +22,7 @@
         </div>
         <div class="info" *ngIf="profile">
           <div class="title">
-            <a >{{
-              profile.full_name
-            }}</a>
+            <a>{{ profile.full_name }}</a>
           </div>
           <div class="desc">
             <span class="desc-title">Username:</span>&nbsp;{{
@@ -1613,15 +1611,18 @@
       </div>
       <div class="modal-body">
         <div class="image-holder text-center">
-          <div class="image-item" *ngFor="let img of listOfImages" [class.selected]="img==img_number">
+          <div
+            class="image-item"
+            *ngFor="let img of listOfImages"
+            [class.selected]="img == img_number"
+          >
             <img
-              alt="{{img}}"
+              alt="{{ img }}"
               (click)="onimg(img)"
-              class="profile_img "
-              src="assets/profile/{{img}}.jpg"
+              class="profile_img"
+              src="assets/profile/{{ img }}.jpg"
             />
           </div>
-          
         </div>
       </div>
       <div class="modal-footer">
