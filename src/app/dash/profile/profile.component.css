@@ -331,24 +331,28 @@ li {
 
 /* .profilemodal .modal-dialog .modal-content {
  background-color: #427fed;
-} */ 
+} */
 
-.image-item{
-  display:inline-block;
-  border:8px solid rgb(214, 214, 214);
-  border-radius:100px;
-  overflow:hidden;
-  margin:5px;
-  transition:all 0.3s ease;
+.image-item {
+  display: inline-block;
+  border: 8px solid rgb(214, 214, 214);
+  border-radius: 100px;
+  overflow: hidden;
+  margin: 5px;
+  transition: all 0.3s ease;
 }
-.image-item.selected{  
-  border:8px solid #3f84fc;
+.image-item.selected {
+  border: 8px solid #3f84fc;
 }
-.image-item:hover{
-  cursor:pointer;
-  opacity:0.5;
+.image-item:hover {
+  cursor: pointer;
+  opacity: 0.5;
 }
-.image-item img{
-  height:80px;
-  width:80px;
+.image-item img {
+  height: 80px;
+  width: 80px;
+}
+.image-holder {
+  overflow: auto;
+  max-height: calc(100vh - 225px);
 }
