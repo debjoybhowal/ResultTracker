@@ -5,7 +5,7 @@
 }
 
 .body1 {
-  background-image: url("https://image.freepik.com/free-photo/international-day-literacy-concept-with-learning-tools_1150-24438.jpg");
+  background: url("https://img.techpowerup.org/201118/joanna-kosinska-laasol0lrys-unsplash-1.jpg"), rgba(74, 74, 74, 0.7);;
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -73,8 +73,8 @@ img {
   text-decoration: none;
 }
 #hero .btn-get-started:hover {
-  background: #fff;
-  color: #7cc576;
+  background: #3F84FC;
+  color: #fff;
 }
 .logo {
   font-size: 30px;

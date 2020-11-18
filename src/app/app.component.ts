@@ -12,11 +12,9 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       if (event instanceof GuardsCheckStart) {
         this.loading = true;
-        console.log("GuardStart")
       }     
       if (event instanceof GuardsCheckEnd) {
         this.loading = false;
-        console.log("GuardEnd")
       } 
     });
   }
